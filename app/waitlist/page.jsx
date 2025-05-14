@@ -5,7 +5,7 @@ const page = () => {
     <div className="mt-20 fixed w-full">
       <div className="aspect-video w-full">
         <iframe
-          style={{ width: "100%", height: "95%" }}
+          style={{ width: "100%" }}
           height="569"
           src="https://waitlist-376.created.app"
           title="Waiting List Landing Page"
