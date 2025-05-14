@@ -1,3 +1,4 @@
+import HomeSearch from "@/components/home-search";
 import "../app/globals.css";
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
             </p>
           </div>
           {/* Search */}
+          <HomeSearch />
         </div>
       </section>
     </div>
