@@ -1,0 +1,22 @@
+import "../app/globals.css";
+
+export default function Home() {
+  return (
+    <div className="pt-20 flex flex-col">
+      {/* Header */}
+      <section className="relative dotted-background py-16 md:py-28 ">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="mb-8">
+            <h1 className="gradient-title text-5xl md:text-8xl mb-4 text-white ">
+              Find Your Dream Car with AIxCAR
+            </h1>
+            <p className="text-xl text-gray-500 mb-8 max-w-2xl mx-auto">
+              Advanced AI Car Search and test drive from thousands of vehicles
+            </p>
+          </div>
+          {/* Search */}
+        </div>
+      </section>
+    </div>
+  );
+}
