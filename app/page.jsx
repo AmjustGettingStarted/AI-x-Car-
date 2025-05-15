@@ -4,6 +4,7 @@ import { ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { featuredCars } from "@/lib/data";
 import CarCard from "@/components/car-card";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -24,11 +25,13 @@ export default function Home() {
         </div>
       </section>
       <section className="py-12">
-        <div>
-          <div>
-            <h2>Featured Cars</h2>
-            <Button>
-              View All <ChevronRight className="ml-1 h-4 w-4" />
+        <div className="container mx-auto px-4">
+          <div className="mb-8 flex items-center justify-between">
+            <h2 className="text-2xl font-bold">Featured Cars</h2>
+            <Button className="flex items-center" variant="ghost" asChild>
+              <Link href="/cars" className=" ">
+                View All <ChevronRight className="ml-1 h-4 w-4" />
+              </Link>
             </Button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
