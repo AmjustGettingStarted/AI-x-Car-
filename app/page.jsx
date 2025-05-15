@@ -2,9 +2,10 @@ import HomeSearch from "@/components/home-search";
 import "../app/globals.css";
 import { ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { featuredCars } from "@/lib/data";
+import { carMakes, featuredCars } from "@/lib/data";
 import CarCard from "@/components/car-card";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -24,6 +25,8 @@ export default function Home() {
           <HomeSearch />
         </div>
       </section>
+
+      {/* Featured */}
       <section className="py-12">
         <div className="container mx-auto px-4">
           <div className="mb-8 flex items-center justify-between">
@@ -38,6 +41,41 @@ export default function Home() {
             {featuredCars.map((car) => (
               <CarCard key={car.id} car={car} />
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Browse Brands */}
+      <section className="py-12 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="mb-8 flex items-center justify-between">
+            <h2 className="text-2xl font-bold">Browse by Make</h2>
+            <Button className="flex items-center" variant="ghost" asChild>
+              <Link href="/cars" className=" ">
+                View All <ChevronRight className="ml-1 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {carMakes.map((make) => {
+              return (
+                <Link
+                  href={`/cars?make=${make.name}`}
+                  key={make.name}
+                  className="bg-white rounded-lg shadow p-4 text-center hover:shadow-md transition"
+                >
+                  <div className="h-16 w-auto mx-auto mb-2 relative">
+                    <Image
+                      src={make.image}
+                      fill
+                      alt={make.image}
+                      className="object-contain"
+                    />
+                  </div>
+                  <h3 className="font-medium">{make.name}</h3>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
