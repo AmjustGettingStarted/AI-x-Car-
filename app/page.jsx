@@ -2,7 +2,7 @@ import HomeSearch from "@/components/home-search";
 import "../app/globals.css";
 import { Calendar, Car, ChevronRight, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { bodyTypes, carMakes, featuredCars } from "@/lib/data";
+import { bodyTypes, carMakes, faqItems, featuredCars } from "@/lib/data";
 import CarCard from "@/components/car-card";
 import Link from "next/link";
 import Image from "next/image";
@@ -173,13 +173,17 @@ export default function Home() {
           <h2 className="text-2xl font-bold text-center mb-8">
             Frequently Asked Questions
           </h2>
-          <Accordion type="single" collapsible>
-            <AccordionItem value="item-1">
-              <AccordionTrigger>Is it accessible?</AccordionTrigger>
-              <AccordionContent>
-                Yes. It adheres to the WAI-ARIA design pattern.
-              </AccordionContent>
-            </AccordionItem>
+          <Accordion type="single" collapsible className="w-full">
+            {faqItems.map((item, i) => {
+              return (
+                <AccordionItem value={`item-${i}`} key={i}>
+                  <AccordionTrigger className="hover:no-underline">
+                    {item.question}
+                  </AccordionTrigger>
+                  <AccordionContent>{item.answer} </AccordionContent>
+                </AccordionItem>
+              );
+            })}
           </Accordion>
         </div>
       </section>
