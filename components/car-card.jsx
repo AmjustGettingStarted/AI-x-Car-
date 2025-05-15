@@ -6,7 +6,7 @@ import { CarIcon, Heart } from "lucide-react";
 import { Button } from "./ui/button";
 
 const CarCard = ({ car }) => {
-  const [isSaved, setIsSaved] = useState(car.whishListed);
+  const [isSaved, setIsSaved] = useState(car.wishlisted);
   return (
     <Card className="overflow-hidden hover:shadow-lg transition group">
       <div className="relative h-48">
@@ -24,7 +24,15 @@ const CarCard = ({ car }) => {
             <CarIcon className="h-12 w-12 text-gray-400" />
           </div>
         )}
-        <Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className={`absolute top-2 right-2 bg-white/90 rounded-full p1.5 ${
+            isSaved
+              ? "text-red-500 hover:text-red-600"
+              : "text-gray-600 hover:text-gray-900"
+          } `}
+        >
           <Heart className={isSaved ? "fill-current" : ""} size={20} />
         </Button>
       </div>
