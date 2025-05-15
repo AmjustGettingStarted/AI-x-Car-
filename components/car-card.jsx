@@ -4,6 +4,7 @@ import { Card, CardContent } from "./ui/card";
 import Image from "next/image";
 import { CarIcon, Heart } from "lucide-react";
 import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
 
 const CarCard = ({ car }) => {
   const [isSaved, setIsSaved] = useState(car.wishlisted);
@@ -54,6 +55,18 @@ const CarCard = ({ car }) => {
           <span>{car.transmission}</span>
           <span className="mx-2">⭒</span>
           <span>{car.fuelType}</span>
+        </div>
+
+        <div>
+          <Badge variant="outline" className="bg-gray-50">
+            {car.bodyType}
+          </Badge>
+          <Badge variant="outline" className="bg-gray-50">
+            {car.mileage.toLocaleString()} miles
+          </Badge>
+          <Badge variant="outline" className="bg-gray-50">
+            {car.color}
+          </Badge>
         </div>
       </CardContent>
     </Card>
