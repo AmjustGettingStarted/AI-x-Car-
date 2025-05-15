@@ -2,7 +2,7 @@ import HomeSearch from "@/components/home-search";
 import "../app/globals.css";
 import { Calendar, Car, ChevronRight, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { carMakes, featuredCars } from "@/lib/data";
+import { bodyTypes, carMakes, featuredCars } from "@/lib/data";
 import CarCard from "@/components/car-card";
 import Link from "next/link";
 import Image from "next/image";
@@ -80,6 +80,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Why Choose Our Platform */}
       <section className="py-16">
         <div>
           <h2 className="text-2xl font-bold text-center mb-12">
@@ -117,6 +118,45 @@ export default function Home() {
                 Verified listings and secure booking process for peace of mind.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Browse by Body Type */}
+      <section className="py-12 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="mb-8 flex items-center justify-between">
+            <h2 className="text-2xl font-bold">Browse by Body Type</h2>
+            <Button className="flex items-center" variant="ghost" asChild>
+              <Link href="/cars" className=" ">
+                View All <ChevronRight className="ml-1 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4  gap-4">
+            {bodyTypes.map((type) => {
+              return (
+                <Link
+                  href={`/cars?bodyType=${type.name}`}
+                  key={type.name}
+                  className="cursor-pointer relative group"
+                >
+                  <div className="overflow-hidden rounded-lg flex justify-end h-28 mb-4 relative">
+                    <Image
+                      src={type.image}
+                      fill
+                      alt={type.image}
+                      className="object-cover group-hover:scale-105 transition duration-300"
+                    />
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-lg flex items-center">
+                    <h3 className="text-white text-xl font-bold pl-4 pb-2">
+                      {type.name}
+                    </h3>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
