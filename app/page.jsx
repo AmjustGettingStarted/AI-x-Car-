@@ -6,6 +6,12 @@ import { bodyTypes, carMakes, featuredCars } from "@/lib/data";
 import CarCard from "@/components/car-card";
 import Link from "next/link";
 import Image from "next/image";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export default function Home() {
   return (
@@ -158,6 +164,23 @@ export default function Home() {
               );
             })}
           </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="py-12 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-2xl font-bold text-center mb-8">
+            Frequently Asked Questions
+          </h2>
+          <Accordion type="single" collapsible>
+            <AccordionItem value="item-1">
+              <AccordionTrigger>Is it accessible?</AccordionTrigger>
+              <AccordionContent>
+                Yes. It adheres to the WAI-ARIA design pattern.
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       </section>
     </div>
