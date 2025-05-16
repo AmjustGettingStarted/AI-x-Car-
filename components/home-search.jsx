@@ -1,14 +1,17 @@
 "use client";
 import React, { useState } from "react";
 import { Input } from "./ui/input";
+import { Camera } from "lucide-react";
+import { Button } from "./ui/button";
 
 const HomeSearch = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [imageSearchActive, setImageSearchActive] = useState(false);
   const handleTextSubmit = () => {};
   return (
     <div>
       <form onSubmit={handleTextSubmit}>
-        <div>
+        <div className="relative flex items-center ">
           <Input
             type="text"
             placeholder="Enter make, model, or use our AI Image Search..."
@@ -16,6 +19,20 @@ const HomeSearch = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10 pr-12 py-6 w-full rounded-full border-gray-300 bg-white/95 backdrop-blur-sm "
           />
+          <div className="absolute right-[100px]">
+            <Camera
+              size={35}
+              onClick={() => setImageSearchActive(!imageSearchActive)}
+              className="cursor-pointer rounded-xl p-1.5"
+              style={{
+                background: imageSearchActive ? "black" : "",
+                color: imageSearchActive ? "white" : "",
+              }}
+            />
+          </div>
+          <Button type="submit" className="absolute right-2 rounded-full">
+            Search
+          </Button>
         </div>
       </form>
     </div>
