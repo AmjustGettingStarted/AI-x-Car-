@@ -12,6 +12,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { SignedOut } from "@clerk/nextjs";
 
 export default function Home() {
   return (
@@ -185,6 +186,29 @@ export default function Home() {
               );
             })}
           </Accordion>
+        </div>
+      </section>
+
+      {/*  */}
+      <section className="py-16 dotted-background text-white">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold capitalize mb-4">
+            Ready to find your Dream car?
+          </h2>
+          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+            Join thousands of satisfied customers who found their perfect
+            vehicle through our platform
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Button size="lg" asChild variant="secondary">
+              <Link href="/cars">View All Cars</Link>
+            </Button>
+            <SignedOut>
+              <Button size="lg" asChild>
+                <Link href="/sign-up">Sign Up Now</Link>
+              </Button>
+            </SignedOut>
+          </div>
         </div>
       </section>
     </div>
