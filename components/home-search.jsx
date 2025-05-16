@@ -80,7 +80,7 @@ const HomeSearch = () => {
       {imageSearchActive && (
         <div className="mt-4">
           <form onSubmit={handleImageSearch}>
-            <div>
+            <div className="border-2 border-dashed border-gray-300 rounded-3xl p-6 text-center">
               {imagePreview ? (
                 <div className="flex flex-col items-center">
                   <img
@@ -104,7 +104,7 @@ const HomeSearch = () => {
                   <input {...getInputProps()} />
                   <div className="flex flex-col items-center">
                     <Upload className="h-12 w-12 text-gray-400 mb-2" />
-                    <p>
+                    <p className="text-gray-500 mb-2">
                       {isDragActive && !isDragReject
                         ? "Leave the files here to upload"
                         : "Drag & Drop a car Image or click "}
