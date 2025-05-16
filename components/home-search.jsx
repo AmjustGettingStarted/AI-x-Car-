@@ -6,6 +6,7 @@ import { Button } from "./ui/button";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const HomeSearch = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -13,8 +14,27 @@ const HomeSearch = () => {
   const [imagePreview, setImagePreview] = useState("");
   const [searchImage, setSearchImage] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
-  const handleTextSubmit = () => {};
-  const handleImageSearch = () => {};
+
+  const router = useRouter();
+  const handleTextSubmit = async (e) => {
+    e.preventDefault();
+    if (!searchTerm.trim()) {
+      toast.error("Please enter a search term");
+      return;
+    }
+
+    router.push(`/cars?search=${encodeURIComponent(searchTerm)}`);
+    // Handle text search logic here
+  };
+
+  const handleImageSearch = async (e) => {
+    e.preventDefault();
+    if (!searchImage) {
+      toast.error("Please upload an image");
+      return;
+    }
+  };
+
   const onDrop = (acceptedFiles) => {
     // Do something with the files
     const file = acceptedFiles[0];
@@ -110,7 +130,7 @@ const HomeSearch = () => {
                         : "Drag & Drop a car Image or click "}
                     </p>
                     {isDragReject && (
-                      <p className="text-red-500 mb-2">Invaldi image type</p>
+                      <p className="text-red-500 mb-2">Invalid image type</p>
                     )}
                     <p className="text-gray-400 text-sm">
                       Supports: JPG, PNG (max 5MB)
@@ -119,6 +139,15 @@ const HomeSearch = () => {
                 </div>
               )}
             </div>
+            {imagePreview && (
+              <Button
+                type="submit"
+                className="w-full mt-2"
+                disabled={isUploading}
+              >
+                {isUploading ? "Uploading..." : "Search with this Image"}
+              </Button>
+            )}
           </form>
         </div>
       )}
