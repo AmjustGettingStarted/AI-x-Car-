@@ -109,7 +109,27 @@ model WorkingHour {
   @@index([dayOfWeek])
   @@index([isOpen])
 }
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
 
-model UserSavedCar{}
+model UserSavedCar {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  carId     String
+  car       Car      @relation(fields: [carId], references: [id], onDelete: Cascade)
+  savedAt   DateTime @default(now())
+
+  @@unique([userId, carId])
+  @@index([userId])
+  @@index([carId])
+}
 
 model TestDriveBooking{}
