@@ -10,6 +10,19 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider    = "postgresql"
+  url         = env("DATABASE_URL")
+  directUrl   = env("DIRECT_URL")
+}
+
+model User {
+  id            String      @id @default(uuid())
+  clerkUserId   String      @unique // clerk user id
+  email         String      @unique
+  name          String?
+  imageUrl      String?
+  phone         String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  role          UserRole     @default(USER)
 }
