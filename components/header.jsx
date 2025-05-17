@@ -12,6 +12,7 @@ import React from "react";
 import logo from "@/public/logo.png";
 import { Button } from "./ui/button";
 import { ArrowLeft, CarFront, Heart, Layout } from "lucide-react";
+import { checkUser } from "@/lib/checkUser";
 const Header = async ({ isAdminPage = false }) => {
   const user = await checkUser(); // checks if the user in the database and creates a new user if not
 
