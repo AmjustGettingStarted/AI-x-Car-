@@ -13,7 +13,10 @@ import logo from "@/public/logo.png";
 import { Button } from "./ui/button";
 import { ArrowLeft, CarFront, Heart, Layout } from "lucide-react";
 const Header = async ({ isAdminPage = false }) => {
-  const isAdmin = false;
+  const user = await checkUser(); // checks if the user in the database and creates a new user if not
+
+  const isAdmin = user?.role === "admin";
+
   return (
     <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b ">
       <nav className="mx-auto p-4 flex flex-row items-center justify-between">
