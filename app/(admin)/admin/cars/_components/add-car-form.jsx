@@ -11,6 +11,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 // Predefined options
 const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"];
@@ -57,7 +59,7 @@ const AddCarForm = () => {
     register,
     setValue,
     getValues,
-    formState: { error },
+    formState: { errors },
     handleSubmit,
     watch,
   } = useForm({
@@ -101,10 +103,24 @@ const AddCarForm = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form
-                onSubmit={handleSubmit(onSubmit)}
-                className="space-y-6"
-              ></form>
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="make">Make</Label>
+                    <Input
+                      id="mark"
+                      {...register("make")}
+                      placeholder="e.g. Toyota"
+                      className={errors.make ? "border-red-500" : ""}
+                    />
+                    {errors.make && (
+                      <p className="text-xs text-red-500">
+                        {errors.make.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </form>
             </CardContent>
           </Card>
         </TabsContent>
