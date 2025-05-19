@@ -137,18 +137,34 @@ const AddCarForm = () => {
                     )}
                   </div>
 
-                  {/* Type */}
+                  {/* Year */}
                   <div className="space-y-2">
                     <Label htmlFor="year">Year</Label>
                     <Input
                       id="year"
                       {...register("year")}
-                      placeholder="e.g. Camry"
+                      placeholder="e.g. 2025"
                       className={errors.make ? "border-red-500" : ""}
                     />
                     {errors.year && (
                       <p className="text-xs text-red-500">
                         {errors.year.message}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Price */}
+                  <div className="space-y-2">
+                    <Label htmlFor="price">Price</Label>
+                    <Input
+                      id="price"
+                      {...register("price")}
+                      placeholder="e.g. 12,00,000"
+                      className={errors.make ? "border-red-500" : ""}
+                    />
+                    {errors.price && (
+                      <p className="text-xs text-red-500">
+                        {errors.price.message}
                       </p>
                     )}
                   </div>
