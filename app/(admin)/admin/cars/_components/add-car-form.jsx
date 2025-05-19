@@ -1,7 +1,9 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { z } from "zod";
 
 // Predefined options
 const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"];
@@ -18,6 +20,8 @@ const bodyTypes = [
 const carStatuses = ["AVAILABLE", "UNAVAILABLE", "SOLD"];
 
 const AddCarForm = () => {
+  const [activeTab, setActiveTab] = useState("ai");
+
   const carFormSchema = z.object({
     make: z.string().min(1, "Make is required"),
     model: z.string().min(1, "Model is required"),
@@ -68,15 +72,22 @@ const AddCarForm = () => {
   });
   return (
     <div>
-      <Tabs defaultValue="ai" className="mt-6">
-        <TabsList>
+      <Tabs
+        defaultValue="ai"
+        className="mt-6"
+        value={activeTab}
+        onValueChange={setActiveTab}
+      >
+        <TabsList className="grid grid-cols-2 w-full">
           <TabsTrigger value="manual">Manual Upload</TabsTrigger>
           <TabsTrigger value="ai">AI Upload</TabsTrigger>
         </TabsList>
-        <TabsContent value="account">
+        <TabsContent value="manual" className="mt-6">
           Make changes to your account here.
         </TabsContent>
-        <TabsContent value="password">Change your password here.</TabsContent>
+        <TabsContent value="ai" className="mt-6">
+          Change your password here.
+        </TabsContent>
       </Tabs>
     </div>
   );
