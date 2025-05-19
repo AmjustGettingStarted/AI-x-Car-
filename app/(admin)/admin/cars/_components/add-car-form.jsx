@@ -184,6 +184,22 @@ const AddCarForm = () => {
                       </p>
                     )}
                   </div>
+
+                  {/* Color */}
+                  <div className="space-y-2">
+                    <Label htmlFor="color">Color</Label>
+                    <Input
+                      id="color"
+                      {...register("color")}
+                      placeholder="e.g. Black"
+                      className={errors.make ? "border-red-500" : ""}
+                    />
+                    {errors.color && (
+                      <p className="text-xs text-red-500">
+                        {errors.color.message}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </form>
             </CardContent>
