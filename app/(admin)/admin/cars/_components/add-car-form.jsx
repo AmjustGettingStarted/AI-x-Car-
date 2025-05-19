@@ -168,6 +168,22 @@ const AddCarForm = () => {
                       </p>
                     )}
                   </div>
+
+                  {/* Milage */}
+                  <div className="space-y-2">
+                    <Label htmlFor="milage">Milage</Label>
+                    <Input
+                      id="milage"
+                      {...register("milage")}
+                      placeholder="e.g. 15000"
+                      className={errors.make ? "border-red-500" : ""}
+                    />
+                    {errors.milage && (
+                      <p className="text-xs text-red-500">
+                        {errors.milage.message}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </form>
             </CardContent>
