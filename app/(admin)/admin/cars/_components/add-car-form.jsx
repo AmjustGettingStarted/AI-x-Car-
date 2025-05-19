@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Form, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { z } from "zod";
@@ -58,6 +58,7 @@ const AddCarForm = () => {
     setValue,
     getValues,
     formState: { error },
+    handleSubmit,
     watch,
   } = useForm({
     resolver: zodResolver(carFormSchema),
@@ -77,6 +78,8 @@ const AddCarForm = () => {
       featured: false,
     },
   });
+
+  const onSubmit = async (data) => {};
   return (
     <div>
       <Tabs
@@ -92,11 +95,16 @@ const AddCarForm = () => {
         <TabsContent value="manual" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Card Title</CardTitle>
-              <CardDescription>Card Description</CardDescription>
+              <CardTitle>Car Details</CardTitle>
+              <CardDescription>
+                Enter the details of the car you want to add.
+              </CardDescription>
             </CardHeader>
             <CardContent>
-              <p>Card Content</p>
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="space-y-6"
+              ></form>
             </CardContent>
           </Card>
         </TabsContent>
