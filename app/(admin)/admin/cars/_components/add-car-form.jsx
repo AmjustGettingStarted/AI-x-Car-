@@ -4,6 +4,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { z } from "zod";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 // Predefined options
 const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"];
@@ -83,7 +90,15 @@ const AddCarForm = () => {
           <TabsTrigger value="ai">AI Upload</TabsTrigger>
         </TabsList>
         <TabsContent value="manual" className="mt-6">
-          Make changes to your account here.
+          <Card>
+            <CardHeader>
+              <CardTitle>Card Title</CardTitle>
+              <CardDescription>Card Description</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p>Card Content</p>
+            </CardContent>
+          </Card>
         </TabsContent>
         <TabsContent value="ai" className="mt-6">
           Change your password here.
