@@ -132,7 +132,23 @@ const AddCarForm = () => {
                     />
                     {errors.model && (
                       <p className="text-xs text-red-500">
-                        {errors.make.message}
+                        {errors.model.message}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Type */}
+                  <div className="space-y-2">
+                    <Label htmlFor="year">Year</Label>
+                    <Input
+                      id="year"
+                      {...register("year")}
+                      placeholder="e.g. Camry"
+                      className={errors.make ? "border-red-500" : ""}
+                    />
+                    {errors.year && (
+                      <p className="text-xs text-red-500">
+                        {errors.year.message}
                       </p>
                     )}
                   </div>
