@@ -1,5 +1,7 @@
+import { db } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { cookies } from "next/headers";
 
 async function fileToBase64(file) {
   const bytes = await file.arrayBuffer();
