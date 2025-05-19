@@ -105,6 +105,7 @@ const AddCarForm = () => {
             <CardContent>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {/* Make */}
                   <div className="space-y-2">
                     <Label htmlFor="make">Make</Label>
                     <Input
@@ -114,6 +115,22 @@ const AddCarForm = () => {
                       className={errors.make ? "border-red-500" : ""}
                     />
                     {errors.make && (
+                      <p className="text-xs text-red-500">
+                        {errors.make.message}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Model */}
+                  <div className="space-y-2">
+                    <Label htmlFor="model">Model</Label>
+                    <Input
+                      id="model"
+                      {...register("model")}
+                      placeholder="e.g. Camry"
+                      className={errors.make ? "border-red-500" : ""}
+                    />
+                    {errors.model && (
                       <p className="text-xs text-red-500">
                         {errors.make.message}
                       </p>
