@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 
 // Predefined options
 const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"];
@@ -327,7 +328,7 @@ const AddCarForm = () => {
                       defaultValue={getValues("status")}
                     >
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select status"  />
+                        <SelectValue placeholder="Select status" />
                       </SelectTrigger>
                       <SelectContent>
                         {carStatuses.map((status) => (
@@ -337,6 +338,24 @@ const AddCarForm = () => {
                         ))}
                       </SelectContent>
                     </Select>
+                  </div>
+
+                  {/* Description */}
+                  <div className="space-y-3 col-span-1 md:col-span-2 lg:col-span-3">
+                    <Label htmlFor="description">Description</Label>
+                    <Textarea
+                      id="description"
+                      {...register("description")}
+                      placeholder="Enter detailed description of the car..."
+                      className={`min-h-32 ${
+                        errors.description ? "border-red-500" : ""
+                      }`}
+                    />
+                    {errors.description && (
+                      <p className="text-xs text-red-500">
+                        {errors.description.message}
+                      </p>
+                    )}
                   </div>
                 </div>
               </form>
