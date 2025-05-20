@@ -24,7 +24,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
-import { Upload, X } from "lucide-react";
+import { Loader2, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
@@ -141,6 +141,11 @@ const AddCarForm = () => {
     },
     multiple: true,
   });
+
+  const removeImage = (index) => {
+    setUploadedImages((prev) => prev.filter((_, i) => i !== index));
+    toast.success("Image removed successfully");
+  };
   return (
     <div>
       <Tabs
@@ -483,6 +488,7 @@ const AddCarForm = () => {
                               size="icon"
                               variant="destructive"
                               className="absolute top-1 right-1 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                              onClick={() => removeImage(index)}
                             >
                               <X className="h-3 w-3" />
                             </Button>
@@ -492,6 +498,21 @@ const AddCarForm = () => {
                     </div>
                   </div>
                 )}
+
+                <Button
+                  type="submit"
+                  className="w-full md:w-auto"
+                  disabled={true}
+                >
+                  {true ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Adding Car...
+                    </>
+                  ) : (
+                    "Add Car"
+                  )}
+                </Button>
               </form>
             </CardContent>
           </Card>
