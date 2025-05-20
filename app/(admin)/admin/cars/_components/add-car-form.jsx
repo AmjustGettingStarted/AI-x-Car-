@@ -227,7 +227,7 @@ const AddCarForm = () => {
                       <SelectContent>
                         {fuelTypes.map((type) => {
                           return (
-                            <SelectItem value="light" key={type}>
+                            <SelectItem value={type} key={type}>
                               {type}
                             </SelectItem>
                           );
@@ -259,10 +259,10 @@ const AddCarForm = () => {
                         <SelectValue placeholder="Select Transmision" />
                       </SelectTrigger>
                       <SelectContent>
-                        {transmissions.map((type) => {
+                        {transmissions.map((tran) => {
                           return (
-                            <SelectItem value="light" key={type}>
-                              {type}
+                            <SelectItem value={tran} key={tran}>
+                              {tran}
                             </SelectItem>
                           );
                         })}
@@ -291,10 +291,10 @@ const AddCarForm = () => {
                         <SelectValue placeholder="Select Body Type" />
                       </SelectTrigger>
                       <SelectContent>
-                        {bodyTypes.map((type) => {
+                        {bodyTypes.map((body) => {
                           return (
-                            <SelectItem value="light" key={type}>
-                              {type}
+                            <SelectItem value={body} key={body}>
+                              {body}
                             </SelectItem>
                           );
                         })}
@@ -341,8 +341,8 @@ const AddCarForm = () => {
                     </Select>
                   </div>
                 </div>
+
                 {/* Description */}
-                {/* <div className="space-y-3 col-span-1 md:col-span-2 lg:col-span-3"> */}
                 <div className="space-y-3 ">
                   <Label htmlFor="description">Description</Label>
                   <Textarea
