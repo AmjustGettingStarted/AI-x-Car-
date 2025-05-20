@@ -24,7 +24,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
-import { Upload } from "lucide-react";
+import { Upload, X } from "lucide-react";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
 // Predefined options
 const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"];
@@ -456,6 +458,40 @@ const AddCarForm = () => {
                     <p className="text-xs text-red-500 mt-1">{imageError}</p>
                   )}
                 </div>
+
+                {/* Image Preview */}
+                {uploadedImages.length > 0 && (
+                  <div className="mt-4">
+                    <h3 className="text-sm font-medium mb-2">
+                      Uploaded Images {uploadedImages.length}
+                    </h3>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                      {uploadedImages.map((image, index) => {
+                        return (
+                          <div className="relative group">
+                            <Image
+                              key={index}
+                              src={image}
+                              alt={`Car Image ${index + 1}`}
+                              height={50}
+                              width={50}
+                              priority
+                              className="h-28 w-full object-cover rounded-md"
+                            />
+                            <Button
+                              type="button"
+                              size="icon"
+                              variant="destructive"
+                              className="absolute top-1 right-1 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <X className="h-3 w-3" />
+                            </Button>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </form>
             </CardContent>
           </Card>
