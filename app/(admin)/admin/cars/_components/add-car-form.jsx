@@ -318,6 +318,26 @@ const AddCarForm = () => {
                       placeholder="e.g. 5"
                     />
                   </div>
+
+                  {/* Status */}
+                  <div className="space-y-3">
+                    <Label htmlFor="status">Status</Label>
+                    <Select
+                      onValueChange={(value) => setValue("status", value)}
+                      defaultValue={getValues("status")}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select status"  />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {carStatuses.map((status) => (
+                          <SelectItem key={status} value={status}>
+                            {status.charAt(0) + status.slice(1).toLowerCase()}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </form>
             </CardContent>
