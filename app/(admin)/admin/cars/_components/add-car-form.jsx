@@ -22,6 +22,9 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useDropzone } from "react-dropzone";
+import { toast } from "sonner";
+import { Upload } from "lucide-react";
 
 // Predefined options
 const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"];
@@ -39,6 +42,8 @@ const carStatuses = ["AVAILABLE", "UNAVAILABLE", "SOLD"];
 
 const AddCarForm = () => {
   const [activeTab, setActiveTab] = useState("ai");
+  const [uploadedImages, setUploadedImages] = useState([]);
+  const [imageError, setImageError] = useState("");
 
   const carFormSchema = z.object({
     make: z.string().min(1, "Make is required"),
@@ -90,7 +95,50 @@ const AddCarForm = () => {
     },
   });
 
-  const onSubmit = async (data) => {};
+  const onSubmit = async (data) => {
+    if (uploadedImages.length === 0) {
+      setImageError("At least one image is required");
+      return;
+    }
+  };
+
+  const onMultiImageDrop = (acceptedFiles) => {
+    const validFiles = acceptedFiles.filter((file) => {
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error(`${file.name} exceeds 5MB limit and will be skipped`);
+        return false;
+      }
+      return true;
+    });
+
+    if (validFiles.length === 0) return;
+
+    const newImages = [];
+    validFiles.forEac((file) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        newImages.push(e.target.result);
+        if (newImages.length === validFiles.length) {
+          setUploadedImages((prev) => [...prev, ...newImages]);
+          setImageError("");
+          toast.success(`Successfully Uploaded ${validFiles.length} images`);
+        }
+      };
+
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const {
+    getRootProps: getMultiImageRootProps,
+    getInputProps: getMultiImageInputProps,
+  } = useDropzone({
+    onDrop: onMultiImageDrop,
+    accept: {
+      "image/*": [".jpeg", ".png", ".jpg", ".webp"],
+    },
+    multiple: true,
+  });
   return (
     <div>
       <Tabs
@@ -374,6 +422,34 @@ const AddCarForm = () => {
                     <p className="text-sm text-gray-500">
                       Featured cars appear on the homepage
                     </p>
+                  </div>
+                  <div>
+                    <Label
+                      htmlFor="images"
+                      className={imageError ? "text-red-500" : ""}
+                    >
+                      Images
+                      {imageError && <span className="text-red-500">*</span>}
+                    </Label>
+                    <div
+                      {...getMultiImageRootProps()}
+                      className="cursor-pointer"
+                    >
+                      <input {...getMultiImageInputProps()} />
+                      <div className="flex flex-col items-center">
+                        <Upload className="h-12 w-12 text-gray-400 mb-2" />
+                        <p className="text-gray-500 mb-2">
+                          Drag & Drop or click to upload multiple images
+                        </p>
+
+                        <p className="text-gray-400 text-sm">
+                          ( JPG, PNG, WEBP - max 5MB each )
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div></div>
+                    </div>
                   </div>
                 </div>
               </form>

@@ -148,7 +148,7 @@ export default function Home() {
                   key={type.name}
                   className="cursor-pointer relative group"
                 >
-                  <div className="overflow-hidden rounded-lg flex justify-end h-32 mb-4 relative text-black/90">
+                  <div className="overflow-hidden rounded-lg flex justify-end h-36 mb-4 relative text-black/90">
                     <Image
                       src={type.image}
                       fill
@@ -189,7 +189,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/*  */}
+      {/* Second Hero  */}
       <section className="py-16 dotted-background text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold capitalize mb-4">
