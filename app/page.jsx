@@ -148,16 +148,16 @@ export default function Home() {
                   key={type.name}
                   className="cursor-pointer relative group"
                 >
-                  <div className="overflow-hidden rounded-lg flex justify-end h-28 mb-4 relative">
+                  <div className="overflow-hidden rounded-lg flex justify-end h-32 mb-4 relative text-black/90">
                     <Image
                       src={type.image}
                       fill
                       alt={type.image}
-                      className="object-cover group-hover:scale-105 transition duration-300"
+                      className="object-cover group-hover:scale-105 transition duration-300  "
                     />
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-lg flex items-center">
-                    <h3 className="text-white text-xl font-bold pl-4 pb-2">
+                  <div className="absolute inset-0 bg-black/10  rounded-lg flex items-center">
+                    <h3 className="text-white text-xl font-bold pl-4 pb-2 ">
                       {type.name}
                     </h3>
                   </div>
