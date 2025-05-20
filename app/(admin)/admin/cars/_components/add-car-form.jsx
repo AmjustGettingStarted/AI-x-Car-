@@ -114,9 +114,9 @@ const AddCarForm = () => {
     if (validFiles.length === 0) return;
 
     const newImages = [];
-    validFiles.forEac((file) => {
+    validFiles.forEach((file) => {
       const reader = new FileReader();
-      reader.onload = () => {
+      reader.onload = (e) => {
         newImages.push(e.target.result);
         if (newImages.length === validFiles.length) {
           setUploadedImages((prev) => [...prev, ...newImages]);
@@ -423,34 +423,38 @@ const AddCarForm = () => {
                       Featured cars appear on the homepage
                     </p>
                   </div>
-                  <div>
-                    <Label
-                      htmlFor="images"
-                      className={imageError ? "text-red-500" : ""}
-                    >
-                      Images
-                      {imageError && <span className="text-red-500">*</span>}
-                    </Label>
-                    <div
-                      {...getMultiImageRootProps()}
-                      className="cursor-pointer"
-                    >
-                      <input {...getMultiImageInputProps()} />
-                      <div className="flex flex-col items-center">
-                        <Upload className="h-12 w-12 text-gray-400 mb-2" />
-                        <p className="text-gray-500 mb-2">
-                          Drag & Drop or click to upload multiple images
-                        </p>
+                </div>
 
-                        <p className="text-gray-400 text-sm">
-                          ( JPG, PNG, WEBP - max 5MB each )
-                        </p>
-                      </div>
-                    </div>
-                    <div>
-                      <div></div>
+                {/* Upload Images */}
+                <div>
+                  <Label
+                    htmlFor="images"
+                    className={imageError ? "text-red-500" : ""}
+                  >
+                    Images
+                    {imageError && <span className="text-red-500">*</span>}
+                  </Label>
+                  <div
+                    {...getMultiImageRootProps()}
+                    className={`border-2 border-dashed mt-2 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-50 transition ${
+                      imageError ? "border-red-500" : "border-gray-300"
+                    }`}
+                  >
+                    <input {...getMultiImageInputProps()} />
+                    <div className="flex flex-col items-center justify-center">
+                      <Upload className="h-12 w-12 text-gray-400 mb-3" />
+                      <p className="text-gray-600 text-sm">
+                        Drag & Drop or click to upload multiple images
+                      </p>
+
+                      <p className="text-gray-500 text-xs mt-1">
+                        ( JPG, PNG, WEBP - max 5MB each )
+                      </p>
                     </div>
                   </div>
+                  {imageError && (
+                    <p className="text-xs text-red-500 mt-1">{imageError}</p>
+                  )}
                 </div>
               </form>
             </CardContent>
