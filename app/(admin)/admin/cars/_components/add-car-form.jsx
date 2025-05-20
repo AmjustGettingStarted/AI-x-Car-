@@ -13,6 +13,13 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Predefined options
 const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"];
@@ -197,6 +204,36 @@ const AddCarForm = () => {
                     {errors.color && (
                       <p className="text-xs text-red-500">
                         {errors.color.message}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Fuel Type */}
+                  <div className="space-y-2">
+                    <Label htmlFor="fuelType">Fuel Type</Label>
+                    <Select
+                      onValueChange={(value) => setValue("fuelType", value)}
+                      defaultValue={getValues("fuelType")}
+                    >
+                      <SelectTrigger
+                        className={errors.fuelType ? "border-red-500" : ""}
+                      >
+                        <SelectValue placeholder="Select Fuel Type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {fuelTypes.map((type) => {
+                          return (
+                            <SelectItem value="light" key={type}>
+                              {type}
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectContent>
+                    </Select>
+
+                    {errors.fuelType && (
+                      <p className="text-xs text-red-500">
+                        {errors.fuelType.message}
                       </p>
                     )}
                   </div>
