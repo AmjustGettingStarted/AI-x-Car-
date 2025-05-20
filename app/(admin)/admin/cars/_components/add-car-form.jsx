@@ -216,7 +216,9 @@ const AddCarForm = () => {
                       defaultValue={getValues("fuelType")}
                     >
                       <SelectTrigger
-                        className={errors.fuelType ? "border-red-500" : ""}
+                        className={
+                          errors.fuelType ? "border-red-500 w-full " : "w-full"
+                        }
                       >
                         <SelectValue placeholder="Select Fuel Type" />
                       </SelectTrigger>
@@ -246,7 +248,11 @@ const AddCarForm = () => {
                       defaultValue={getValues("transmission")}
                     >
                       <SelectTrigger
-                        className={errors.transmission ? "border-red-500" : ""}
+                        className={
+                          errors.transmission
+                            ? "border-red-500 w-full"
+                            : "w-full"
+                        }
                       >
                         <SelectValue placeholder="Select Transmision" />
                       </SelectTrigger>
@@ -276,7 +282,9 @@ const AddCarForm = () => {
                       defaultValue={getValues("bodyType")}
                     >
                       <SelectTrigger
-                        className={errors.bodyType ? "border-red-500" : ""}
+                        className={
+                          errors.bodyType ? "border-red-500 w-full" : "w-full"
+                        }
                       >
                         <SelectValue placeholder="Select Body Type" />
                       </SelectTrigger>
@@ -301,7 +309,7 @@ const AddCarForm = () => {
                   {/* Seats */}
                   <div className="space-y-2">
                     <Label htmlFor="seats">
-                      Number of Seats{" "}
+                      Number of Seats
                       <span className="text-sm text-gray-500">(Optional)</span>
                     </Label>
                     <Input
