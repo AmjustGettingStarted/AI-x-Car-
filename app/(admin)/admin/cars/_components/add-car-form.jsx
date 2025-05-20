@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 
 // Predefined options
 const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"];
@@ -339,23 +340,40 @@ const AddCarForm = () => {
                       </SelectContent>
                     </Select>
                   </div>
+                </div>
+                {/* Description */}
+                {/* <div className="space-y-3 col-span-1 md:col-span-2 lg:col-span-3"> */}
+                <div className="space-y-3 ">
+                  <Label htmlFor="description">Description</Label>
+                  <Textarea
+                    id="description"
+                    {...register("description")}
+                    placeholder="Enter detailed description of the car..."
+                    className={`min-h-32 ${
+                      errors.description ? "border-red-500" : ""
+                    }`}
+                  />
+                  {errors.description && (
+                    <p className="text-xs text-red-500">
+                      {errors.description.message}
+                    </p>
+                  )}
+                </div>
 
-                  {/* Description */}
-                  <div className="space-y-3 col-span-1 md:col-span-2 lg:col-span-3">
-                    <Label htmlFor="description">Description</Label>
-                    <Textarea
-                      id="description"
-                      {...register("description")}
-                      placeholder="Enter detailed description of the car..."
-                      className={`min-h-32 ${
-                        errors.description ? "border-red-500" : ""
-                      }`}
-                    />
-                    {errors.description && (
-                      <p className="text-xs text-red-500">
-                        {errors.description.message}
-                      </p>
-                    )}
+                {/* Featured */}
+                <div className="flex items-start space-x-3 space-y-0 rounded-md border p-4 ">
+                  <Checkbox
+                    id="featured"
+                    checked={watch("featured")}
+                    onCheckedChange={(checked) => {
+                      setValue("featured", checked);
+                    }}
+                  />
+                  <div className="space-y-1 leading-none">
+                    <Label htmlFor="featured">Feature this car</Label>
+                    <p className="text-sm text-gray-500">
+                      Featured cars appear on the homepage
+                    </p>
                   </div>
                 </div>
               </form>
