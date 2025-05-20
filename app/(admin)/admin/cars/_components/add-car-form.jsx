@@ -297,6 +297,19 @@ const AddCarForm = () => {
                       </p>
                     )}
                   </div>
+
+                  {/* Seats */}
+                  <div className="space-y-2">
+                    <Label htmlFor="seats">
+                      Number of Seats{" "}
+                      <span className="text-sm text-gray-500">(Optional)</span>
+                    </Label>
+                    <Input
+                      id="seats"
+                      {...register("seats")}
+                      placeholder="e.g. 5"
+                    />
+                  </div>
                 </div>
               </form>
             </CardContent>
