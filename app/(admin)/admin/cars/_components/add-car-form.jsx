@@ -27,6 +27,8 @@ import { toast } from "sonner";
 import { Loader2, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import useFeatch from "@/hooks/use-fetch";
+import { addCar } from "@/actions/cars";
 
 // Predefined options
 const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"];
@@ -96,6 +98,12 @@ const AddCarForm = () => {
       featured: false,
     },
   });
+
+  const {
+    data: addCarResult,
+    loading: addCarLoading,
+    fn: addCarFn,
+  } = useFeatch(addCar);
 
   const onSubmit = async (data) => {
     if (uploadedImages.length === 0) {
@@ -502,9 +510,9 @@ const AddCarForm = () => {
                 <Button
                   type="submit"
                   className="w-full md:w-auto"
-                  disabled={true}
+                  disabled={addCarLoading}
                 >
-                  {true ? (
+                  {addCarLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Adding Car...

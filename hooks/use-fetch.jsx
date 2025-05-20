@@ -1,11 +1,29 @@
+import { toast } from "sonner";
+
 const { useState } = require("react");
 
 const useFeatch = (cb) => {
-  cosnt [data,setData] = useState(undefined);
-  const [loading,setLoading] = useState(null);
-  const [error,setError] = useState(null);
+  cosnt[(data, setData)] = useState(undefined);
+  const [loading, setLoading] = useState(null);
+  const [error, setError] = useState(null);
 
-  const fn = async() => {
+  const fn = async () => {
+    setLoading(true);
+    setError(null);
 
-  }
-});
+    try {
+      const response = await cb(...args);
+      setData(response);
+      setError(null);
+    } catch (error) {
+      setError(error);
+      toast.error("An error occurred while fetching data");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { data, loading, error, fn, setData };
+};
+
+export default useFeatch;
