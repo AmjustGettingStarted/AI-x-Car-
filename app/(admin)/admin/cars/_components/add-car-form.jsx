@@ -237,6 +237,36 @@ const AddCarForm = () => {
                       </p>
                     )}
                   </div>
+
+                  {/* Transmission */}
+                  <div className="space-y-2">
+                    <Label htmlFor="transmission">Transmision</Label>
+                    <Select
+                      onValueChange={(value) => setValue("transmission", value)}
+                      defaultValue={getValues("transmission")}
+                    >
+                      <SelectTrigger
+                        className={errors.transmission ? "border-red-500" : ""}
+                      >
+                        <SelectValue placeholder="Select Transmision" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {transmissions.map((type) => {
+                          return (
+                            <SelectItem value="light" key={type}>
+                              {type}
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectContent>
+                    </Select>
+
+                    {errors.transmission && (
+                      <p className="text-xs text-red-500">
+                        {errors.transmission.message}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </form>
             </CardContent>
