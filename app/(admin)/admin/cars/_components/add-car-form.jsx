@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -29,6 +29,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import useFeatch from "@/hooks/use-fetch";
 import { addCar } from "@/actions/cars";
+import { useRouter } from "next/navigation";
 
 // Predefined options
 const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"];
@@ -43,6 +44,8 @@ const bodyTypes = [
   "Pickup",
 ];
 const carStatuses = ["AVAILABLE", "UNAVAILABLE", "SOLD"];
+
+  const router = useRouter();
 
 const AddCarForm = () => {
   const [activeTab, setActiveTab] = useState("ai");
@@ -105,11 +108,31 @@ const AddCarForm = () => {
     fn: addCarFn,
   } = useFeatch(addCar);
 
+  useEffect(() => {
+    if (addCarResult?.success) {
+      toast.success("Car added successfully");
+      router.push("/admin/cars");
+    }
+  });
+
   const onSubmit = async (data) => {
     if (uploadedImages.length === 0) {
       setImageError("At least one image is required");
       return;
     }
+
+    const carData = {
+      ...data,
+      year: parseInt(data.year),
+      price: parseFloat(data.price),
+      milage: parseFloat(data.mileage),
+      seats: data.seats ? parseInt(data.seats) : null,
+    };
+
+    await addCarFn({
+      carData,
+      images: uploadedImages,
+    });
   };
 
   const onMultiImageDrop = (acceptedFiles) => {
@@ -154,6 +177,7 @@ const AddCarForm = () => {
     setUploadedImages((prev) => prev.filter((_, i) => i !== index));
     toast.success("Image removed successfully");
   };
+
   return (
     <div>
       <Tabs
