@@ -267,6 +267,36 @@ const AddCarForm = () => {
                       </p>
                     )}
                   </div>
+
+                  {/* Body Type */}
+                  <div className="space-y-2">
+                    <Label htmlFor="bodyType">Body Type</Label>
+                    <Select
+                      onValueChange={(value) => setValue("bodyType", value)}
+                      defaultValue={getValues("bodyType")}
+                    >
+                      <SelectTrigger
+                        className={errors.bodyType ? "border-red-500" : ""}
+                      >
+                        <SelectValue placeholder="Select Body Type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {bodyTypes.map((type) => {
+                          return (
+                            <SelectItem value="light" key={type}>
+                              {type}
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectContent>
+                    </Select>
+
+                    {errors.bodyType && (
+                      <p className="text-xs text-red-500">
+                        {errors.bodyType.message}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </form>
             </CardContent>
