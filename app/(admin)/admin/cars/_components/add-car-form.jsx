@@ -35,6 +35,7 @@ import useFetch from "@/hooks/use-fetch";
 const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"];
 const transmissions = ["Automatic", "Manual", "Semi-Automatic"];
 const bodyTypes = [
+  "Supercar / Hypercar",
   "SUV",
   "Sedan",
   "Hatchback",
@@ -51,7 +52,7 @@ const AddCarForm = () => {
   const [imageError, setImageError] = useState("");
   const router = useRouter();
 
-  // Form Schema with Zod
+  // Form Schema Validation with Zod
   const carFormSchema = z.object({
     make: z.string().min(1, "Make is required"),
     model: z.string().min(1, "Model is required"),
@@ -73,7 +74,6 @@ const AddCarForm = () => {
       .min(10, "Description must be at least 10 characters"),
     status: z.enum(["AVAILABLE", "UNAVAILABLE", "SOLD"]),
     featured: z.boolean().default(false),
-    // images: z.array(z.string()).optional(), // Optional, as images are handled separately
     // Images are handled separately
   });
 
@@ -100,7 +100,6 @@ const AddCarForm = () => {
       description: "",
       status: "AVAILABLE",
       featured: false,
-      // images: [],
     },
   });
 
