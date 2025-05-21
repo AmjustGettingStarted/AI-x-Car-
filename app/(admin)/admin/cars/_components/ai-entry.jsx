@@ -118,6 +118,28 @@ const AiEntry = () => {
                 </div>
               )}
             </div>
+            <div className="bg-gray-50 p-4 rounded-md">
+              <h3 className="font-medium mb-2">How it works</h3>
+              <ol className="space-y-2 text-sm text-gray-600 list-decimal pl-4">
+                <li>Upload a clear image of the car</li>
+                <li>Click "Extract Details" to analyze with Gemini AI</li>
+                <li>Review the extracted information</li>
+                <li>Fill in any missing details manually</li>
+                <li>Add the car to your inventory</li>
+              </ol>
+            </div>
+
+            <div className="bg-amber-50 p-4 rounded-md">
+              <h3 className="font-medium text-amber-800 mb-1">
+                Tips for best results
+              </h3>
+              <ul className="space-y-1 text-sm text-amber-700">
+                <li>• Use clear, well-lit images</li>
+                <li>• Try to capture the entire vehicle</li>
+                <li>• For difficult models, use multiple views</li>
+                <li>• Always verify AI-extracted information</li>
+              </ul>
+            </div>
           </div>
         </CardContent>
       </Card>
