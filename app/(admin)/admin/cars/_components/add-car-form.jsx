@@ -30,6 +30,7 @@ import { Button } from "@/components/ui/button";
 import { addCar } from "@/actions/cars";
 import { useRouter } from "next/navigation";
 import useFetch from "@/hooks/use-fetch";
+import AiEntry from "./ai-entry";
 
 // Predefined options
 const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"];
@@ -555,7 +556,7 @@ const AddCarForm = () => {
           </Card>
         </TabsContent>
         <TabsContent value="ai" className="mt-6">
-          Change your password here.
+          <AiEntry />   
         </TabsContent>
       </Tabs>
     </div>
