@@ -51,6 +51,7 @@ const AddCarForm = () => {
   const [activeTab, setActiveTab] = useState("ai");
   const [uploadedImages, setUploadedImages] = useState([]);
   const [imageError, setImageError] = useState("");
+  const [aiProcessKey, setAiProcessKey] = useState(0);
   const router = useRouter();
 
   // Form Schema Validation with Zod
@@ -224,11 +225,11 @@ const AddCarForm = () => {
       toast.error("Please upload an image");
       return;
     }
-    // Reset previous result/error if your useFetch supports it
     if (typeof processImageFn.reset === "function") {
       processImageFn.reset();
     }
-    await processImageFn(uploadedAiImage);
+    setAiProcessKey((k) => k + 1); // increment key to force re-run
+    await processImageFn({ file: uploadedAiImage, key: aiProcessKey + 1 });
   };
 
   useEffect(() => {
