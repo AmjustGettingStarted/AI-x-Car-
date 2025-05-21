@@ -17,7 +17,7 @@ const useFetch = (cb) => {
       setError(null);
     } catch (error) {
       setError(error);
-      toast.error("An error occurred while fetching data");
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }

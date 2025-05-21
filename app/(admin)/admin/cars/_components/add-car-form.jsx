@@ -118,14 +118,10 @@ const AddCarForm = () => {
   }, [addCarResult, router]);
 
   const onSubmit = async (data) => {
-    console.log("data: ", data);
-
     if (uploadedImages.length === 0) {
       setImageError("At least one image is required");
       return;
     }
-
-    // console.log(data, uploadedImages);
 
     const carData = {
       ...data,
