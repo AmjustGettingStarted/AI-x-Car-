@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Camera } from "lucide-react";
+import { Camera, Loader2 } from "lucide-react";
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
@@ -69,17 +69,36 @@ const AiEntry = () => {
                     alt="Uploaded Car"
                     className="max-h-56 max-w-full object-contain mb-4"
                   />
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      setImagePreview(null), setUploadedAiImage(null);
-                      toast.success("Image removed successfully");
-                    }}
-                    className="bg-red-500 text-white px-4 py-2 rounded-lg"
-                  >
-                    Remove
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setImagePreview(null), setUploadedAiImage(null);
+                        toast.success("Image removed successfully");
+                      }}
+                      className="bg-red-500 text-white px-4 py-2 rounded-lg"
+                    >
+                      Remove
+                    </Button>
+                    <Button
+                      size="sm"
+                      // onClick={}
+                      // disabled={}
+                    >
+                      {true ? (
+                        <>
+                          <Loader2 className="animate-spin mr-2 h-4 w-4 " />
+                          Processing...
+                        </>
+                      ) : (
+                        <>
+                          <Camera className="mr-2 h-2 w-4" />
+                          Extract Details
+                        </>
+                      )}
+                    </Button>
+                  </div>
                 </div>
               ) : (
                 <div
