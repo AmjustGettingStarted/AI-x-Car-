@@ -70,10 +70,15 @@ const AiEntry = () => {
                     className="max-h-56 max-w-full object-contain mb-4"
                   />
                   <Button
-                    onClick={() => removeImage(0)}
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setImagePreview(null), setUploadedAiImage(null);
+                      toast.success("Image removed successfully");
+                    }}
                     className="bg-red-500 text-white px-4 py-2 rounded-lg"
                   >
-                    Remove Image
+                    Remove
                   </Button>
                 </div>
               ) : (
