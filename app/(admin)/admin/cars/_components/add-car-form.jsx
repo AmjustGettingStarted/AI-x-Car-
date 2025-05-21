@@ -24,13 +24,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
-import { Camera, Loader2, Upload, X } from "lucide-react";
+import { Loader2, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { addCar } from "@/actions/cars";
 import { useRouter } from "next/navigation";
 import useFetch from "@/hooks/use-fetch";
-import { processCarImageWithAI } from "@/actions/cars";
+import AiEntry from "./ai-entry";
 
 // Predefined options
 const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"];
