@@ -1,4 +1,5 @@
 "use client";
+import { processCarImageWithAI } from "@/actions/cars";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -7,8 +8,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import useFetch from "@/hooks/use-fetch";
 import { Camera, Loader2 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 
@@ -50,6 +52,59 @@ const AiEntry = () => {
     toast.success("Image removed successfully");
   };
 
+  const {
+    loading: processImageLoading,
+    fn: processImageFn,
+    data: processImageResult,
+    error: processImageError,
+  } = useFetch(processCarImageWithAI);
+
+  const processWithAi = async () => {
+    if (!uploadedAiImage) {
+      toast.error("Please upload an image");
+      return;
+    }
+    await processImageFn(uploadedAiImage);
+  };
+
+  useEffect(() => {
+    if (processImageError) {
+      toast.error(processImageError.message || "Failed To Upload Car");
+    }
+  }, [processImageError]);
+
+  useEffect(() => {
+    if (processImageResult && processImageResult.success) {
+      const carDetails = processImageResult.data;
+
+      // Update form with AI results
+      setValue("make", carDetails.make);
+      setValue("model", carDetails.model);
+      setValue("year", carDetails.year.toString());
+      setValue("color", carDetails.color);
+      setValue("bodyType", carDetails.bodyType);
+      setValue("fuelType", carDetails.fuelType);
+      setValue("price", carDetails.price);
+      setValue("mileage", carDetails.mileage);
+      setValue("transmission", carDetails.transmission);
+      setValue("description", carDetails.description);
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setUploadedAiImage((prev) => [...prev, e.target.result]);
+        // toast.success("Image uploaded successfully");
+      };
+      reader.readAsDataURL(uploadedAiImage);
+      toast.success("Car details extracted successfully", {
+        description: `Detected ${carDetails.make} ${carDetails.model} (${
+          carDetails.year
+        } with ${Math.round(carDetails.confidence * 100)}% confidence)`,
+      });
+
+      setActiveTab("manual");
+    }
+  }, [processImageResult, uploadedAiImage]);
+
   return (
     <>
       <Card>
@@ -83,10 +138,10 @@ const AiEntry = () => {
                     </Button>
                     <Button
                       size="sm"
-                      // onClick={}
-                      // disabled={}
+                      onClick={processWithAi}
+                      disabled={processImageLoading}
                     >
-                      {true ? (
+                      {processImageLoading ? (
                         <>
                           <Loader2 className="animate-spin mr-2 h-4 w-4 " />
                           Processing...
