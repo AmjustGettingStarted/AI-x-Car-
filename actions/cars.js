@@ -13,7 +13,7 @@ async function fileToBase64(file) {
   return buffer.toString("base64");
 }
 
-export async function processCarImageWithAI({ file }) {
+export async function processCarImageWithAI(file) {
   try {
     if (!process.env.GEMINI_API_KEY) {
       throw new Error("Gemini API key is not set");
@@ -202,12 +202,3 @@ export async function addCar({ carData, images }) {
     throw new Error("Error adding car:" + error.message);
   }
 }
-
-const onSubmit = async (data) => {
-  // ...any validation...
-  await Fn({
-    carData: { ...data }, // spread to create a new object
-    images: [...uploadedImages], // spread to create a new array
-    ts: Date.now(), // add a timestamp to always make it unique
-  });
-};
