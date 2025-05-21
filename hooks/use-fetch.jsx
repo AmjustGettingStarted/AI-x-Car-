@@ -2,12 +2,12 @@ import { toast } from "sonner";
 
 const { useState } = require("react");
 
-const useFeatch = (cb) => {
-  cosnt[(data, setData)] = useState(undefined);
+const useFetch = (cb) => {
+  const [data, setData] = useState(undefined);
   const [loading, setLoading] = useState(null);
   const [error, setError] = useState(null);
 
-  const fn = async () => {
+  const fn = async (...args) => {
     setLoading(true);
     setError(null);
 
@@ -26,4 +26,4 @@ const useFeatch = (cb) => {
   return { data, loading, error, fn, setData };
 };
 
-export default useFeatch;
+export default useFetch;

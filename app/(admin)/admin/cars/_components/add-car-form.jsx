@@ -27,9 +27,9 @@ import { toast } from "sonner";
 import { Loader2, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import useFeatch from "@/hooks/use-fetch";
 import { addCar } from "@/actions/cars";
 import { useRouter } from "next/navigation";
+import useFetch from "@/hooks/use-fetch";
 
 // Predefined options
 const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"];
@@ -45,13 +45,13 @@ const bodyTypes = [
 ];
 const carStatuses = ["AVAILABLE", "UNAVAILABLE", "SOLD"];
 
-  const router = useRouter();
-
 const AddCarForm = () => {
   const [activeTab, setActiveTab] = useState("ai");
   const [uploadedImages, setUploadedImages] = useState([]);
   const [imageError, setImageError] = useState("");
+  const router = useRouter();
 
+  // Form Schema with Zod
   const carFormSchema = z.object({
     make: z.string().min(1, "Make is required"),
     model: z.string().min(1, "Model is required"),
@@ -73,6 +73,7 @@ const AddCarForm = () => {
       .min(10, "Description must be at least 10 characters"),
     status: z.enum(["AVAILABLE", "UNAVAILABLE", "SOLD"]),
     featured: z.boolean().default(false),
+    // images: z.array(z.string()).optional(), // Optional, as images are handled separately
     // Images are handled separately
   });
 
@@ -99,6 +100,7 @@ const AddCarForm = () => {
       description: "",
       status: "AVAILABLE",
       featured: false,
+      // images: [],
     },
   });
 
@@ -106,26 +108,30 @@ const AddCarForm = () => {
     data: addCarResult,
     loading: addCarLoading,
     fn: addCarFn,
-  } = useFeatch(addCar);
+  } = useFetch(addCar);
 
   useEffect(() => {
     if (addCarResult?.success) {
       toast.success("Car added successfully");
       router.push("/admin/cars");
     }
-  });
+  }, [addCarResult, router]);
 
   const onSubmit = async (data) => {
+    console.log("data: ", data);
+
     if (uploadedImages.length === 0) {
       setImageError("At least one image is required");
       return;
     }
 
+    // console.log(data, uploadedImages);
+
     const carData = {
       ...data,
       year: parseInt(data.year),
       price: parseFloat(data.price),
-      milage: parseFloat(data.mileage),
+      mileage: parseFloat(data.mileage),
       seats: data.seats ? parseInt(data.seats) : null,
     };
 
@@ -265,18 +271,18 @@ const AddCarForm = () => {
                     )}
                   </div>
 
-                  {/* Milage */}
+                  {/* mileage */}
                   <div className="space-y-2">
-                    <Label htmlFor="milage">Milage</Label>
+                    <Label htmlFor="mileage">Mileage</Label>
                     <Input
-                      id="milage"
-                      {...register("milage")}
+                      id="mileage"
+                      {...register("mileage")}
                       placeholder="e.g. 15000"
                       className={errors.make ? "border-red-500" : ""}
                     />
-                    {errors.milage && (
+                    {errors.mileage && (
                       <p className="text-xs text-red-500">
-                        {errors.milage.message}
+                        {errors.mileage.message}
                       </p>
                     )}
                   </div>
@@ -479,7 +485,11 @@ const AddCarForm = () => {
                       imageError ? "border-red-500" : "border-gray-300"
                     }`}
                   >
-                    <input {...getMultiImageInputProps()} />
+                    <input
+                      {...getMultiImageInputProps()}
+                      type="file"
+                      multiple
+                    />
                     <div className="flex flex-col items-center justify-center">
                       <Upload className="h-12 w-12 text-gray-400 mb-3" />
                       <p className="text-gray-600 text-sm">
@@ -505,7 +515,7 @@ const AddCarForm = () => {
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                       {uploadedImages.map((image, index) => {
                         return (
-                          <div className="relative group">
+                          <div className="relative group" key={index}>
                             <Image
                               key={index}
                               src={image}
