@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import useFetch from "@/hooks/use-fetch";
+import { formatCurrency } from "@/lib/helper";
 import { CarIcon, Loader2, Plus, Search } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -126,9 +127,8 @@ const CarsList = () => {
                             car.model
                           )}
                         </TableCell>
-                        <TableCell className="font-medium">
-                          {car.year}
-                        </TableCell>
+                        <TableCell>{car.year}</TableCell>
+                        <TableCell>{formatCurrency(car.price)}</TableCell>
                       </TableRow>
                     );
                   })}
