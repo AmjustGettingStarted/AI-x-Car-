@@ -1,5 +1,6 @@
 "use client";
 import { deleteCar, getCars, updateCarStatus } from "@/actions/cars";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -49,6 +50,32 @@ const CarsList = () => {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
+  };
+
+  // Get status badge color
+  const getStatusBadge = (status) => {
+    switch (status) {
+      case "AVAILABLE":
+        return (
+          <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+            Available
+          </Badge>
+        );
+      case "UNAVAILABLE":
+        return (
+          <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-100">
+            Unavailable
+          </Badge>
+        );
+      case "SOLD":
+        return (
+          <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">
+            Sold
+          </Badge>
+        );
+      default:
+        return <Badge variant="outline">{status}</Badge>;
+    }
   };
   return (
     <div className="space-y-4">
@@ -129,6 +156,7 @@ const CarsList = () => {
                         </TableCell>
                         <TableCell>{car.year}</TableCell>
                         <TableCell>{formatCurrency(car.price)}</TableCell>
+                        <TableCell>{getStatusBadge(car.status)}</TableCell>
                       </TableRow>
                     );
                   })}
