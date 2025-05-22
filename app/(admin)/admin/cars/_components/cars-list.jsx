@@ -116,6 +116,19 @@ const CarsList = () => {
                             </div>
                           )}
                         </TableCell>
+                        <TableCell className="font-medium">
+                          {car.make}{" "}
+                          {car.model.length > 20 ? (
+                            <span title={car.model}>
+                              {car.model.slice(0, 20) + "..."}
+                            </span>
+                          ) : (
+                            car.model
+                          )}
+                        </TableCell>
+                        <TableCell className="font-medium">
+                          {car.year}
+                        </TableCell>
                       </TableRow>
                     );
                   })}
