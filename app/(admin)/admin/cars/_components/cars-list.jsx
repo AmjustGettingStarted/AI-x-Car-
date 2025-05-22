@@ -14,10 +14,11 @@ import {
 } from "@/components/ui/table";
 import useFetch from "@/hooks/use-fetch";
 import { formatCurrency } from "@/lib/helper";
-import { CarIcon, Loader2, Plus, Search } from "lucide-react";
+import { CarIcon, Loader2, Plus, Search, Star, StarOff } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const CarsList = () => {
   const [search, setSearch] = useState("");
@@ -48,6 +49,14 @@ const CarsList = () => {
     error: updateError,
   } = useFetch(updateCarStatus);
 
+  // To prevent refresh every time you update the values
+  useEffect(() => {
+    if (updateResult?.success) {
+      toast.success("Car Updated successfully");
+      fetchCars(search);
+    }
+  }, [updateResult, search]);
+
   const handleSearchSubmit = (e) => {
     e.preventDefault();
   };
@@ -76,6 +85,10 @@ const CarsList = () => {
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
+  };
+
+  const handleToggleFeaturedCar = async (car) => {
+    await updateCarStatusFn(car.id, { featured: !car.featured });
   };
   return (
     <div className="space-y-4">
@@ -157,6 +170,21 @@ const CarsList = () => {
                         <TableCell>{car.year}</TableCell>
                         <TableCell>{formatCurrency(car.price)}</TableCell>
                         <TableCell>{getStatusBadge(car.status)}</TableCell>
+                        <TableCell>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="p-0 w-9 h-9 cursor-pointer"
+                            onClick={() => handleToggleFeaturedCar(car)}
+                            disabled={updatingCar}
+                          >
+                            {car.featured ? (
+                              <Star className="h-5 w-5 text-amber-500 fill-amber-500" />
+                            ) : (
+                              <StarOff className="h-5 w-5 text-gray-400" />
+                            )}
+                          </Button>
+                        </TableCell>
                       </TableRow>
                     );
                   })}
