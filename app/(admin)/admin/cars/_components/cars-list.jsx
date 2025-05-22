@@ -1,11 +1,12 @@
 "use client";
 import { deleteCar, getCars, updateCarStatus } from "@/actions/cars";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import useFetch from "@/hooks/use-fetch";
 import { Plus, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const CarsList = () => {
   const [search, setSearch] = useState("");
@@ -17,6 +18,10 @@ const CarsList = () => {
     data: carsData,
     error: carsError,
   } = useFetch(getCars);
+
+  useEffect(() => {
+    fetchCars(search);
+  }, [search]);
 
   const {
     loading: deletingCar,
@@ -62,6 +67,16 @@ const CarsList = () => {
         </form>
       </div>
       {/* Cars Table */}
+      <Card>
+  <CardHeader>
+    <CardTitle>Card Title</CardTitle>
+    <CardDescription>Card Description</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <p>Card Content</p>
+  </CardContent>
+</Card>
+
     </div>
   );
 };
