@@ -12,6 +12,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import useFetch from "@/hooks/use-fetch";
 import { formatCurrency } from "@/lib/helper";
 import { CarIcon, Loader2, Plus, Search, Star, StarOff } from "lucide-react";
@@ -141,13 +147,13 @@ const CarsList = () => {
                   {carsData.data.map((car) => {
                     return (
                       <TableRow key={car.id}>
-                        <TableCell className="w-10 h-10 rounded-md overflow-hidden">
+                        <TableCell className="w-20 h-20 rounded-md overflow-hidden">
                           {car.images && car.images.length > 0 ? (
                             <Image
                               src={car.images[0]}
                               alt={`${car.make} ${car.model}`}
-                              height={40}
-                              width={40}
+                              height={1080}
+                              width={1920}
                               className="w-full h-full object-cover"
                               priority
                             />
@@ -157,12 +163,17 @@ const CarsList = () => {
                             </div>
                           )}
                         </TableCell>
-                        <TableCell className="font-medium">
+                        <TableCell className="font-medium ">
                           {car.make}{" "}
                           {car.model.length > 20 ? (
-                            <span title={car.model}>
-                              {car.model.slice(0, 20) + "..."}
-                            </span>
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger>
+                                  {car.model.slice(0, 20) + "..."}
+                                </TooltipTrigger>
+                                <TooltipContent>{car.model}</TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
                           ) : (
                             car.model
                           )}
