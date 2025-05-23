@@ -182,7 +182,7 @@ const CarsList = () => {
             <Input
               type="search"
               placeholder="Search Cars ..."
-              className=" pl-9 w-full sm:w-100"
+              className=" pl-9 w-full sm:w-60"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
