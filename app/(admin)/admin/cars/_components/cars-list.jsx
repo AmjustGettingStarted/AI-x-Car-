@@ -31,12 +31,14 @@ import useFetch from "@/hooks/use-fetch";
 import { formatCurrency } from "@/lib/helper";
 import {
   CarIcon,
+  Eye,
   Loader2,
   MoreHorizontal,
   Plus,
   Search,
   Star,
   StarOff,
+  Trash,
 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -224,13 +226,26 @@ const CarsList = () => {
                                 <MoreHorizontal className="h-4 w-4" />
                               </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent>
-                              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                              <DropdownMenuItem
+                                onClick={() => router.push(`/cars/${car.id}`)}
+                              >
+                                <Eye className="w-4 h-4 mr-2" />
+                                View
+                              </DropdownMenuItem>
                               <DropdownMenuSeparator />
-                              <DropdownMenuItem>Profile</DropdownMenuItem>
-                              <DropdownMenuItem>Billing</DropdownMenuItem>
-                              <DropdownMenuItem>Team</DropdownMenuItem>
-                              <DropdownMenuItem>Subscription</DropdownMenuItem>
+                              <DropdownMenuLabel>Status</DropdownMenuLabel>
+                              <DropdownMenuItem>Set Available</DropdownMenuItem>
+                              <DropdownMenuItem>
+                                Set Unavailable
+                              </DropdownMenuItem>
+                              <DropdownMenuItem>Mark as Sold</DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem>
+                                <Trash className="w-4 h-4 mr-2" />
+                                Delete
+                              </DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
                         </TableCell>
