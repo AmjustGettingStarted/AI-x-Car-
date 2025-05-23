@@ -1,4 +1,5 @@
 import React from "react";
+import SettingsForm from "./_components/settings-form";
 
 export const metadata = {
   title: " Settings 🛠 | Ai x CAR",
@@ -8,7 +9,9 @@ export const metadata = {
 const SettingsPage = () => {
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">SettingsPage</h1>
+      <h1 className="text-2xl font-bold mb-6">
+        <SettingsForm />
+      </h1>
     </div>
   );
 };
