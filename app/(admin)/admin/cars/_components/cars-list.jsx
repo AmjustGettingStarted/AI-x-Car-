@@ -284,11 +284,32 @@ const CarsList = () => {
                               </DropdownMenuItem>
                               <DropdownMenuSeparator />
                               <DropdownMenuLabel>Status</DropdownMenuLabel>
-                              <DropdownMenuItem>Set Available</DropdownMenuItem>
-                              <DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() =>
+                                  handleStatusUpdate(car, "AVAILABLE")
+                                }
+                                disabled={
+                                  car.status === "AVAILABLE" || updatingCar
+                                }
+                              >
+                                Set Available
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() =>
+                                  handleStatusUpdate(car, "UNAVAILABLE")
+                                }
+                                disabled={
+                                  car.status === "UNAVAILABLE" || updatingCar
+                                }
+                              >
                                 Set Unavailable
                               </DropdownMenuItem>
-                              <DropdownMenuItem>Mark as Sold</DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => handleStatusUpdate(car, "SOLD")}
+                                disabled={car.status === "SOLD" || updatingCar}
+                              >
+                                Mark as Sold
+                              </DropdownMenuItem>
                               <DropdownMenuSeparator />
                               <DropdownMenuItem
                                 className={`text-red-600`}
