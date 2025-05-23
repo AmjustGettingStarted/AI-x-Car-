@@ -18,9 +18,26 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 import useFetch from "@/hooks/use-fetch";
 import { formatCurrency } from "@/lib/helper";
-import { CarIcon, Loader2, Plus, Search, Star, StarOff } from "lucide-react";
+import {
+  CarIcon,
+  Loader2,
+  MoreHorizontal,
+  Plus,
+  Search,
+  Star,
+  StarOff,
+} from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -195,6 +212,27 @@ const CarsList = () => {
                               <StarOff className="h-5 w-5 text-gray-400" />
                             )}
                           </Button>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="w-8 h-8 p-0"
+                              >
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem>Profile</DropdownMenuItem>
+                              <DropdownMenuItem>Billing</DropdownMenuItem>
+                              <DropdownMenuItem>Team</DropdownMenuItem>
+                              <DropdownMenuItem>Subscription</DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </TableCell>
                       </TableRow>
                     );
