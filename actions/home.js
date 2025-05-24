@@ -10,7 +10,7 @@ export async function getFeaturedCars(limit = 9) {
     const cars = await db.car.findMany({
       where: {
         featured: true,
-        status: "AVAILABLE" || "UNAVAILABLE",
+        status: { in: ["AVAILABLE", "UNAVAILABLE"] },
       },
       take: limit,
       orderBy: { createdAt: "desc" },
