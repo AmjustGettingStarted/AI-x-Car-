@@ -12,7 +12,7 @@ const CarCard = ({ car }) => {
   const handleToggleSave = async (e) => {};
   const router = useRouter();
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition group py-0">
+    <Card className="min-w-sm overflow-hidden hover:shadow-lg transition group py-0">
       <div className="relative h-48">
         {car.images && car.images.length > 0 ? (
           <div className="w-full h-full relative">
@@ -47,7 +47,7 @@ const CarCard = ({ car }) => {
             {car.make} {car.model}
           </h3>
           <span className="text-xl font-bold text-blue-600">
-            ₹{car.price.toLocaleString()}
+            ${car.price.toLocaleString()}
           </span>
         </div>
 
