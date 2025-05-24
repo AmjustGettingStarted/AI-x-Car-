@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "./ui/input";
 import { Camera, Upload } from "lucide-react";
 import { Button } from "./ui/button";
@@ -7,6 +7,8 @@ import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import useFetch from "@/hooks/use-fetch";
+import { processImageSearch } from "@/actions/home";
 
 const HomeSearch = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -16,6 +18,15 @@ const HomeSearch = () => {
   const [isUploading, setIsUploading] = useState(false);
 
   const router = useRouter();
+
+  // Use the useFetch hook for image processing
+  const {
+    loading: isProcessing,
+    fn: processImageFn,
+    data: processResult,
+    error: processError,
+  } = useFetch(processImageSearch);
+
   const handleTextSubmit = async (e) => {
     e.preventDefault();
     if (!searchTerm.trim()) {
@@ -33,7 +44,36 @@ const HomeSearch = () => {
       toast.error("Please upload an image");
       return;
     }
+
+    await processImageFn(searchImage);
   };
+
+   // Handle process result and errors with useEffect
+  useEffect(() => {
+    if (processResult?.success) {
+      const params = new URLSearchParams();
+
+      // Add extracted params to the search
+      if (processResult.data.make) params.set("make", processResult.data.make);
+      if (processResult.data.bodyType)
+        params.set("bodyType", processResult.data.bodyType);
+      if (processResult.data.color)
+        params.set("color", processResult.data.color);
+
+      // Redirect to search results
+      router.push(`/cars?${params.toString()}`);
+    }
+  }, [processResult, router]);
+
+  // Hanlde Process Error
+   useEffect(() => {
+    if (processError) {
+      toast.error(
+        "Failed to analyze image: " + (processError.message || "Unknown error")
+      );
+    }
+  }, [processError]);
+
 
   const onDrop = (acceptedFiles) => {
     // Do something with the files
