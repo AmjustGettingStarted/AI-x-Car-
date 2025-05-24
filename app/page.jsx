@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/accordion";
 import { SignedOut } from "@clerk/nextjs";
 import { getFeaturedCars } from "@/actions/home";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 export default async function Home() {
   const featuredCars = await getFeaturedCars();
@@ -46,10 +47,16 @@ export default async function Home() {
               </Link>
             </Button>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
-            {featuredCars.map((car) => (
-              <CarCard key={car.id} car={car} />
-            ))}
+          {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 "> */}
+          <div className="w-full ">
+            <ScrollArea className="w-full whitespace-nowrap rounded-md border">
+              <div className="flex w-max space-x-4 p-4">
+                {featuredCars.map((car) => (
+                  <CarCard key={car.id} car={car} />
+                ))}
+              </div>
+              <ScrollBar orientation="horizontal" className="hidden" />
+            </ScrollArea>
           </div>
         </div>
       </section>
