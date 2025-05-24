@@ -47,7 +47,13 @@ export default async function Home() {
               </Link>
             </Button>
           </div>
-          {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 "> */}
+          {/* Featured Section In GRID */}
+          {/* <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-2 lg:gap-6 ">
+            {featuredCars.map((car) => (
+              <CarCard key={car.id} car={car} />
+            ))}
+          </div> */}
+          {/* Featured Section on Mobile View */}
           <div className="w-full ">
             <ScrollArea className="w-full whitespace-nowrap rounded-md border">
               <div className="flex w-max space-x-4 p-4">
