@@ -48,7 +48,7 @@ const HomeSearch = () => {
     await processImageFn(searchImage);
   };
 
-   // Handle process result and errors with useEffect
+  // Handle process result and errors with useEffect
   useEffect(() => {
     if (processResult?.success) {
       const params = new URLSearchParams();
@@ -66,14 +66,13 @@ const HomeSearch = () => {
   }, [processResult, router]);
 
   // Hanlde Process Error
-   useEffect(() => {
+  useEffect(() => {
     if (processError) {
       toast.error(
         "Failed to analyze image: " + (processError.message || "Unknown error")
       );
     }
   }, [processError]);
-
 
   const onDrop = (acceptedFiles) => {
     // Do something with the files
@@ -183,9 +182,13 @@ const HomeSearch = () => {
               <Button
                 type="submit"
                 className="w-full mt-2"
-                disabled={isUploading}
+                disabled={isUploading || isProcessing}
               >
-                {isUploading ? "Uploading..." : "Search with this Image"}
+                {isUploading
+                  ? "Uploading..."
+                  : isProcessing
+                  ? "Analyzing Image"
+                  : "Search with this Image"}
               </Button>
             )}
           </form>
