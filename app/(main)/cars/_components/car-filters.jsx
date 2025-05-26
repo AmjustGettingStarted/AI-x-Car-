@@ -1,7 +1,18 @@
 "use client";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Filter } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import CarFilterControls from "./filter-controls";
 
 const CarFilters = ({ filters }) => {
   const router = useRouter();
@@ -51,21 +62,43 @@ const CarFilters = ({ filters }) => {
     currentSortBy,
   ]);
 
+  // Count active filters
+  const activeFilterCount = [
+    make,
+    bodyType,
+    fuelType,
+    transmission,
+    currentMinPrice > filters.priceRange.min ||
+      currentMaxPrice < filters.priceRange.max,
+  ].filter(Boolean).length;
+
   return (
     <div>
       {/* mobile Filters or mobile page */}
       <div className="lg:hidden mb-4">
         <div className="flex items-center">
-          <Sheet>
-            <SheetTrigger>Open</SheetTrigger>
-            <SheetContent>
+          <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+            <SheetTrigger asChild>
+              <Button variant="outline" className="flex items-center gap-2">
+                <Filter className="h-4 w-4" />
+                Filters
+                {activeFilterCount > 0 && (
+                  <Badge className="ml-1 h-5 w-5 rounded-full p-0 flex items-center justify-center">
+                    {activeFilterCount}
+                  </Badge>
+                )}
+              </Button>
+            </SheetTrigger>
+            <SheetContent
+              side="left"
+              className="w-full sm:max-w-md overflow-y-auto"
+            >
               <SheetHeader>
-                <SheetTitle>Are you absolutely sure?</SheetTitle>
-                <SheetDescription>
-                  This action cannot be undone. This will permanently delete
-                  your account and remove your data from our servers.
-                </SheetDescription>
+                <SheetTitle>Filters</SheetTitle>
               </SheetHeader>
+              <div className="py-6">
+                <CarFilterControls />
+              </div>
             </SheetContent>
           </Sheet>
         </div>
