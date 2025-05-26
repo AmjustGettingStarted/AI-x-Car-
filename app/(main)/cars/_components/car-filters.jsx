@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/sheet";
 import { Filter } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import CarFilterControls from "./filter-controls";
 
 const CarFilters = ({ filters }) => {
@@ -129,6 +129,44 @@ const CarFilters = ({ filters }) => {
     router.push(url);
     setIsSheetOpen(false);
   };
+
+  // Update URL when filters change
+  const applyFilters = useCallback(() => {
+    const params = new URLSearchParams();
+
+    if (make) params.set("make", make);
+    if (bodyType) params.set("bodyType", bodyType);
+    if (fuelType) params.set("fuelType", fuelType);
+    if (transmission) params.set("transmission", transmission);
+    if (priceRange[0] > filters.priceRange.min)
+      params.set("minPrice", priceRange[0].toString());
+    if (priceRange[1] < filters.priceRange.max)
+      params.set("maxPrice", priceRange[1].toString());
+    if (sortBy !== "newest") params.set("sortBy", sortBy);
+
+    // Preserve search and page params if they exist
+    const search = searchParams.get("search");
+    const page = searchParams.get("page");
+    if (search) params.set("search", search);
+    if (page && page !== "1") params.set("page", page);
+
+    const query = params.toString();
+    const url = query ? `${pathname}?${query}` : pathname;
+
+    router.push(url);
+    setIsSheetOpen(false);
+  }, [
+    make,
+    bodyType,
+    fuelType,
+    transmission,
+    priceRange,
+    sortBy,
+    pathname,
+    searchParams,
+    filters.priceRange.min,
+    filters.priceRange.max,
+  ]);
 
   return (
     <div>
