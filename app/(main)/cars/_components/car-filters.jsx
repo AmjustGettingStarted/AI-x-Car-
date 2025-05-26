@@ -14,6 +14,13 @@ import { Filter } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
 import CarFilterControls from "./filter-controls";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const CarFilters = ({ filters }) => {
   const router = useRouter();
@@ -218,6 +225,29 @@ const CarFilters = ({ filters }) => {
         </div>
       </div>
       {/* Sort selection */}
+      <Select
+        value={sortBy}
+        onValueChange={(value) => {
+          setSortBy(value);
+          // Apply filters immediately when sort changes
+          setTimeout(() => applyFilters(), 0);
+        }}
+      >
+        <SelectTrigger className="w-[180px] lg:w-full">
+          <SelectValue placeholder="Sort by" />
+        </SelectTrigger>
+        <SelectContent>
+          {[
+            { value: "newest", label: "Newest First" },
+            { value: "priceAsc", label: "Price: Low to High" },
+            { value: "priceDesc", label: "Price: High to Low" },
+          ].map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
 
       {/* Desktop Filters */}
     </div>
