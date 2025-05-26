@@ -1,3 +1,4 @@
+import { Slider } from "@/components/ui/slider";
 import React from "react";
 
 const CarFilterControls = ({
@@ -41,7 +42,20 @@ const CarFilterControls = ({
       onChange: (value) => onFilterChange("transmission", value),
     },
   ];
-  return <div>CarFilterControls</div>;
+  return (
+    <div className="space-y-4">
+      <h3 className="font-medium">Price Range</h3>
+      <div className="px-2">
+        <Slider
+          min={filters.priceRange.min}
+          max={filters.priceRange.max}
+          step={100}
+          value={priceRange}
+          onValueChange={(value) => onFilterChange("priceRange", value)}
+        />
+      </div>
+    </div>
+  );
 };
 
 export default CarFilterControls;
