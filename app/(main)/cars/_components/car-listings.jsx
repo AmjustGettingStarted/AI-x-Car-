@@ -4,6 +4,8 @@ import useFetch from "@/hooks/use-fetch";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import CarListingsLoading from "./car-listings-loading";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Info } from "lucide-react";
 
 const CarListings = () => {
   const searchParams = useSearchParams();
@@ -55,6 +57,26 @@ const CarListings = () => {
   if (loading && !result) {
     return <CarListingsLoading />;
   }
+
+  // Handle error
+  if (error || (result && !result.success)) {
+    return (
+      <Alert variant="destructive">
+        <Info className="h-4 w-4" />
+        <AlertTitle>Error</AlertTitle>
+        <AlertDescription>
+          Failed to load cars. Please try again later.
+        </AlertDescription>
+      </Alert>
+    );
+  }
+
+  // If no results yet, return empty placeholder
+  if (!result || !result.data) {
+    return null;
+  }
+
+  const { data: cars, pagination } = result;
 
   return <div>CarListings</div>;
 };
