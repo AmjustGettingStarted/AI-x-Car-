@@ -10,7 +10,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Filter } from "lucide-react";
+import { Filter, Sliders, X } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
 import CarFilterControls from "./filter-controls";
@@ -176,7 +176,7 @@ const CarFilters = ({ filters }) => {
   ]);
 
   return (
-    <div>
+    <div className="flex lg:flex-col justify-between gap-4">
       {/* mobile Filters or mobile page */}
       <div className="lg:hidden mb-4">
         <div className="flex items-center">
@@ -250,6 +250,40 @@ const CarFilters = ({ filters }) => {
       </Select>
 
       {/* Desktop Filters */}
+      <div className="hidden lg:block sticky top-24">
+        <div className="border rounded-lg overflow-hidden bg-white">
+          <div className="p-4 border-b bg-gray-50 flex justify-between items-center">
+            <h3 className="font-medium flex items-center">
+              <Sliders className="w-4 h-4 mr-2" />
+              Filters
+            </h3>
+            {activeFilterCount > 0 && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 text-sm text-gray-600"
+                onClick={clearFilters}
+              >
+                <X className="mr-1 h-3 w-3" />
+                Clear All
+              </Button>
+            )}
+          </div>
+          <div className="py-6">
+            <CarFilterControls
+              filters={filters}
+              currentFilters={currentFilters}
+              onFilterChange={handleFilterChange}
+              onClearFilter={handleClearFilter}
+            />
+          </div>
+          <div className="p-4 border-t">
+            <Button className="w-full" onClick={applyFilters}>
+              Apply Filters
+            </Button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
