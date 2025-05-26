@@ -1,9 +1,9 @@
 "use client";
-import { usePathname, useSearchParams } from "next/navigation";
-import { useRouter } from "next/router";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-const CarFilters = () => {
+const CarFilters = ({ filters }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -51,7 +51,30 @@ const CarFilters = () => {
     currentSortBy,
   ]);
 
-  return <div>CarFilters</div>;
+  return (
+    <div>
+      {/* mobile Filters or mobile page */}
+      <div className="lg:hidden mb-4">
+        <div className="flex items-center">
+          <Sheet>
+            <SheetTrigger>Open</SheetTrigger>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle>Are you absolutely sure?</SheetTitle>
+                <SheetDescription>
+                  This action cannot be undone. This will permanently delete
+                  your account and remove your data from our servers.
+                </SheetDescription>
+              </SheetHeader>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </div>
+      {/* Sort selection */}
+
+      {/* Desktop Filters */}
+    </div>
+  );
 };
 
 export default CarFilters;
