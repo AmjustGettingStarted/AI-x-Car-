@@ -8,6 +8,14 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Info } from "lucide-react";
 import Link from "next/link";
 import CarCard from "@/components/car-card";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 const CarListings = () => {
   const searchParams = useSearchParams();
@@ -55,6 +63,15 @@ const CarListings = () => {
     page,
   ]);
 
+  // Update URL when page changes
+  useEffect(() => {
+    if (currentPage !== page) {
+      const params = new URLSearchParams(searchParams);
+      params.set("page", currentPage.toString());
+      router.push(`?${params.toString()}`);
+    }
+  }, [currentPage, router, searchParams, page]);
+
   // Show loading state
   if (loading && !result) {
     return <CarListingsLoading />;
@@ -100,13 +117,82 @@ const CarListings = () => {
     );
   }
 
+  // Handle pagination clicks
+  const handlePageChange = (pageNum) => {
+    setCurrentPage(pageNum);
+  };
+
+  // Generate pagination URL
+  const getPaginationUrl = (pageNum) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", pageNum.toString());
+    return `?${params.toString()}`;
+  };
+
+  // Generate pagination items
+  const paginationItems = [];
+
+  // Calculate which page numbers to show (first, last, and around current page)
+  const visiblePageNumbers = [];
+
+  // Always show page 1
+  visiblePageNumbers.push(1);
+
+  // Show pages around current page
+  for (
+    let i = Math.max(2, page - 1);
+    i <= Math.min(pagination.pages - 1, page + 1);
+    i++
+  ) {
+    visiblePageNumbers.push(i);
+  }
+
+  // Always show last page if there's more than 1 page
+  if (pagination.pages > 1) {
+    visiblePageNumbers.push(pagination.pages);
+  }
+
+  // Sort and deduplicate
+  const uniquePageNumbers = [...new Set(visiblePageNumbers)].sort(
+    (a, b) => a - b
+  );
+
+  // Create pagination items with ellipses
+  let lastPageNumber = 0;
+  uniquePageNumbers.forEach((pageNumber) => {
+    if (pageNumber - lastPageNumber > 1) {
+      // Add ellipsis
+      paginationItems.push(
+        <PaginationItem key={`ellipsis-${pageNumber}`}>
+          <PaginationEllipsis />
+        </PaginationItem>
+      );
+    }
+
+    paginationItems.push(
+      <PaginationItem key={pageNumber}>
+        <PaginationLink
+          href={getPaginationUrl(pageNumber)}
+          isActive={pageNumber === page}
+          onClick={(e) => {
+            e.preventDefault();
+            handlePageChange(pageNumber);
+          }}
+        >
+          {pageNumber}
+        </PaginationLink>
+      </PaginationItem>
+    );
+
+    lastPageNumber = pageNumber;
+  });
+
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
         <p className="text-gray-600">
-          Showing
+          Showing{" "}
           <span className="font-medium">
-            {(page - 1) * limit + 1}-{Math.min(page * limit, pagination.total)}
             {(page - 1) * limit + 1}-{Math.min(page * limit, pagination.total)}
           </span>
           of <span className="font-medium">{pagination.total}</span> cars
@@ -114,11 +200,50 @@ const CarListings = () => {
       </div>
 
       {/* Car grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {cars.map((car) => (
           <CarCard key={car.id} car={car} />
         ))}
       </div>
+
+      {/* shadcn Pagination */}
+      {pagination.pages > 1 && (
+        <Pagination className="mt-10">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                href={getPaginationUrl(page - 1)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (page > 1) {
+                    handlePageChange(page - 1);
+                  }
+                }}
+                className={page <= 1 ? "pointer-events-none opacity-50" : ""}
+              />
+            </PaginationItem>
+
+            {paginationItems}
+
+            <PaginationItem>
+              <PaginationNext
+                href={getPaginationUrl(page + 1)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (page < pagination.pages) {
+                    handlePageChange(page + 1);
+                  }
+                }}
+                className={
+                  page >= pagination.pages
+                    ? "pointer-events-none opacity-50"
+                    : ""
+                }
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </div>
   );
 };
