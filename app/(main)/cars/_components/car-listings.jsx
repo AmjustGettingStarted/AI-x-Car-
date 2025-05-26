@@ -1,7 +1,9 @@
 "use client";
+import { getCars } from "@/actions/car-listings";
 import useFetch from "@/hooks/use-fetch";
 import { useRouter, useSearchParams } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
+import CarListingsLoading from "./car-listings-loading";
 
 const CarListings = () => {
   const searchParams = useSearchParams();
@@ -22,6 +24,37 @@ const CarListings = () => {
 
   // Use the useFetch hook
   const { loading, fn: fetchCars, data: result, error } = useFetch(getCars);
+
+  // Fetch cars when filters change
+  useEffect(() => {
+    fetchCars({
+      search,
+      make,
+      bodyType,
+      fuelType,
+      transmission,
+      minPrice,
+      maxPrice,
+      sortBy,
+      page,
+      limit,
+    });
+  }, [
+    search,
+    make,
+    bodyType,
+    fuelType,
+    transmission,
+    minPrice,
+    maxPrice,
+    sortBy,
+    page,
+  ]);
+
+  // Show loading state
+  if (loading && !result) {
+    return <CarListingsLoading />;
+  }
 
   return <div>CarListings</div>;
 };
