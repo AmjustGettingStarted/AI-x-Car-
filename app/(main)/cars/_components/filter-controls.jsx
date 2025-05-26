@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
-import { Check } from "lucide-react";
+import { Check, X } from "lucide-react";
 import React from "react";
 
 const CarFilterControls = ({
