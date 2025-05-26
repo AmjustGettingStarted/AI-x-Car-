@@ -2,7 +2,7 @@
 import { getCars } from "@/actions/car-listings";
 import useFetch from "@/hooks/use-fetch";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import CarListingsLoading from "./car-listings-loading";
 
 const CarListings = () => {
