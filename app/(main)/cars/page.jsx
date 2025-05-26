@@ -1,5 +1,6 @@
 import { getCarFilters } from "@/actions/car-listings";
 import React from "react";
+import CarFilters from "./_components/car-filters";
 
 export const metadata = {
   title: "Cars 🏎 | AIxCAR",
@@ -14,8 +15,11 @@ const CarsPage = async () => {
         Browse Cars
       </h1>
       <div className="flex flex-col lg:flex-row gap-8">
-        <div>{/* Filters */}</div>
-        <div>{/* Listings */}</div>
+        <div className="w-full lg:w-80 flex-shrink-0">
+          {/* Filters */}
+          <CarFilters filters={filtersData.data} />
+        </div>
+        <div className="flex-1 ">{/* Listings */}</div>
       </div>
     </div>
   );
