@@ -5,6 +5,7 @@ import {
   Sheet,
   SheetContent,
   SheetDescription,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -72,6 +73,63 @@ const CarFilters = ({ filters }) => {
       currentMaxPrice < filters.priceRange.max,
   ].filter(Boolean).length;
 
+  const currentFilters = {
+    make,
+    bodyType,
+    fuelType,
+    transmission,
+    priceRange,
+    priceRangeMin: filters.priceRange.min,
+    priceRangeMax: filters.priceRange.max,
+  };
+
+  // Handle filter changes
+  const handleFilterChange = (filterName, value) => {
+    switch (filterName) {
+      case "make":
+        setMake(value);
+        break;
+      case "bodyType":
+        setBodyType(value);
+        break;
+      case "fuelType":
+        setFuelType(value);
+        break;
+      case "transmission":
+        setTransmission(value);
+        break;
+      case "priceRange":
+        setPriceRange(value);
+        break;
+    }
+  };
+
+  // Handle clearing specific filter
+  const handleClearFilter = (filterName) => {
+    handleFilterChange(filterName, "");
+  };
+
+  // Clear all filters
+  const clearFilters = () => {
+    setMake("");
+    setBodyType("");
+    setFuelType("");
+    setTransmission("");
+    setPriceRange([filters.priceRange.min, filters.priceRange.max]);
+    setSortBy("newest");
+
+    // Keep search term if exists
+    const params = new URLSearchParams();
+    const search = searchParams.get("search");
+    if (search) params.set("search", search);
+
+    const query = params.toString();
+    const url = query ? `${pathname}?${query}` : pathname;
+
+    router.push(url);
+    setIsSheetOpen(false);
+  };
+
   return (
     <div>
       {/* mobile Filters or mobile page */}
@@ -97,8 +155,26 @@ const CarFilters = ({ filters }) => {
                 <SheetTitle>Filters</SheetTitle>
               </SheetHeader>
               <div className="py-6">
-                <CarFilterControls />
+                <CarFilterControls
+                  filters={filters}
+                  currentFilters={currentFilters}
+                  onFilterChange={handleFilterChange}
+                  onClearFilter={handleClearFilter}
+                />
               </div>
+              <SheetFooter className="sm:justify-between flex-row pt-2 border-t space-x-4 mt-auto">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={clearFilters}
+                  className="flex-1"
+                >
+                  Reset
+                </Button>
+                <Button type="button" onClick={applyFilters} className="flex-1">
+                  Show Results
+                </Button>
+              </SheetFooter>
             </SheetContent>
           </Sheet>
         </div>
