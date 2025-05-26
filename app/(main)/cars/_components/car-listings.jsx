@@ -7,6 +7,7 @@ import CarListingsLoading from "./car-listings-loading";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Info } from "lucide-react";
 import Link from "next/link";
+import CarCard from "@/components/car-card";
 
 const CarListings = () => {
   const searchParams = useSearchParams();
@@ -101,13 +102,22 @@ const CarListings = () => {
 
   return (
     <div>
-      <div>
-        <p>
+      <div className="flex justify-between items-center mb-6">
+        <p className="text-gray-600">
           Showing
-          <span>
+          <span className="font-medium">
+            {(page - 1) * limit + 1}-{Math.min(page * limit, pagination.total)}
             {(page - 1) * limit + 1}-{Math.min(page * limit, pagination.total)}
           </span>
+          of <span className="font-medium">{pagination.total}</span> cars
         </p>
+      </div>
+
+      {/* Car grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {cars.map((car) => (
+          <CarCard key={car.id} car={car} />
+        ))}
       </div>
     </div>
   );
