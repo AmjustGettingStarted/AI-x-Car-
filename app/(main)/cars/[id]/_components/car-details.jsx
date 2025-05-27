@@ -70,8 +70,8 @@ const CarDetails = ({ car, testDrive }) => {
 
   return (
     <div>
-      <div>
-        <div>
+      <div className="flex flex-col lg:flex-row gap-8">
+        <div className="w-full lg:w-7/12">
           <div className="aspect-video rounded-lg overflow-hidden relative mb-4">
             {car.images && car.images.length > 0 ? (
               <Image
@@ -87,8 +87,32 @@ const CarDetails = ({ car, testDrive }) => {
               </div>
             )}
           </div>
+          {/* Thumbnails */}
+          {car.images && car.images.length > 1 && (
+            <div className="flex gap-2 overflow-x-auto pb-2">
+              {car.images.map((image, index) => (
+                <div
+                  key={index}
+                  className={`relative cursor-pointer rounded-md h-20 w-24 flex-shrink-0 transition ${
+                    index === currentImageIndex
+                      ? "border-2 border-blue-600"
+                      : "opacity-70 hover:opacity-100"
+                  }`}
+                  onClick={() => setCurrentImageIndex(index)}
+                >
+                  <Image
+                    src={image}
+                    alt={`${car.year} ${car.make} ${car.model} - view ${
+                      index + 1
+                    }`}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-        <div></div>
       </div>
     </div>
   );
