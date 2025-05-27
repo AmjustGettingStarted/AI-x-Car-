@@ -1,8 +1,9 @@
 "use client";
 import { toggleSavedCar } from "@/actions/car-listings";
+import { Button } from "@/components/ui/button";
 import useFetch from "@/hooks/use-fetch";
 import { useAuth } from "@clerk/nextjs";
-import { Car } from "lucide-react";
+import { Car, Heart, Share2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -112,6 +113,30 @@ const CarDetails = ({ car, testDrive }) => {
               ))}
             </div>
           )}
+          {/* Secondary Actions */}
+          <div className="flex mt-4 gap-4">
+            <Button
+              variant="outline"
+              className={`flex items-center gap-2 flex-1 cursor-pointer ${
+                isWishlisted ? "text-red-500" : ""
+              }`}
+              onClick={handleSaveCar}
+              disabled={savingCar}
+            >
+              <Heart
+                className={`h-5 w-5 ${isWishlisted ? "fill-red-500" : ""}`}
+              />
+              {isWishlisted ? "Saved" : "Save"}
+            </Button>
+            <Button
+              variant="outline"
+              className="flex items-center gap-2 flex-1 cursor-pointer"
+              onClick={handleShare}
+            >
+              <Share2 className="h-5 w-5" />
+              Share
+            </Button>
+          </div>
         </div>
       </div>
     </div>
