@@ -55,7 +55,7 @@ export default async function Home() {
           </div> */}
           {/* Featured Section on Mobile View */}
           <div className="w-full ">
-            <ScrollArea className="w-full whitespace-nowrap rounded-md border">
+            <ScrollArea className="w-full whitespace-nowrap rounded-md ">
               <div className="flex w-max space-x-4 p-4">
                 {featuredCars.map((car) => (
                   <CarCard key={car.id} car={car} />
@@ -79,7 +79,7 @@ export default async function Home() {
             </Button>
           </div>
           {/* Scroll Area */}
-          <ScrollArea className="w-full whitespace-nowrap rounded-md border">
+          <ScrollArea className="w-full whitespace-nowrap rounded-md ">
             {/* <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4"> */}
             <div className="w-full flex space-x-4">
               {carMakes.map((make) => {
