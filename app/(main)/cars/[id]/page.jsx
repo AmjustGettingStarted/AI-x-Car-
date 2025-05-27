@@ -1,5 +1,7 @@
 import { getCarById } from "@/actions/car-listings";
+import { notFound } from "next/navigation";
 import React from "react";
+import CarDetails from "./_components/car-details";
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
@@ -22,9 +24,19 @@ export async function generateMetadata({ params }) {
     },
   };
 }
-const CarPage = async ({ params }) => {
+const CarDetailsPage = async ({ params }) => {
   const { id } = await params;
-  return <div>CarPage : {id}</div>;
+  const result = await getCarById(id);
+
+  if (!result.success) {
+    notFound();
+  }
+
+  return (
+    <div className="container mx-auto px-4 py-12">
+      <CarDetails car={result.data} testDriveInfo={result.data.testDriveInfo} />
+    </div>
+  );
 };
 
-export default CarPage;
+export default CarDetailsPage;
