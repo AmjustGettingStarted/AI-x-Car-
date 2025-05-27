@@ -214,7 +214,7 @@ const CarsList = () => {
                   {carsData.data.map((car) => {
                     return (
                       <TableRow key={car.id}>
-                        <TableCell className="w-20 h-20 rounded-md overflow-hidden">
+                        <TableCell className="min-w-20 min-h-20 rounded-md ">
                           {car.images && car.images.length > 0 ? (
                             <Image
                               src={car.images[0]}
