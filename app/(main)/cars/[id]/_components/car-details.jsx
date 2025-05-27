@@ -144,7 +144,7 @@ const CarDetails = ({ car, testDrive }) => {
               onClick={handleShare}
             >
               <Share2 className="h-5 w-5" />
-              Sharing
+              Share
             </Button>
           </div>
         </div>
