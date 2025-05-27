@@ -4,6 +4,7 @@ import { serializeCarData } from "@/lib/helper";
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { Dog } from "lucide-react";
+import { revalidatePath } from "next/cache";
 
 export async function getCarFilters() {
   try {
