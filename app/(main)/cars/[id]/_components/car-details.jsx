@@ -1,9 +1,19 @@
 "use client";
 import { toggleSavedCar } from "@/actions/car-listings";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import useFetch from "@/hooks/use-fetch";
+import { formatCurrency } from "@/lib/helper";
 import { useAuth } from "@clerk/nextjs";
-import { Car, Heart, Share2 } from "lucide-react";
+import { Car, Currency, Fuel, Gauge, Heart, Share2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -136,6 +146,37 @@ const CarDetails = ({ car, testDrive }) => {
               <Share2 className="h-5 w-5" />
               Share
             </Button>
+          </div>
+        </div>
+
+        {/* Car Details */}
+        <div className="w-full lg:w-5/12">
+          <div className="flex items-center justify-between">
+            <Badge className="mb-2">{car.bodyType}</Badge>
+          </div>
+
+          <h1 className="text-4xl font-bold mb-1">
+            {car.year} {car.make} {car.model}
+          </h1>
+
+          <div className="text-2xl font-bold text-blue-600">
+            {formatCurrency(car.price)}
+          </div>
+
+          {/* Quick Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 my-6">
+            <div className="flex items-center gap-2">
+              <Gauge className="text-gray-500 h-5 w-5" />
+              <span>{car.mileage.toLocaleString()} miles</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Fuel className="text-gray-500 h-5 w-5" />
+              <span>{car.fuelType}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Car className="text-gray-500 h-5 w-5" />
+              <span>{car.transmission}</span>
+            </div>
           </div>
         </div>
       </div>
