@@ -178,6 +178,26 @@ const CarDetails = ({ car, testDrive }) => {
               <span>{car.transmission}</span>
             </div>
           </div>
+
+          {/* Emi part */}
+          <Card>
+            <CardContent>
+              <div className="flex items-center gap-2 text-lg font-medium mb-2">
+                <Currency className="h-5 w-5 text-blue-600" />
+                <h3>EMI Calculator</h3>
+              </div>
+              <div className="text-sm text-gray-600">
+                Estimated Monthly Payment:{" "}
+                <span className="font-bold text-gray-900">
+                  {formatCurrency(car.price / 60)}
+                </span>{" "}
+                for 60 months
+              </div>
+              <div className="text-xs text-gray-500 mt-1">
+                *Based on $0 down payment and 4.5% interest rate
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
