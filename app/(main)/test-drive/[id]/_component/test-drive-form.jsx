@@ -22,7 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon, Car, CheckCircle2, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -123,6 +123,52 @@ const TestDriveForm = ({ car, testDriveInfo }) => {
     // Disable if dealership is closed on this day
     return !daySchedule || !daySchedule.isOpen;
   };
+
+  useEffect(() => {
+    if (!selectedDate || !dealership?.workingHours) return;
+
+    const selectedDayOfWeek = format(selectedDate, "EEEE").toUpperCase();
+    const daySchedule = dealership.workingHours.find(
+      (day) => day.dayOfWeek === selectedDayOfWeek
+    );
+
+    if (!daySchedule || !daySchedule.isOpen) {
+      setAvailableTimeSlots([]);
+      return;
+    }
+
+    // Parse opening and closing hours
+    const openHour = parseInt(daySchedule.openTime.split(":")[0]);
+    const closeHour = parseInt(daySchedule.closeTime.split(":")[0]);
+
+    // Generate time slots (every hour)
+    const slots = [];
+    for (let hour = openHour; hour < closeHour; hour++) {
+      const startTime = `${hour.toString().padStart(2, "0")}:00`;
+      const endTime = `${(hour + 1).toString().padStart(2, "0")}:00`;
+      // Check if this slot is already booked
+      const isBooked = existingBookings.some((booking) => {
+        const bookingDate = booking.date;
+        return (
+          bookingDate === format(selectedDate, "yyyy-MM-dd") &&
+          (booking.startTime === startTime || booking.endTime === endTime)
+        );
+      });
+
+      if (!isBooked) {
+        slots.push({
+          id: `${startTime}-${endTime}`,
+          label: `${startTime} - ${endTime}`,
+          startTime,
+          endTime,
+        });
+      }
+    }
+    setAvailableTimeSlots(slots);
+
+    // Clear time slot selection when date changes
+    setValue("timeSlot", "");
+  }, [selectedDate]);
 
   // Submit handler
   const onSubmit = async (data) => {
