@@ -14,12 +14,21 @@ import {
 import useFetch from "@/hooks/use-fetch";
 import { formatCurrency } from "@/lib/helper";
 import { useAuth } from "@clerk/nextjs";
-import { Car, Currency, Fuel, Gauge, Heart, Share2 } from "lucide-react";
+import {
+  Car,
+  Currency,
+  Fuel,
+  Gauge,
+  Heart,
+  MessageSquare,
+  Share2,
+} from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import EmiCalculator from "./emi-calculator";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const CarDetails = ({ car, testDrive }) => {
   const router = useRouter();
@@ -184,7 +193,7 @@ const CarDetails = ({ car, testDrive }) => {
           {/* Emi part */}
 
           <Dialog>
-            <DialogTrigger>
+            <DialogTrigger className="w-full text-start cursor-pointer">
               <Card>
                 <CardContent>
                   <div className="flex items-center gap-2 text-lg font-medium mb-2">
@@ -213,6 +222,35 @@ const CarDetails = ({ car, testDrive }) => {
               </DialogHeader>
             </DialogContent>
           </Dialog>
+
+          {/* Request More Info */}
+          <Card className="my-6">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-2 text-lg font-medium mb-2">
+                <MessageSquare className="h-5 w-5 text-blue-600" />
+                <h3>Have Questions?</h3>
+              </div>
+              <p className="text-sm text-gray-600 mb-3">
+                Our representatives are available to answer all your queries
+                about this vehicle.
+              </p>
+              <a href="mailto:gamerhmv2050@gmail.com">
+                <Button variant="outline" className="w-full cursor-pointer">
+                  Request Info
+                </Button>
+              </a>
+            </CardContent>
+          </Card>
+
+          {/* Check the status of the car */}
+           {(car.status === "SOLD" || car.status === "UNAVAILABLE") && (
+            <Alert variant="destructive">
+              <AlertTitle className="capitalize">
+                This car is {car.status.toLowerCase()}
+              </AlertTitle>
+              <AlertDescription>Please check again later.</AlertDescription>
+            </Alert>
+          )}
         </div>
       </div>
     </div>
