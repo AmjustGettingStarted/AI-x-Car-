@@ -1,5 +1,7 @@
 "use client";
+import { Card, CardContent } from "@/components/ui/card";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Car } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -45,7 +47,32 @@ const TestDriveForm = ({ car, testDriveInfo }) => {
   // Watch date field to update available time slots
   const selectedDate = watch("date");
 
-  return <div>TestDriveForm</div>;
+  return (
+    <div>
+      <div>
+        <Card>
+          <CardContent>
+            <h2 className="text-xl font-bold mb-4">Car Details</h2>
+
+            {/* to Render first image of the Car */}
+            <div className="aspect-video rounded-lg overflow-hidden relative mb-4">
+              {car.images && car.images.length > 0 ? (
+                <img
+                  src={car.images[0]}
+                  alt={`${car.year} ${car.make} ${car.model}`}
+                  className="object-cover w-full h-full"
+                />
+              ) : (
+                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                  <Car className="h-12 w-12 text-gray-400" />
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
 };
 
 export default TestDriveForm;
