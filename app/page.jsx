@@ -2,7 +2,7 @@ import HomeSearch from "@/components/home-search";
 import "../app/globals.css";
 import { Calendar, Car, ChevronRight, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { bodyTypes, carMakes, faqItems, featuredCars } from "@/lib/data";
+import { bodyTypes, carMakes, faqItems } from "@/lib/data";
 import CarCard from "@/components/car-card";
 import Link from "next/link";
 import Image from "next/image";
@@ -42,7 +42,7 @@ export default async function Home() {
           <div className="mb-8 flex items-center justify-between">
             <h2 className="text-2xl font-bold">Featured Cars</h2>
             <Button className="flex items-center" variant="ghost" asChild>
-              <Link href="/cars" className=" ">
+              <Link href="/cars">
                 View All <ChevronRight className="ml-1 h-4 w-4" />
               </Link>
             </Button>
