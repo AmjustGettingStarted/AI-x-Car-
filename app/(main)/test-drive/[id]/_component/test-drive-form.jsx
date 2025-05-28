@@ -21,7 +21,30 @@ const TestDriveForm = ({ car, testDriveInfo }) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [bookingDetails, setBookingDetails] = useState(null);
 
-  useForm({ resolver: zodResolver(testDriveSchema) });
+  // Initialize react-hook-form with zod resolver
+  const {
+    control,
+    handleSubmit,
+    watch,
+    setValue,
+    reset,
+    formState: { errors, isValid },
+  } = useForm({
+    resolver: zodResolver(testDriveSchema),
+    defaultValues: {
+      date: undefined,
+      timeSlot: undefined,
+      notes: "",
+    },
+  });
+
+  // Get dealership and booking information
+  const dealership = testDriveInfo?.dealership;
+  const existingBookings = testDriveInfo?.existingBookings || [];
+
+  // Watch date field to update available time slots
+  const selectedDate = watch("date");
+
   return <div>TestDriveForm</div>;
 };
 
