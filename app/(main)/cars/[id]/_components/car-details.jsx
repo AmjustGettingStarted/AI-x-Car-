@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -18,6 +19,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
+import EmiCalculator from "./emi-calculator";
 
 const CarDetails = ({ car, testDrive }) => {
   const router = useRouter();
@@ -180,24 +182,37 @@ const CarDetails = ({ car, testDrive }) => {
           </div>
 
           {/* Emi part */}
-          <Card>
-            <CardContent>
-              <div className="flex items-center gap-2 text-lg font-medium mb-2">
-                <Currency className="h-5 w-5 text-blue-600" />
-                <h3>EMI Calculator</h3>
-              </div>
-              <div className="text-sm text-gray-600">
-                Estimated Monthly Payment:{" "}
-                <span className="font-bold text-gray-900">
-                  {formatCurrency(car.price / 60)}
-                </span>{" "}
-                for 60 months
-              </div>
-              <div className="text-xs text-gray-500 mt-1">
-                *Based on $0 down payment and 4.5% interest rate
-              </div>
-            </CardContent>
-          </Card>
+
+          <Dialog>
+            <DialogTrigger>
+              <Card>
+                <CardContent>
+                  <div className="flex items-center gap-2 text-lg font-medium mb-2">
+                    <Currency className="h-5 w-5 text-blue-600" />
+                    <h3>EMI Calculator</h3>
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    Estimated Monthly Payment:{" "}
+                    <span className="font-bold text-gray-900">
+                      {formatCurrency(car.price / 60)}
+                    </span>{" "}
+                    for 60 months
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">
+                    *Based on $0 down payment and 4.5% interest rate
+                  </div>
+                </CardContent>
+              </Card>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>EMI Calculator</DialogTitle>
+                <DialogDescription>
+                  <EmiCalculator price={car.price} />
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </div>
