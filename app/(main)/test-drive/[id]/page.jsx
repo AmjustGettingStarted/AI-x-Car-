@@ -7,8 +7,8 @@ export async function generateMetadata() {
   };
 }
 
-const TestDrivePage = () => {
-  return <div>TestDrivePage</div>;
+const TestDrivePage = ({params}) => {
+  return <div>TestDrivePage: {params.id}</div>;
 };
 
 export default TestDrivePage;
