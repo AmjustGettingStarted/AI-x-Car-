@@ -276,6 +276,44 @@ const CarDetails = ({ car, testDriveInfo }) => {
           )}
         </div>
       </div>
+      {/* More Information */}
+      <div className="mt-12 p-6 bg-white rounded-lg shadow-sm">
+        <div className="flex flex-col md:flex-row gap-8">
+          <div className="w-full md:w-1/2">
+            <h3 className="text-2xl font-bold mb-6">Description</h3>
+            <p className="whitespace-pre-line text-gray-700">
+              {car.description}
+            </p>
+          </div>
+          <div className="flex-1">
+            <h3 className="text-2xl font-bold mb-6">Features</h3>
+            <ul className="grid grid-cols-1 gap-2">
+              <li className="flex items-center gap-2">
+                <span className="h-2 w-2 bg-blue-600 rounded-full"></span>
+                {car.transmission} Transmission
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="h-2 w-2 bg-blue-600 rounded-full"></span>
+                {car.fuelType} Engine
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="h-2 w-2 bg-blue-600 rounded-full"></span>
+                {car.bodyType} Body Style
+              </li>
+              {car.seats && (
+                <li className="flex items-center gap-2">
+                  <span className="h-2 w-2 bg-blue-600 rounded-full"></span>
+                  {car.seats} Seats
+                </li>
+              )}
+              <li className="flex items-center gap-2">
+                <span className="h-2 w-2 bg-blue-600 rounded-full"></span>
+                {car.color} Exterior
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
