@@ -48,8 +48,8 @@ const TestDriveForm = ({ car, testDriveInfo }) => {
   const selectedDate = watch("date");
 
   return (
-    <div>
-      <div>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="md:col-span-1">
         <Card>
           <CardContent>
             <h2 className="text-xl font-bold mb-4">Car Details</h2>
@@ -67,6 +67,38 @@ const TestDriveForm = ({ car, testDriveInfo }) => {
                   <Car className="h-12 w-12 text-gray-400" />
                 </div>
               )}
+            </div>
+            <h3 className="text-lg font-bold">
+              {car.year} {car.make} {car.model}
+            </h3>
+
+            <div className="mt-2 text-xl font-bold text-blue-600">
+              ${car.price.toLocaleString()}
+            </div>
+
+            <div className="mt-4 text-sm text-gray-500">
+              <div className="flex justify-between py-1 border-b">
+                <span>Mileage</span>
+                <span className="font-medium">
+                  {car.mileage.toLocaleString()} miles
+                </span>
+              </div>
+              <div className="flex justify-between py-1 border-b">
+                <span>Fuel Type</span>
+                <span className="font-medium">{car.fuelType}</span>
+              </div>
+              <div className="flex justify-between py-1 border-b">
+                <span>Transmission</span>
+                <span className="font-medium">{car.transmission}</span>
+              </div>
+              <div className="flex justify-between py-1 border-b">
+                <span>Body Type</span>
+                <span className="font-medium">{car.bodyType}</span>
+              </div>
+              <div className="flex justify-between py-1">
+                <span>Color</span>
+                <span className="font-medium">{car.color}</span>
+              </div>
             </div>
           </CardContent>
         </Card>
