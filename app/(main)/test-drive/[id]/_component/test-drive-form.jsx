@@ -102,6 +102,29 @@ const TestDriveForm = ({ car, testDriveInfo }) => {
             </div>
           </CardContent>
         </Card>
+
+        {/* Dealership Info */}
+        <Card className="mt-6">
+          <CardContent className="p-6">
+            <h2 className="text-xl font-bold mb-4">Dealership Info</h2>
+            <div className="text-sm">
+              <p className="font-medium">
+                {dealership?.name || "Vehiql Motors"}
+              </p>
+              <p className="text-gray-600 mt-1">
+                {dealership?.address || "Address not available"}
+              </p>
+              <p className="text-gray-600 mt-3">
+                <span className="font-medium">Phone:</span>{" "}
+                {dealership?.phone || "Not available"}
+              </p>
+              <p className="text-gray-600">
+                <span className="font-medium">Email:</span>{" "}
+                {dealership?.email || "Not available"}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
