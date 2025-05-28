@@ -4,6 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent } from "@/components/ui/card";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -19,7 +26,7 @@ import { Textarea } from "@/components/ui/textarea";
 import useFetch from "@/hooks/use-fetch";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { CalendarIcon, Car, CheckCircle2, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { use, useEffect, useState } from "react";
@@ -298,7 +305,7 @@ const TestDriveForm = ({ car, testDriveInfo }) => {
                           <Button
                             variant="outline"
                             className={cn(
-                              "w-full justify-start text-left font-normal",
+                              "w-full justify-start text-left font-normal cursor-pointer",
                               !field.value && "text-muted-foreground"
                             )}
                           >
@@ -395,7 +402,7 @@ const TestDriveForm = ({ car, testDriveInfo }) => {
               {/* Submit Button */}
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full cursor-pointer"
                 disabled={bookingInProgress}
               >
                 {bookingInProgress ? (
@@ -430,6 +437,59 @@ const TestDriveForm = ({ car, testDriveInfo }) => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Confirmation Dialog */}
+      <Dialog open={showConfirmation} onOpenChange={setShowConfirmation}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <CheckCircle2 className="h-5 w-5 text-green-500" />
+              Test Drive Booked Successfully
+            </DialogTitle>
+            <DialogDescription>
+              Your test drive has been confirmed with the following details:
+            </DialogDescription>
+          </DialogHeader>
+
+          {bookingDetails && (
+            <div className="py-4">
+              <div className="space-y-3">
+                <div className="flex justify-between">
+                  <span className="font-medium">Car:</span>
+                  <span>
+                    {car.year} {car.make} {car.model}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-medium">Date:</span>
+                  <span>{bookingDetails.date}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-medium">Time Slot:</span>
+                  <span>{bookingDetails.timeSlot}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-medium">Dealership:</span>
+                  <span>{dealership?.name || "Vehiql Motors"}</span>
+                </div>
+              </div>
+
+              <div className="mt-4 bg-blue-50 p-3 rounded text-sm text-blue-700">
+                Please arrive 10 minutes early with your driver's license.
+              </div>
+            </div>
+          )}
+
+          <div className="flex justify-end">
+            <Button
+              onClick={handleCloseConfirmation}
+              className="cursor-pointer"
+            >
+              Done
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
