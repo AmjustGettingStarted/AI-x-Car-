@@ -390,7 +390,64 @@ const CarDetails = ({ car, testDriveInfo }) => {
             </div>
 
             {/* Working Hours */}
-            
+            <div className="md:w-1/2 lg:w-1/3">
+              <h4 className="font-medium mb-2">Working Hours</h4>
+              <div className="space-y-2">
+                {testDriveInfo.dealership?.workingHours
+                  ? testDriveInfo.dealership.workingHours
+                      .sort((a, b) => {
+                        const days = [
+                          "MONDAY",
+                          "TUESDAY",
+                          "WEDNESDAY",
+                          "THURSDAY",
+                          "FRIDAY",
+                          "SATURDAY",
+                          "SUNDAY",
+                        ];
+                        return (
+                          days.indexOf(a.dayOfWeek) - days.indexOf(b.dayOfWeek)
+                        );
+                      })
+                      .map((day) => (
+                        <div
+                          key={day.dayOfWeek}
+                          className="flex justify-between text-sm"
+                        >
+                          <span className="text-gray-600">
+                            {day.dayOfWeek.charAt(0) +
+                              day.dayOfWeek.slice(1).toLowerCase()}
+                          </span>
+                          <span>
+                            {day.isOpen
+                              ? `${day.openTime} - ${day.closeTime}`
+                              : "Closed"}
+                          </span>
+                        </div>
+                      ))
+                  : // Default hours if none provided
+                    [
+                      "Monday",
+                      "Tuesday",
+                      "Wednesday",
+                      "Thursday",
+                      "Friday",
+                      "Saturday",
+                      "Sunday",
+                    ].map((day, index) => (
+                      <div key={day} className="flex justify-between text-sm">
+                        <span className="text-gray-600">{day}</span>
+                        <span>
+                          {index < 5
+                            ? "9:00 - 18:00"
+                            : index === 5
+                            ? "10:00 - 16:00"
+                            : "Closed"}
+                        </span>
+                      </div>
+                    ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
