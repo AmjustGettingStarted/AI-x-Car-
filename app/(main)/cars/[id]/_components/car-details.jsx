@@ -21,6 +21,7 @@ import {
   Fuel,
   Gauge,
   Heart,
+  LocateFixed,
   MessageSquare,
   Share2,
 } from "lucide-react";
@@ -360,6 +361,36 @@ const CarDetails = ({ car, testDriveInfo }) => {
                 <span className="font-medium">{car.seats}</span>
               </div>
             )}
+          </div>
+        </div>
+      </div>
+
+      {/* Dealership Location Section */}
+      <div className="mt-8 p-6 bg-white rounded-lg shadow-sm">
+        <h2 className="text-2xl font-bold mb-6">Dealership Location</h2>
+        <div className="bg-gray-50 rounded-lg p-6">
+          <div className="flex flex-col md:flex-row gap-6 justify-between">
+            {/* Dealership Name and Address */}
+            <div className="flex items-start gap-3">
+              <LocateFixed className="h-5 w-5 text-blue-600 mt-1 flex-shrink-0" />
+              <div>
+                <h4 className="font-medium">
+                  {testDriveInfo.dealership?.name || "Not Available"}
+                </h4>
+                <p className="text-gray-600">
+                  {testDriveInfo.dealership?.address || "Not Available"}
+                </p>
+                <p className="text-gray-600 mt-1">
+                  Phone: {testDriveInfo.dealership?.phone || "Not Available"}
+                </p>
+                <p className="text-gray-600">
+                  Email: {testDriveInfo.dealership?.email || "Not Available"}
+                </p>
+              </div>
+            </div>
+
+            {/* Working Hours */}
+            
           </div>
         </div>
       </div>
