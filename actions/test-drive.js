@@ -76,3 +76,62 @@ export async function bookTestDrive({
     };
   }
 }
+
+  // Get user's test drive bookings - reservations page
+export async function getUserTestDrives() {
+  try {
+    const { userId } = await auth();
+    if (!userId) {
+      return {
+        success: false,
+        error: "Unauthorized",
+      };
+    }
+
+    // Get the user from our database
+    const user = await db.user.findUnique({
+      where: { clerkUserId: userId },
+    });
+
+    if (!user) {
+      return {
+        success: false,
+        error: "User not found",
+      };
+    }
+
+    // Get user's test drive bookings
+    const bookings = await db.testDriveBooking.findMany({
+      where: { userId: user.id },
+      include: {
+        car: true,
+      },
+      orderBy: { bookingDate: "desc" },
+    });
+
+    // Format the bookings
+    const formattedBookings = bookings.map((booking) => ({
+      id: booking.id,
+      carId: booking.carId,
+      car: serializeCarData(booking.car),
+      bookingDate: booking.bookingDate.toISOString(),
+      startTime: booking.startTime,
+      endTime: booking.endTime,
+      status: booking.status,
+      notes: booking.notes,
+      createdAt: booking.createdAt.toISOString(),
+      updatedAt: booking.updatedAt.toISOString(),
+    }));
+
+    return {
+      success: true,
+      data: formattedBookings,
+    };
+  } catch (error) {
+    console.error("Error fetching test drives:", error);
+    return {
+      success: false,
+      error: error.message,
+    };
+  }
+}
