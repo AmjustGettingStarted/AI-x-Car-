@@ -1,3 +1,4 @@
+import { getCarById } from "@/actions/car-listings";
 import React from "react";
 
 export async function generateMetadata() {
@@ -7,8 +8,16 @@ export async function generateMetadata() {
   };
 }
 
-const TestDrivePage = ({params}) => {
-  return <div>TestDrivePage: {params.id}</div>;
+const TestDrivePage = async ({ params }) => {
+  // Fetch car details
+  const { id } = params;
+  const result = await getCarById(id);
+
+  // If car not found, show 404
+  if (!result.success) {
+    notFound();
+  }
+  return <div>TestDrivePage: {id}</div>;
 };
 
 export default TestDrivePage;
