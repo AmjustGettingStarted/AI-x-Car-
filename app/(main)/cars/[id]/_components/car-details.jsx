@@ -15,6 +15,7 @@ import useFetch from "@/hooks/use-fetch";
 import { formatCurrency } from "@/lib/helper";
 import { useAuth } from "@clerk/nextjs";
 import {
+  Calendar,
   Car,
   Currency,
   Fuel,
@@ -29,8 +30,9 @@ import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import EmiCalculator from "./emi-calculator";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { format } from "date-fns";
 
-const CarDetails = ({ car, testDrive }) => {
+const CarDetails = ({ car, testDriveInfo }) => {
   const router = useRouter();
   const { isSignedIn } = useAuth();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -88,6 +90,16 @@ const CarDetails = ({ car, testDrive }) => {
     } else {
       copyToClipboard();
     }
+  };
+
+  // Handle book test drive
+  const handleBookTestDrive = () => {
+    if (!isSignedIn) {
+      toast.error("Please sign in to book a test drive");
+      router.push("/sign-in");
+      return;
+    }
+    router.push(`/test-drive/${car.id}`);
   };
 
   return (
@@ -165,15 +177,12 @@ const CarDetails = ({ car, testDrive }) => {
           <div className="flex items-center justify-between">
             <Badge className="mb-2">{car.bodyType}</Badge>
           </div>
-
           <h1 className="text-4xl font-bold mb-1">
             {car.year} {car.make} {car.model}
           </h1>
-
           <div className="text-2xl font-bold text-blue-600">
             {formatCurrency(car.price)}
           </div>
-
           {/* Quick Stats */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 my-6">
             <div className="flex items-center gap-2">
@@ -189,9 +198,7 @@ const CarDetails = ({ car, testDrive }) => {
               <span>{car.transmission}</span>
             </div>
           </div>
-
           {/* Emi part */}
-
           <Dialog>
             <DialogTrigger className="w-full text-start cursor-pointer">
               <Card>
@@ -222,7 +229,6 @@ const CarDetails = ({ car, testDrive }) => {
               </DialogHeader>
             </DialogContent>
           </Dialog>
-
           {/* Request More Info */}
           <Card className="my-6">
             <CardContent className="p-4">
@@ -243,13 +249,30 @@ const CarDetails = ({ car, testDrive }) => {
           </Card>
 
           {/* Check the status of the car */}
-           {(car.status === "SOLD" || car.status === "UNAVAILABLE") && (
+          {(car.status === "SOLD" || car.status === "UNAVAILABLE") && (
             <Alert variant="destructive">
               <AlertTitle className="capitalize">
                 This car is {car.status.toLowerCase()}
               </AlertTitle>
               <AlertDescription>Please check again later.</AlertDescription>
             </Alert>
+          )}
+
+          {/* Book Test Drive Button */}
+          {car.status !== "SOLD" && car.status !== "UNAVAILABLE" && (
+            <Button
+              className="w-full py-6 text-lg"
+              onClick={handleBookTestDrive}
+              disabled={testDriveInfo.userTestDrive}
+            >
+              <Calendar className="mr-2 h-5 w-5" />
+              {testDriveInfo.userTestDrive
+                ? `Booked for ${format(
+                    new Date(testDriveInfo.userTestDrive.bookingDate),
+                    "EEEE, MMMM d, yyyy"
+                  )}`
+                : "Book Test Drive"}
+            </Button>
           )}
         </div>
       </div>
