@@ -3,7 +3,7 @@ import { Badge } from "./ui/badge";
 import { format, parseISO } from "date-fns";
 import { Card } from "./ui/card";
 import Image from "next/image";
-import { Calendar, Car, Clock } from "lucide-react";
+import { Calendar, Car, Clock, User } from "lucide-react";
 
 // Helper function to format time
 const formatTime = (timeString) => {
@@ -69,25 +69,32 @@ const TestDriveCard = ({
               {getStatusBadge(booking.status)}
             </div>
           </div>
-        </div>
 
-        <div className="p-4 sm:w-1/2 sm:flex-1">
-          <div className="hidden sm:block mb-2">
-            {getStatusBadge(booking.status)}
-          </div>
-          <h3 className="text-lg font-bold mb-1">
-            {booking.car.year} {booking.car.make} {booking.car.model}{" "}
-          </h3>
-          {renderStatusSelector()}
-
-          <div className="space-y-2 my-2">
-            <div className="flex items-center text-gray-600">
-              <Calendar className="h-4 w-4 mr-2" />
-              {format(new Date(booking.bookingDate), "EEEE, MMMM d, yyyy")}
+          <div className="p-4 sm:w-1/2 sm:flex-1">
+            <div className="hidden sm:block mb-2">
+              {getStatusBadge(booking.status)}
             </div>
-            <div className="flex items-center text-gray-600">
-              <Clock className="h-4 w-4 mr-2" />
-              {formatTime(booking.startTime)} - {formatTime(booking.endTime)}
+            <h3 className="text-lg font-bold mb-1">
+              {booking.car.year} {booking.car.make} {booking.car.model}{" "}
+            </h3>
+            {renderStatusSelector()}
+
+            <div className="space-y-2 my-2">
+              <div className="flex items-center text-gray-600">
+                <Calendar className="h-4 w-4 mr-2" />
+                {format(new Date(booking.bookingDate), "EEEE, MMMM d, yyyy")}
+              </div>
+              <div className="flex items-center text-gray-600">
+                <Clock className="h-4 w-4 mr-2" />
+                {formatTime(booking.startTime)} - {formatTime(booking.endTime)}
+              </div>
+              {/* Show customer info in admin view */}
+              {isAdmin && booking.user && (
+                <div className="flex items-center text-gray-600">
+                  <User className="h-4 w-4 mr-2" />
+                  {booking.user.name || booking.user.email}
+                </div>
+              )}
             </div>
           </div>
         </div>
