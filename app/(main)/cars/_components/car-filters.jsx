@@ -182,7 +182,10 @@ const CarFilters = ({ filters }) => {
         <div className="flex items-center">
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
-              <Button variant="outline" className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                className="flex items-center gap-2 cursor-pointer"
+              >
                 <Filter className="h-4 w-4" />
                 Filters
                 {activeFilterCount > 0 && (
@@ -212,11 +215,15 @@ const CarFilters = ({ filters }) => {
                   type="button"
                   variant="outline"
                   onClick={clearFilters}
-                  className="flex-1"
+                  className="flex-1 cursor-pointer"
                 >
                   Reset
                 </Button>
-                <Button type="button" onClick={applyFilters} className="flex-1">
+                <Button
+                  type="button"
+                  onClick={applyFilters}
+                  className="flex-1 cursor-pointer"
+                >
                   Show Results
                 </Button>
               </SheetFooter>
@@ -233,7 +240,7 @@ const CarFilters = ({ filters }) => {
           setTimeout(() => applyFilters(), 0);
         }}
       >
-        <SelectTrigger className="w-[180px] lg:w-full">
+        <SelectTrigger className="w-[180px] lg:w-full cursor-pointer">
           <SelectValue placeholder="Sort by" />
         </SelectTrigger>
         <SelectContent>
@@ -261,7 +268,7 @@ const CarFilters = ({ filters }) => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 text-sm text-gray-600"
+                className="h-8 text-sm text-gray-600 cursor-pointer"
                 onClick={clearFilters}
               >
                 <X className="mr-1 h-3 w-3" />
