@@ -124,7 +124,7 @@ const CarDetails = ({ car, testDriveInfo }) => {
           </div>
           {/* Thumbnails */}
           {car.images && car.images.length > 1 && (
-            <div className="flex gap-2 overflow-x-auto pb-2">
+            <div className="flex gap-2 overflow-x-auto pb-2 hide-scrollbar">
               {car.images.map((image, index) => (
                 <div
                   key={index}
@@ -262,7 +262,7 @@ const CarDetails = ({ car, testDriveInfo }) => {
           {/* Book Test Drive Button */}
           {car.status !== "SOLD" && car.status !== "UNAVAILABLE" && (
             <Button
-              className="w-full py-6 text-lg"
+              className="w-full py-6 text-lg cursor-pointer"
               onClick={handleBookTestDrive}
               disabled={testDriveInfo.userTestDrive}
             >
