@@ -11,6 +11,7 @@ import CarCard from "@/components/car-card";
 import {
   Pagination,
   PaginationContent,
+  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
