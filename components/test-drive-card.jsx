@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Badge } from "./ui/badge";
 import { format, parseISO } from "date-fns";
 import { Card } from "./ui/card";
@@ -6,6 +6,12 @@ import Image from "next/image";
 import { ArrowRight, Calendar, Car, Clock, Loader2, User } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "./ui/dialog";
 
 // Helper function to format time
 const formatTime = (timeString) => {
@@ -122,7 +128,7 @@ const TestDriveCard = ({
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full my-2 sm:mb-0 cursor-pointer"
+                className="w-full my-2 cursor-pointer"
                 asChild
               >
                 <Link
@@ -153,6 +159,18 @@ const TestDriveCard = ({
           )}
         </div>
       </Card>
+
+      <Dialog>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Are you absolutely sure?</DialogTitle>
+            <DialogDescription>
+              This action cannot be undone. This will permanently delete your
+              account and remove your data from our servers.
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
