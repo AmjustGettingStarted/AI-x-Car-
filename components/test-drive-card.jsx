@@ -10,6 +10,8 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
+  DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
 
@@ -160,17 +162,68 @@ const TestDriveCard = ({
         </div>
       </Card>
 
-      <Dialog>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Are you absolutely sure?</DialogTitle>
-            <DialogDescription>
-              This action cannot be undone. This will permanently delete your
-              account and remove your data from our servers.
-            </DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
+      {/* Cancel Confirmation Dialog */}
+      {onCancel && (
+        <Dialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Cancel Test Drive</DialogTitle>
+              <DialogDescription>
+                Are you sure you want to cancel your test drive for the{" "}
+                {booking.car.year} {booking.car.make} {booking.car.model}? This
+                action cannot be undone.
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="py-4">
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="font-medium">Date:</span>
+                  <span>
+                    {format(
+                      new Date(booking.bookingDate),
+                      "EEEE, MMMM d, yyyy"
+                    )}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-medium">Time:</span>
+                  <span>
+                    {formatTime(booking.startTime)} -{" "}
+                    {formatTime(booking.endTime)}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => setCancelDialogOpen(false)}
+                disabled={isCancelling}
+                className={`cursor-pointer`}
+              >
+                Keep Reservation
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={handleCancel}
+                disabled={isCancelling}
+                className={`cursor-pointer`}
+              >
+                {isCancelling ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Cancelling...
+                  </>
+                ) : (
+                  "Cancel Reservation"
+                )}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
     </>
   );
 };
