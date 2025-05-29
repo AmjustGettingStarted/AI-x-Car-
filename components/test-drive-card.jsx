@@ -123,7 +123,22 @@ const TestDriveCard = ({
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-             
+              {(booking.status === "PENDING" ||
+                booking.status === "CONFIRMED") && (
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  className="w-full cursor-pointer"
+                  onClick={() => setCancelDialogOpen(true)}
+                  disabled={isCancelling}
+                >
+                  {isCancelling ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    "Cancel"
+                  )}
+                </Button>
+              )}
             </div>
           )}
         </div>
