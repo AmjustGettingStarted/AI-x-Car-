@@ -109,7 +109,21 @@ const TestDriveCard = ({
                   <p className="text-gray-600">{booking.notes}</p>
                 </div>
               )}
-              
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full my-2 sm:mb-0 cursor-pointer"
+                asChild
+              >
+                <Link
+                  href={`/cars/${booking.carId}`}
+                  className="flex items-center justify-center"
+                >
+                  View Car
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+             
             </div>
           )}
         </div>
