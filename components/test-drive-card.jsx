@@ -43,6 +43,16 @@ const TestDriveCard = ({
   isCancelling = false,
   renderStatusSelector = () => null,
 }) => {
+  const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+
+  // Handle cancel
+  const handleCancel = async () => {
+    if (!onCancel) return;
+
+    await onCancel(booking.id);
+    setCancelDialogOpen(false);
+  };
+
   return (
     <>
       <Card
