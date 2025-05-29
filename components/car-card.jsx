@@ -75,7 +75,7 @@ const CarCard = ({ car }) => {
         <Button
           variant="ghost"
           size="icon"
-          className={`absolute top-2 right-2 bg-white/90 rounded-full p1.5 ${
+          className={`absolute cursor-pointer top-2 right-2 bg-white/90 rounded-full p1.5 ${
             isSaved
               ? "text-red-500 hover:text-red-600"
               : "text-gray-600 hover:text-gray-900"
@@ -121,7 +121,7 @@ const CarCard = ({ car }) => {
 
         <div className="flex justify-between">
           <Button
-            className="flex-1"
+            className="flex-1 cursor-pointer"
             onClick={() => router.push(`/cars/${car.id}`)}
           >
             View Car
