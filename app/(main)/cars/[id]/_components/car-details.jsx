@@ -52,7 +52,7 @@ const CarDetails = ({ car, testDriveInfo }) => {
       setIsWishlisted(toggleResult.saved);
       toast.success(toggleResult.message);
     }
-  }, [toggleResult, isWishlisted]);
+  }, [toggleResult]); // removed isWishlisted to fix the double toast notification
 
   // Handle errors with useEffect
   useEffect(() => {
