@@ -176,8 +176,8 @@ export default async function Home() {
                       className="object-cover group-hover:scale-105 transition duration-300  "
                     />
                   </div>
-                  <div className="absolute inset-0 bg-black/10  rounded-lg flex items-center">
-                    <h3 className="text-white text-xl font-bold pl-4 pb-2 ">
+                  <div className="absolute inset-0 bg-black/20  rounded-lg flex items-end">
+                    <h3 className="text-white text-xl font-bold pl-4 pb-2 drop-shadow-[0_0_5px_rgba(255,255,255,0.6)] tracking-wide">
                       {type.name}
                     </h3>
                   </div>
