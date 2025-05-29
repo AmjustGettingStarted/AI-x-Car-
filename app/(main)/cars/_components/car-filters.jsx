@@ -278,7 +278,7 @@ const CarFilters = ({ filters }) => {
             />
           </div>
           <div className="p-4 border-t">
-            <Button className="w-full" onClick={applyFilters}>
+            <Button className="w-full cursor-pointer" onClick={applyFilters}>
               Apply Filters
             </Button>
           </div>
