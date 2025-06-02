@@ -16,6 +16,7 @@ import {
 import useFetch from "@/hooks/use-fetch";
 import { AlertCircle, CalendarRange, Loader2, Search } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const TestDriveList = () => {
   const [search, setSearch] = useState("");
@@ -52,6 +53,43 @@ const TestDriveList = () => {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     fetchTestDrives({ search, status: statusFilter });
+  };
+
+   // Handle errors
+  useEffect(() => {
+    if (testDrivesError) {
+      toast.error("Failed to load test drives");
+    }
+    if (updateError) {
+      toast.error("Failed to update test drive status");
+    }
+    if (cancelError) {
+      toast.error("Failed to cancel test drive");
+    }
+  }, [testDrivesError, updateError, cancelError]);
+
+  // Handle successful operations
+  useEffect(() => {
+    if (updateResult?.success) {
+      toast.success("Test drive status updated successfully");
+      fetchTestDrives({ search, status: statusFilter });
+    }
+    if (cancelResult?.success) {
+      toast.success("Test drive cancelled successfully");
+      fetchTestDrives({ search, status: statusFilter });
+    }
+  }, [updateResult, cancelResult]);
+
+   // Handle status update
+  const handleUpdateStatus = async (bookingId, newStatus) => {
+    if (newStatus) {
+      await updateStatusFn(bookingId, newStatus);
+    }
+  };
+
+  // Handle booking cancellation
+  const handleCancel = async (bookingId) => {
+    await cancelTestDriveFn(bookingId);
   };
 
   return (

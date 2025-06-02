@@ -1,7 +1,9 @@
 "use server";
 
+import { serializeCarData } from "@/lib/helper";
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
+import { revalidatePath } from "next/cache";
 
 export async function getAdmin() {
   const { userId } = await auth();
@@ -14,11 +16,10 @@ export async function getAdmin() {
   if (!user || user.role !== "ADMIN") {
     return { authorized: false, reason: "not admin" };
   }
-  return { authorized: true, user};
+  return { authorized: true, user };
 }
 
-
-  // Get all test drives for admin with filters
+// Get all test drives for admin with filters
 export async function getAdminTestDrives({ search = "", status = "" }) {
   try {
     const { userId } = await auth();
