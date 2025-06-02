@@ -51,7 +51,6 @@ const Sidebar = () => {
         ))}
       </div>
       <div className="flex md:hidden bottom-0 left-0 fixed right-0 z-50 bg-white border-t justify-around items-center h-16">
-        {" "}
         {routes.map((route) => (
           <Link
             href={route.href}
