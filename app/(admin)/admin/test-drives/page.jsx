@@ -1,6 +1,12 @@
 import React from "react";
 import TestDriveList from "./_components/test-drive-list";
 
+export const metadata = {
+  title: "Test Drives 🍷 | AIxCAR Admin",
+  description: "Manage test drive bookings",
+};
+
+
 const TestDrives = () => {
   return (
     <div className="py-6">
