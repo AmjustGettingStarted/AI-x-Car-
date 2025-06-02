@@ -1,8 +1,15 @@
 "use client";
 import { getAdminTestDrives, updateTestDriveStatus } from "@/actions/admin";
 import { cancelTestDrive } from "@/actions/test-drive";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import useFetch from "@/hooks/use-fetch";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const TestDriveList = () => {
   const [search, setSearch] = useState("");
@@ -29,7 +36,38 @@ const TestDriveList = () => {
     data: cancelResult,
     error: cancelError,
   } = useFetch(cancelTestDrive);
-  return <div>TestDriveList</div>;
+
+  // Initial fetch and refetch on search/filter changes
+  useEffect(() => {
+    fetchTestDrives({ search, status: statusFilter });
+  }, [search, statusFilter]);
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+        <div className="flex flex-col sm:flex-row gap-4 w-full">
+          {/* Status Filter */}
+          <Select
+            value={statusFilter}
+            onValueChange={setStatusFilter}
+            className="w-full sm:w-48"
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="All Statuses" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem>All Statuses</SelectItem>
+              <SelectItem value="PENDING">Pending</SelectItem>
+              <SelectItem value="CONFIRMED">Confirmed</SelectItem>
+              <SelectItem value="COMPLETED">Completed</SelectItem>
+              <SelectItem value="CANCELLED">Cancelled</SelectItem>
+              <SelectItem value="NO_SHOW">No Show</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default TestDriveList;
