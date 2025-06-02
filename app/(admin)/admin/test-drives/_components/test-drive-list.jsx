@@ -1,6 +1,8 @@
 "use client";
 import { getAdminTestDrives, updateTestDriveStatus } from "@/actions/admin";
 import { cancelTestDrive } from "@/actions/test-drive";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -9,6 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import useFetch from "@/hooks/use-fetch";
+import { Search } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 const TestDriveList = () => {
@@ -42,6 +45,12 @@ const TestDriveList = () => {
     fetchTestDrives({ search, status: statusFilter });
   }, [search, statusFilter]);
 
+  // Handle search submit
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    fetchTestDrives({ search, status: statusFilter });
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
@@ -64,6 +73,23 @@ const TestDriveList = () => {
               <SelectItem value="NO_SHOW">No Show</SelectItem>
             </SelectContent>
           </Select>
+
+          {/* Search Form */}
+          <form onSubmit={handleSearchSubmit} className="flex w-full">
+            <div className="relative flex-1">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+              <Input
+                type="search"
+                placeholder="Search by car or customer..."
+                className="pl-9 w-full"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
+            <Button type="submit" className="ml-2">
+              Search
+            </Button>
+          </form>
         </div>
       </div>
     </div>
