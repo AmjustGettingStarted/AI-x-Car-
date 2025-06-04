@@ -19,7 +19,6 @@ AI-x-Car is a modern car marketplace web application built with [Next.js](https:
 
 ---
 
-## 📁 Project Structure
 
 # 📦 Project Structure
 
