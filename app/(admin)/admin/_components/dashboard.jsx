@@ -309,7 +309,29 @@ export function Dashboard({ initialData }) {
                   <h3 className="font-medium">Booking Status Breakdown</h3>
 
                   {/* Pending */}
-                  <d
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Pending</span>
+                      <span className="font-medium">
+                        {testDrives.pending} (
+                        {(
+                          (testDrives.pending / testDrives.total) *
+                          100
+                        ).toFixed(1)}
+                        %)
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                      <div
+                        className="bg-amber-500 h-2.5 rounded-full"
+                        style={{
+                          width: `${
+                            (testDrives.pending / testDrives.total) * 100
+                          }%`,
+                        }}
+                      ></div>
+                    </div>
+                  </div>
 
                  
                 </div>
