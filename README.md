@@ -21,61 +21,97 @@ AI-x-Car is a modern car marketplace web application built with [Next.js](https:
 
 ## 📁 Project Structure
 
-📦 root/
-├── 📄 .env # Environment variables (DB, API keys, etc.)
-├── 📄 .gitignore # Git ignored files
-├── 📄 components.json # Component registry/configuration
-├── 📄 eslint.config.mjs # ESLint configuration
-├── 📄 jsconfig.json # JavaScript config (paths/aliases)
-├── 📄 middleware.js # Next.js middleware for request handling
-├── 📄 next.config.mjs # Next.js configuration
-├── 📄 package.json # Project dependencies and scripts
-├── 📄 postcss.config.mjs # PostCSS configuration for Tailwind
-├── 📄 tailwind.config.ts # Tailwind CSS configuration
-├── 📄 README.md # Project documentation (you're here)
-│
-├── 📁 actions/ # Server actions (API logic)
-│ ├── 📄 admin.js # Admin-related actions
-│ ├── 📄 car-listings.js # Car listing CRUD & wishlist logic
-│ ├── 📄 cars.js # Car data fetching & manipulation
-│ ├── 📄 home.js # Homepage data logic
-│ ├── 📄 settings.js # User settings actions
-│ └── 📄 test-drive.js # Test drive booking logic
-│
-├── 📁 app/ # Next.js app directory
-│ ├── 📄 favicon.ico # Favicon
-│ ├── 📄 globals.css # Global CSS
-│ ├── 📄 layout.js # Root layout (header, footer, providers)
-│ └── 📁 (main)/ # Main app routes
-│ └── 📁 cars/
-│ └── 📁 [id]/ # Dynamic car details page
-│ ├── 📁 \_components/
-│ │ ├── 📄 car-details.jsx # Car details UI and logic
-│ │ └── 📄 emi-calculator.jsx # EMI calculator component
-│ └── 📄 page.jsx # Car details page
-│
-├── 📁 components/ # Reusable UI components
-│ ├── 📄 header.jsx # App header (nav, auth, logo)
-│ └── 📁 ui/ # UI primitives (Button, Card, etc.)
-│
-├── 📁 hooks/ # Custom React hooks (e.g., useFetch)
-│
-├── 📁 lib/ # Helpers, utilities, and Prisma client
-│ ├── 📄 checkUser.js # User verification/creation
-│ ├── 📄 helper.js # Utility functions
-│ └── 📁 generated/prisma/ # Auto-generated Prisma client
-│ ├── 📄 index.js
-│ ├── 📄 edge.js
-│ ├── 📄 client.js
-│ ├── 📄 default.js
-│ └── 📁 runtime/
-│
-├── 📁 prisma/ # Prisma schema & migrations
-│ └── (not shown) # Contains schema.prisma, migrations
-│
-├── 📁 public/ # Static assets (images, logos, etc.)
-│
-└── 📁 .next/ # Auto-generated Next.js build output
+# 📦 Project Structure
+
+This project is organized as follows:
+
+---
+
+## 🗂️ Root Files
+
+- **`.env`** — Environment variables (DB, API keys, etc.)  
+- **`.gitignore`** — Git ignored files  
+- **`components.json`** — Component registry/configuration  
+- **`eslint.config.mjs`** — ESLint configuration  
+- **`jsconfig.json`** — JavaScript config (paths/aliases)  
+- **`middleware.js`** — Next.js middleware for request handling  
+- **`next.config.mjs`** — Next.js configuration  
+- **`package.json`** — Project dependencies and scripts  
+- **`postcss.config.mjs`** — PostCSS configuration for Tailwind  
+- **`tailwind.config.ts`** — Tailwind CSS configuration  
+- **`README.md`** — Project documentation (you're here)  
+
+---
+
+## 📁 `/actions` — API Logic
+
+- **`admin.js`** — Admin-related actions  
+- **`car-listings.js`** — Car listing CRUD & wishlist logic  
+- **`cars.js`** — Car data fetching & manipulation  
+- **`home.js`** — Homepage data logic  
+- **`settings.js`** — User settings actions  
+- **`test-drive.js`** — Test drive booking logic  
+
+---
+
+## 📁 `/app` — Next.js App Directory
+
+- **`favicon.ico`** — Favicon  
+- **`globals.css`** — Global CSS  
+- **`layout.js`** — Root layout (header, footer, providers)  
+
+### 📁 `(main)/cars/[id]/` — Dynamic Car Details Page
+
+- **`page.jsx`** — Car details page  
+- **`_components/car-details.jsx`** — Car details UI and logic  
+- **`_components/emi-calculator.jsx`** — EMI calculator component  
+
+---
+
+## 📁 `/components` — Reusable UI Components
+
+- **`header.jsx`** — App header (nav, auth, logo)  
+- **`/ui/`** — UI primitives (e.g., Button, Card, etc.)
+
+---
+
+## 📁 `/hooks` — Custom Hooks
+
+- Custom React hooks (e.g., `useFetch`)
+
+---
+
+## 📁 `/lib` — Helpers & Prisma Client
+
+- **`checkUser.js`** — User verification/creation  
+- **`helper.js`** — Utility functions  
+
+### 📁 `/generated/prisma/` — Auto-generated Prisma Client
+
+- **`index.js`**  
+- **`edge.js`**  
+- **`client.js`**  
+- **`default.js`**  
+- **`/runtime/`**
+
+---
+
+## 📁 `/prisma` — Schema & Migrations
+
+- Contains `schema.prisma` and all migrations
+
+---
+
+## 📁 `/public` — Static Assets
+
+- Images, logos, and other static content
+
+---
+
+## 📁 `/.next` — Next.js Build Output
+
+- Auto-generated during build
+
 
 ---
 
