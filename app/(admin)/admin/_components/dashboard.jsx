@@ -358,6 +358,31 @@ export function Dashboard({ initialData }) {
                     </div>
                   </div>
 
+                  {/* Completed */}
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Completed</span>
+                      <span className="font-medium">
+                        {testDrives.completed} (
+                        {(
+                          (testDrives.completed / testDrives.total) *
+                          100
+                        ).toFixed(1)}
+                        %)
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                      <div
+                        className="bg-blue-600 h-2.5 rounded-full"
+                        style={{
+                          width: `${
+                            (testDrives.completed / testDrives.total) * 100
+                          }%`,
+                        }}
+                      ></div>
+                    </div>
+                  </div>
+
                  
                 </div>
               </div>
