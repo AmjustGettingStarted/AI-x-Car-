@@ -1,10 +1,22 @@
+import { getDashboardData } from "@/actions/admin";
 import React from "react";
+import Dashboard from "./_components/dashboard";
 
-const AdminPage = () => {
+export const metadata = {
+  title: "Dashboard 🗽 | AIxCAR Admin",
+  description: "Admin dashboard for Vehiql car marketplace",
+};
+
+const AdminPage = async () => {
+  // Fetch dashboard data
+  const dashboardData = await getDashboardData();
+
   return (
-    <div className="h-screen w-full flex items-center justify-center text-5xl text-black">
-      <h1>AdminPage</h1>
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
+      <Dashboard initialData={dashboardData} />
     </div>
+
   );
 };
 
