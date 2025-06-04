@@ -4,7 +4,13 @@ import { cancelTestDrive } from "@/actions/test-drive";
 import TestDriveCard from "@/components/test-drive-card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -55,7 +61,7 @@ const TestDriveList = () => {
     fetchTestDrives({ search, status: statusFilter });
   };
 
-   // Handle errors
+  // Handle errors
   useEffect(() => {
     if (testDrivesError) {
       toast.error("Failed to load test drives");
@@ -80,7 +86,7 @@ const TestDriveList = () => {
     }
   }, [updateResult, cancelResult]);
 
-   // Handle status update
+  // Handle status update
   const handleUpdateStatus = async (bookingId, newStatus) => {
     if (newStatus) {
       await updateStatusFn(bookingId, newStatus);
@@ -106,7 +112,7 @@ const TestDriveList = () => {
               <SelectValue placeholder="All Statuses" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem>All Statuses</SelectItem>
+              <SelectItem value=" ">All Statuses</SelectItem>
               <SelectItem value="PENDING">Pending</SelectItem>
               <SelectItem value="CONFIRMED">Confirmed</SelectItem>
               <SelectItem value="COMPLETED">Completed</SelectItem>
@@ -133,7 +139,7 @@ const TestDriveList = () => {
           </form>
         </div>
       </div>
-        {/* Test Drives List */}
+      {/* Test Drives List */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
