@@ -383,7 +383,31 @@ export function Dashboard({ initialData }) {
                     </div>
                   </div>
 
-                 
+                  {/* Cancelled */}
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Cancelled</span>
+                      <span className="font-medium">
+                        {testDrives.cancelled} (
+                        {(
+                          (testDrives.cancelled / testDrives.total) *
+                          100
+                        ).toFixed(1)}
+                        %)
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                      <div
+                        className="bg-red-500 h-2.5 rounded-full"
+                        style={{
+                          width: `${
+                            (testDrives.cancelled / testDrives.total) * 100
+                          }%`,
+                        }}
+                      ></div>
+                    </div>
+                  </div>
+
                 </div>
               </div>
             </CardContent>
