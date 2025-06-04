@@ -263,7 +263,53 @@ export function Dashboard({ initialData }) {
             </Card>
           </div>
 
-         
+          {/* Test Drive Status Visualization */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Test Drive Statistics</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                <div className="grid grid-cols-2 gap-6">
+                  {/* Conversion Rate Card */}
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h3 className="text-lg font-medium mb-2">
+                      Conversion Rate
+                    </h3>
+                    <div className="text-3xl font-bold text-blue-600">
+                      {testDrives.conversionRate}%
+                    </div>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Test drives resulting in car purchases
+                    </p>
+                  </div>
+
+                  {/* Test Drive Success Rate */}
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h3 className="text-lg font-medium mb-2">
+                      Completion Rate
+                    </h3>
+                    <div className="text-3xl font-bold text-green-600">
+                      {testDrives.total
+                        ? (
+                            (testDrives.completed / testDrives.total) *
+                            100
+                          ).toFixed(1)
+                        : 0}
+                      %
+                    </div>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Test drives successfully completed
+                    </p>
+                  </div>
+                </div>
+
+                {/* Status Breakdown */}
+                <div className="space-y-4 mt-4">
+                  <h3 className="font-medium">Booking Status Breakdown</h3>
+
+                  {/* Pending */}
+                  <d
 
                  
                 </div>
