@@ -33,13 +33,14 @@ const Sidebar = () => {
   const pathname = usePathname();
   return (
     <>
-      <div className="hidden md:flex h-full flex-col overflow-y-auto bg-white shadow hover:shadow-md cursor-pointer border-r ">
+      {/* Desktop View */}
+      <div className="hidden md:flex h-full flex-col overflow-y-auto bg-white shadow hover:shadow-md border-r ">
         {routes.map((route) => (
           <Link
             href={route.href}
             key={route.label}
             className={cn(
-              "flex items-center gap-x-2 text-slate-500 text-sm font-medium pl-6 transition-all hover:text-slate-600 hover:bg-slate-100/50 h-12 ",
+              "cursor-pointer flex items-center gap-x-2 text-slate-500 text-sm font-medium pl-6 transition-all hover:text-slate-600 hover:bg-slate-100/50 h-12 ",
               pathname === route.href
                 ? "text-blue-700/80 bg-blue-100/50 hover:bg-blue-100 hover:text-blue-700"
                 : ""
@@ -50,6 +51,7 @@ const Sidebar = () => {
           </Link>
         ))}
       </div>
+      {/* Mobile view bottom header */}
       <div className="flex md:hidden bottom-0 left-0 fixed right-0 z-50 bg-white border-t justify-around items-center h-16">
         {routes.map((route) => (
           <Link
