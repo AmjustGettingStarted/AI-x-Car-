@@ -22,6 +22,7 @@ Built on **Next.js**, AI-x-Car delivers **fast, interactive, and scalable experi
 - **Prisma ORM** → Type-safe database access for PostgreSQL.  
 - **PostgreSQL** → Relational database for storing users, cars, bookings, etc.  
 - **Clerk** → Authentication and user management.  
+- **Arcjet** → Advanced security solution providing rate limiting, bot mitigation, spam prevention, and email validation 
 - **Tailwind CSS** → Utility-first CSS framework for rapid UI development.  
 - **Lucide Icons** → Modern SVG icons.  
 - **Sonner** → Toast notifications.  
