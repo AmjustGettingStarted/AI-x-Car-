@@ -244,7 +244,9 @@ const SettingsForm = () => {
             <Shield className="w-4 h-4 mr-2" /> Admin Users
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="hours" className="space-y-6 mt-6 ">
+
+        {/* Hours Tab */}
+        <TabsContent value="hours" className="space-y-6 mt-6">
           <Card>
             <CardHeader>
               <CardTitle>Working Hours</CardTitle>
@@ -254,56 +256,56 @@ const SettingsForm = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {DAYS.map((day, index) => {
-                  return (
-                    <div
-                      key={day.value}
-                      className="grid grid-cols-12 gap-4 items-center py-3 px-4 rounded-lg hover:bg-slate-50"
-                    >
-                      <div className="col-span-3 md:col-span-2">
-                        <div className="font-medium text-lg">{day.label}</div>
-                      </div>
+                {DAYS.map((day, index) => (
+                  <div
+                    key={day.value}
+                    className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center py-3 px-2 sm:px-4 rounded-lg hover:bg-slate-50"
+                  >
+                    {/* Day Label */}
+                    <div className="col-span-3 sm:col-span-2">
+                      <div className="font-medium text-lg">{day.label}</div>
+                    </div>
 
-                      <div className="col-span-9 md:col-span-2 flex items-center font-light">
-                        <Checkbox
-                          id={`is-open-${day.value}`}
-                          checked={workingHours[index]?.isOpen}
-                          onCheckedChange={(checked) => {
-                            handleWorkingHourChange(index, "isOpen", checked);
-                          }}
-                        />
-                        <Label
-                          htmlFor={`is-open-${day.value}`}
-                          className="ml-2 cursor-pointer"
-                        >
-                          {workingHours[index]?.isOpen ? "Open" : "Closed"}
-                        </Label>
-                      </div>
-                      {workingHours[index].isOpen && (
-                        <>
-                          <div className="col-span-5 md:col-span-4">
-                            <div className="flex items-center">
-                              <Clock className="h-4 w-4 text-gray-400 mr-2" />
-                              <Input
-                                type="time"
-                                value={workingHours[index]?.openTime}
-                                onChange={(e) =>
-                                  handleWorkingHourChange(
-                                    index,
-                                    "openTime",
-                                    e.target.value
-                                  )
-                                }
-                                className="text-sm"
-                              />
-                            </div>
-                          </div>
+                    {/* Open Checkbox - Moved to Right */}
+                    <div className="col-span-9 sm:col-span-2 flex items-center justify-end sm:justify-start font-light">
+                      <Checkbox
+                        id={`is-open-${day.value}`}
+                        checked={workingHours[index]?.isOpen}
+                        onCheckedChange={(checked) => {
+                          handleWorkingHourChange(index, "isOpen", checked);
+                        }}
+                        className="w-5 h-5"
+                      />
+                      <Label
+                        htmlFor={`is-open-${day.value}`}
+                        className="ml-2 cursor-pointer"
+                      >
+                        {workingHours[index]?.isOpen ? "Open" : "Closed"}
+                      </Label>
+                    </div>
 
-                          <div className="text-center col-span-1 font-light">
-                            to
-                          </div>
-
-                          <div className="col-span-5 md:col-span-3">
+                    {/* Open & Close Time - In One Line */}
+                    {workingHours[index].isOpen && (
+                      <>
+                        <div className="col-span-12 sm:col-span-8 flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <Clock className="hidden md:inline text-gray-400" size={15} />
+                            <Input
+                              type="time"
+                              value={workingHours[index]?.openTime}
+                              onChange={(e) =>
+                                handleWorkingHourChange(
+                                  index,
+                                  "openTime",
+                                  e.target.value
+                                )
+                              }
+                              className="text-sm w-full sm:w-auto"
+                            />
+                            <span className="inline sm:hidden">-</span>{" "}
+                            {/* Shows "-" on mobile */}
+                            <span className="hidden sm:inline">to</span>{" "}
+                            {/* Shows "to" on larger screens */}
                             <Input
                               type="time"
                               value={workingHours[index]?.closeTime}
@@ -314,22 +316,25 @@ const SettingsForm = () => {
                                   e.target.value
                                 )
                               }
-                              className="text-sm"
+                              className="text-sm w-full sm:w-auto"
                             />
                           </div>
-                        </>
-                      )}
-
-                      {!workingHours[index]?.isOpen && (
-                        <div className="col-span-11 md:col-span-8 text-gray-500 italic text-sm">
-                          Closed all day
                         </div>
-                      )}
-                    </div>
-                  );
-                })}
+                      </>
+                    )}
+
+                    {/* Closed All Day Text */}
+                    {!workingHours[index]?.isOpen && (
+                      <div className="col-span-11 sm:col-span-8 text-gray-500 italic text-sm">
+                        Closed all day
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
-              <div className="mt-6 flex justify-end">
+
+              {/* Save Working Hours Button - Centered on Mobile */}
+              <div className="mt-6 flex justify-center sm:justify-end">
                 <Button onClick={handleSaveHours} disabled={savingHours}>
                   {savingHours ? (
                     <>
@@ -347,6 +352,8 @@ const SettingsForm = () => {
             </CardContent>
           </Card>
         </TabsContent>
+
+        {/* Admin Tab */}
         <TabsContent value="admins" className="space-y-6 mt-6">
           <Card>
             <CardHeader>
