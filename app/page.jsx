@@ -15,6 +15,13 @@ import {
 import { SignedOut } from "@clerk/nextjs";
 import { getFeaturedCars } from "@/actions/home";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 export default async function Home() {
   const featuredCars = await getFeaturedCars();
@@ -47,14 +54,31 @@ export default async function Home() {
               </Link>
             </Button>
           </div>
+
+          {/* Featured Section in Carousel */}
+          <div className="hidden lg:block ">
+            <Carousel className="mx-0">
+              <CarouselContent className="mx-0 space-x-4">
+                {featuredCars.map((car, i) => (
+                  <CarouselItem className="max-w-sm " key={i}>
+                    <CarCard key={car.id} car={car} />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          </div>
+
           {/* Featured Section In GRID */}
           {/* <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-2 lg:gap-6 ">
             {featuredCars.map((car) => (
               <CarCard key={car.id} car={car} />
             ))}
           </div> */}
+
           {/* Featured Section on Mobile View */}
-          <div className="w-full ">
+          <div className="flex lg:hidden w-full ">
             <ScrollArea className="w-full whitespace-nowrap rounded-md ">
               <div className="flex w-max space-x-4 p-4">
                 {featuredCars.map((car) => (
