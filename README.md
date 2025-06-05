@@ -1,21 +1,35 @@
-# AI-x-Car
+# Gemini AI-Integrated Car Marketplace: AI-x-Car  
 
-AI-x-Car is a modern car marketplace web application built with [Next.js](https://nextjs.org), leveraging server-side rendering, authentication, and a PostgreSQL database via [Prisma ORM](https://www.prisma.io/). The project is designed for scalability, maintainability, and a seamless user experience.
+AI-x-Car is a **next-gen car marketplace** where users can **buy, sell, and book test drives effortlessly**. Designed with **speed, automation, and AI-powered precision**, this platform leverages **Gemini AI** to completely transform the car-buying experience.  
 
 ---
 
-## 🚀 Core Technologies
+## 🔹 AI-Powered Features  
 
-- **Next.js**: React framework for server-side rendering, routing, and API routes.
-- **React**: UI library for building interactive user interfaces.
-- **Prisma ORM**: Type-safe database access for PostgreSQL.
-- **PostgreSQL**: Relational database for storing users, cars, bookings, etc.
-- **Clerk**: Authentication and user management.
-- **Tailwind CSS**: Utility-first CSS framework for rapid UI development.
-- **Lucide Icons**: Icon library for modern SVG icons.
-- **Sonner**: Toast notifications.
-- **date-fns**: Modern JavaScript date utility library.
-- **Vercel**: Deployment platform (recommended).
+- ✅ **Auto-Upload & Fetch Car Details** → Upload an image, and Gemini AI **automatically extracts car details** (make, model, year, price, etc.).  
+- ✅ **Reverse Image Search for Car Details** → AI scans the Image to **verify if the similar car exists**, making searches more reliable.  
+- ✅ **Smart Test Drive Booking** → AI optimizes available slots to **quickly schedule test drives** with dealerships.
+
+---
+
+## 💡 Tech Stack & Efficiency  
+
+Built on **Next.js**, AI-x-Car delivers **fast, interactive, and scalable experiences** with **Prisma ORM, Clerk authentication, and a PostgreSQL database** for secure transactions.  
+
+🔹 **Core Technologies**  
+- **Next.js** → React framework for server-side rendering, routing, and API routes.  
+- **React** → UI library for building interactive user interfaces.  
+- **Prisma ORM** → Type-safe database access for PostgreSQL.  
+- **PostgreSQL** → Relational database for storing users, cars, bookings, etc.  
+- **Clerk** → Authentication and user management.  
+- **Tailwind CSS** → Utility-first CSS framework for rapid UI development.  
+- **Lucide Icons** → Modern SVG icons.  
+- **Sonner** → Toast notifications.  
+- **date-fns** → JavaScript date utility library.  
+- **Vercel** → Deployment platform (recommended).  
+
+🚀 **AI-x-Car isn’t just another car marketplace—it’s an AI-driven revolution in automotive sales.**  
+Whether you're buying, selling, or verifying listings, **Gemini AI ensures accuracy, automation, and efficiency like never before.**  
 
 ---
 
