@@ -22,8 +22,8 @@ const FeaturedCars = ({ featuredCars }) => {
         <Carousel
           plugins={[plugin.current]}
           className="w-full"
-          onMouseEnter={plugin.current.stop}
-          onMouseLeave={plugin.current.reset}
+          // onMouseEnter={plugin.current.stop}
+          // onMouseLeave={plugin.current.reset}
         >
           <CarouselContent className="space-x-4">
             {featuredCars.map((car, i) => (
