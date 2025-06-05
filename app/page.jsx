@@ -1,9 +1,9 @@
+import * as React from "react";
 import HomeSearch from "@/components/home-search";
 import "../app/globals.css";
 import { Calendar, Car, ChevronRight, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { bodyTypes, carMakes, faqItems } from "@/lib/data";
-import CarCard from "@/components/car-card";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -15,16 +15,13 @@ import {
 import { SignedOut } from "@clerk/nextjs";
 import { getFeaturedCars } from "@/actions/home";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
+
+import FeaturedCars from "@/components/featured-cars";
 
 export default async function Home() {
   const featuredCars = await getFeaturedCars();
+ 
+
   return (
     <div className="pt-20 flex flex-col">
       {/* Header */}
@@ -46,49 +43,18 @@ export default async function Home() {
       {/* Featured */}
       <section className="py-12">
         <div className="container mx-auto px-4">
-          <div className="mb-8 flex items-center justify-between">
-            <h2 className="text-2xl font-bold">Featured Cars</h2>
-            <Button className="flex items-center" variant="ghost" asChild>
-              <Link href="/cars">
-                View All <ChevronRight className="ml-1 h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
-
-          {/* Featured Section in Carousel */}
-          <div className="hidden lg:block ">
-            <Carousel className="mx-0">
-              <CarouselContent className="mx-0 space-x-4">
-                {featuredCars.map((car, i) => (
-                  <CarouselItem className="max-w-sm " key={i}>
-                    <CarCard key={car.id} car={car} />
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
-          </div>
-
-          {/* Featured Section In GRID */}
-          {/* <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-2 lg:gap-6 ">
-            {featuredCars.map((car) => (
-              <CarCard key={car.id} car={car} />
-            ))}
-          </div> */}
-
-          {/* Featured Section on Mobile View */}
-          <div className="flex lg:hidden w-full ">
-            <ScrollArea className="w-full whitespace-nowrap rounded-md ">
-              <div className="flex w-max space-x-4 p-4">
-                {featuredCars.map((car) => (
-                  <CarCard key={car.id} car={car} />
-                ))}
-              </div>
-              <ScrollBar orientation="horizontal" className="hidden" />
-            </ScrollArea>
-          </div>
+        <div className="mb-8 flex items-center justify-between">
+          <h2 className="text-2xl font-bold">Featured Cars</h2>
+          <Button className="flex items-center" variant="ghost" asChild>
+            <Link href="/cars">
+              View All <ChevronRight className="ml-1 h-4 w-4" />
+            </Link>
+          </Button>
         </div>
+
+        
+        <FeaturedCars featuredCars={featuredCars}/>
+      </div>
       </section>
 
       {/* Browse Brands */}
