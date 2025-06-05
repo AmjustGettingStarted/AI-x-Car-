@@ -13,7 +13,7 @@ import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 
 const FeaturedCars = ({ featuredCars }) => {
   const plugin = React.useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true })
+    Autoplay({ delay: 3000, stopOnInteraction: true })
   );
   return (
     <>
@@ -22,8 +22,8 @@ const FeaturedCars = ({ featuredCars }) => {
         <Carousel
           plugins={[plugin.current]}
           className="w-full"
-          // onMouseEnter={plugin.current.stop}
-          // onMouseLeave={plugin.current.reset}
+          onMouseEnter={plugin.current.stop}
+          onMouseLeave={plugin.current.reset}
         >
           <CarouselContent className="space-x-4">
             {featuredCars.map((car, i) => (
