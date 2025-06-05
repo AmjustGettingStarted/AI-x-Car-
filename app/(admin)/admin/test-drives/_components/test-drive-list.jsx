@@ -52,13 +52,13 @@ const TestDriveList = () => {
 
   // Initial fetch and refetch on search/filter changes
   useEffect(() => {
-    fetchTestDrives({ search, status: statusFilter });
+    fetchTestDrives({ search, status: statusFilter === "ALL" ? "" : statusFilter });
   }, [search, statusFilter]);
 
   // Handle search submit
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    fetchTestDrives({ search, status: statusFilter });
+    fetchTestDrives({ search, status: statusFilter === "ALL" ? "" : statusFilter });
   };
 
   // Handle errors
@@ -112,7 +112,7 @@ const TestDriveList = () => {
               <SelectValue placeholder="All Statuses" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value=" ">All Statuses</SelectItem>
+              <SelectItem value="ALL">All Statuses</SelectItem>
               <SelectItem value="PENDING">Pending</SelectItem>
               <SelectItem value="CONFIRMED">Confirmed</SelectItem>
               <SelectItem value="COMPLETED">Completed</SelectItem>

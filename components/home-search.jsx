@@ -113,12 +113,21 @@ const HomeSearch = () => {
     <div>
       <form onSubmit={handleTextSubmit}>
         <div className="relative flex items-center ">
+          {/* Long Placeholder */}
           <Input
             type="text"
             placeholder="Enter make, model, or use our AI Image Search..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 pr-12 py-6 w-full rounded-full border-gray-300 bg-white/95 backdrop-blur-sm "
+            className="hidden sm:inline pl-10 pr-12 py-6 w-full rounded-full border-gray-300 bg-white/95 backdrop-blur-sm "
+          />
+          {/* Short Placeholder for mobile view */}
+          <Input
+            type="text"
+            placeholder="Enter / AI Image Search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 pr-12 py-6 w-full rounded-full border-gray-300 bg-white/95 backdrop-blur-sm  sm:hidden"
           />
           <div className="absolute right-[100px]">
             <Camera

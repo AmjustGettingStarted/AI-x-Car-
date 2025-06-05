@@ -27,7 +27,7 @@ const Header = async ({ isAdminPage = false }) => {
             alt="logo"
             width={200}
             height={60}
-            className="h-12 w-auto object-contain cursor-pointer"
+            className="h-16 w-auto object-contain cursor-pointer"
           />
           {isAdminPage && (
             <span className="text-xs font-extralight">admin</span>

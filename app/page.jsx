@@ -1,9 +1,9 @@
+import * as React from "react";
 import HomeSearch from "@/components/home-search";
 import "../app/globals.css";
 import { Calendar, Car, ChevronRight, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { bodyTypes, carMakes, faqItems } from "@/lib/data";
-import CarCard from "@/components/car-card";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -16,8 +16,18 @@ import { SignedOut } from "@clerk/nextjs";
 import { getFeaturedCars } from "@/actions/home";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
+import FeaturedCars from "@/components/featured-cars";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+
 export default async function Home() {
   const featuredCars = await getFeaturedCars();
+
   return (
     <div className="pt-20 flex flex-col">
       {/* Header */}
@@ -47,23 +57,8 @@ export default async function Home() {
               </Link>
             </Button>
           </div>
-          {/* Featured Section In GRID */}
-          {/* <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-2 lg:gap-6 ">
-            {featuredCars.map((car) => (
-              <CarCard key={car.id} car={car} />
-            ))}
-          </div> */}
-          {/* Featured Section on Mobile View */}
-          <div className="w-full ">
-            <ScrollArea className="w-full whitespace-nowrap rounded-md ">
-              <div className="flex w-max space-x-4 p-4">
-                {featuredCars.map((car) => (
-                  <CarCard key={car.id} car={car} />
-                ))}
-              </div>
-              <ScrollBar orientation="horizontal" className="hidden" />
-            </ScrollArea>
-          </div>
+
+          <FeaturedCars featuredCars={featuredCars} />
         </div>
       </section>
 
@@ -78,8 +73,44 @@ export default async function Home() {
               </Link>
             </Button>
           </div>
+
+          {/* Carousel Area */}
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="hidden lg:block"
+          >
+            <CarouselContent className="space-x-4">
+              {carMakes.map((make) => {
+                return (
+                  <CarouselItem className="max-w-[200px] bg-white rounded-lg shadow p-4 text-center hover:shadow-md transition">
+                    <Link
+                      href={`/cars?make=${make.name}`}
+                      key={make.name}
+                      className=""
+                    >
+                      <div className="min-h-16 min-w-[150px] mx-auto mb-2 relative">
+                        <Image
+                          src={make.image}
+                          fill
+                          alt={make.image}
+                          className="object-contain"
+                        />
+                      </div>
+                      <h3 className="font-medium">{make.name}</h3>
+                    </Link>
+                  </CarouselItem>
+                );
+              })}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+
           {/* Scroll Area */}
-          <ScrollArea className="w-full whitespace-nowrap rounded-md ">
+          <ScrollArea className="lg:hidden w-full whitespace-nowrap rounded-md ">
             {/* <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4"> */}
             <div className="w-full flex space-x-4">
               {carMakes.map((make) => {

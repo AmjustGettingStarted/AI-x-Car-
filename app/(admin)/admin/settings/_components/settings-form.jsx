@@ -6,6 +6,7 @@ import {
   saveWorkingHours,
   updateUserRole,
 } from "@/actions/settings";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -43,6 +44,7 @@ import {
   Save,
   Search,
   Shield,
+  User,
   Users,
   UserX,
 } from "lucide-react";
@@ -244,7 +246,9 @@ const SettingsForm = () => {
             <Shield className="w-4 h-4 mr-2" /> Admin Users
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="hours" className="space-y-6 mt-6 ">
+
+        {/* Hours Tab */}
+        <TabsContent value="hours" className="space-y-6 mt-6">
           <Card>
             <CardHeader>
               <CardTitle>Working Hours</CardTitle>
@@ -254,56 +258,59 @@ const SettingsForm = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {DAYS.map((day, index) => {
-                  return (
-                    <div
-                      key={day.value}
-                      className="grid grid-cols-12 gap-4 items-center py-3 px-4 rounded-lg hover:bg-slate-50"
-                    >
-                      <div className="col-span-3 md:col-span-2">
-                        <div className="font-medium text-lg">{day.label}</div>
-                      </div>
+                {DAYS.map((day, index) => (
+                  <div
+                    key={day.value}
+                    className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center py-3 px-2 sm:px-4 rounded-lg hover:bg-slate-50"
+                  >
+                    {/* Day Label */}
+                    <div className="col-span-3 sm:col-span-2">
+                      <div className="font-medium text-lg">{day.label}</div>
+                    </div>
 
-                      <div className="col-span-9 md:col-span-2 flex items-center font-light">
-                        <Checkbox
-                          id={`is-open-${day.value}`}
-                          checked={workingHours[index]?.isOpen}
-                          onCheckedChange={(checked) => {
-                            handleWorkingHourChange(index, "isOpen", checked);
-                          }}
-                        />
-                        <Label
-                          htmlFor={`is-open-${day.value}`}
-                          className="ml-2 cursor-pointer"
-                        >
-                          {workingHours[index]?.isOpen ? "Open" : "Closed"}
-                        </Label>
-                      </div>
-                      {workingHours[index].isOpen && (
-                        <>
-                          <div className="col-span-5 md:col-span-4">
-                            <div className="flex items-center">
-                              <Clock className="h-4 w-4 text-gray-400 mr-2" />
-                              <Input
-                                type="time"
-                                value={workingHours[index]?.openTime}
-                                onChange={(e) =>
-                                  handleWorkingHourChange(
-                                    index,
-                                    "openTime",
-                                    e.target.value
-                                  )
-                                }
-                                className="text-sm"
-                              />
-                            </div>
-                          </div>
+                    {/* Open Checkbox - Moved to Right */}
+                    <div className="col-span-9 sm:col-span-2 flex items-center justify-end sm:justify-start font-light">
+                      <Checkbox
+                        id={`is-open-${day.value}`}
+                        checked={workingHours[index]?.isOpen}
+                        onCheckedChange={(checked) => {
+                          handleWorkingHourChange(index, "isOpen", checked);
+                        }}
+                        className="w-5 h-5"
+                      />
+                      <Label
+                        htmlFor={`is-open-${day.value}`}
+                        className="ml-2 cursor-pointer"
+                      >
+                        {workingHours[index]?.isOpen ? "Open" : "Closed"}
+                      </Label>
+                    </div>
 
-                          <div className="text-center col-span-1 font-light">
-                            to
-                          </div>
-
-                          <div className="col-span-5 md:col-span-3">
+                    {/* Open & Close Time - In One Line */}
+                    {workingHours[index].isOpen && (
+                      <>
+                        <div className="col-span-12 sm:col-span-8 flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <Clock
+                              className="hidden md:inline text-gray-400"
+                              size={15}
+                            />
+                            <Input
+                              type="time"
+                              value={workingHours[index]?.openTime}
+                              onChange={(e) =>
+                                handleWorkingHourChange(
+                                  index,
+                                  "openTime",
+                                  e.target.value
+                                )
+                              }
+                              className="text-sm w-full sm:w-auto"
+                            />
+                            <span className="inline sm:hidden">-</span>{" "}
+                            {/* Shows "-" on mobile */}
+                            <span className="hidden sm:inline">to</span>{" "}
+                            {/* Shows "to" on larger screens */}
                             <Input
                               type="time"
                               value={workingHours[index]?.closeTime}
@@ -314,22 +321,25 @@ const SettingsForm = () => {
                                   e.target.value
                                 )
                               }
-                              className="text-sm"
+                              className="text-sm w-full sm:w-auto"
                             />
                           </div>
-                        </>
-                      )}
-
-                      {!workingHours[index]?.isOpen && (
-                        <div className="col-span-11 md:col-span-8 text-gray-500 italic text-sm">
-                          Closed all day
                         </div>
-                      )}
-                    </div>
-                  );
-                })}
+                      </>
+                    )}
+
+                    {/* Closed All Day Text */}
+                    {!workingHours[index]?.isOpen && (
+                      <div className="col-span-11 sm:col-span-8 text-gray-500 italic text-sm">
+                        Closed all day
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
-              <div className="mt-6 flex justify-end">
+
+              {/* Save Working Hours Button - Centered on Mobile */}
+              <div className="mt-6 flex justify-center sm:justify-end">
                 <Button onClick={handleSaveHours} disabled={savingHours}>
                   {savingHours ? (
                     <>
@@ -347,21 +357,23 @@ const SettingsForm = () => {
             </CardContent>
           </Card>
         </TabsContent>
+
+        {/* Admin Tab */}
         <TabsContent value="admins" className="space-y-6 mt-6">
           <Card>
             <CardHeader>
               <CardTitle>Admin Users.</CardTitle>
               <CardDescription>
-                Manage users with Admin Privilages.
+                Manage users with Admin Privileges.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="mb-6 relative">
+              <div className="mb-6 relative w-full">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
                 <Input
                   type="search"
                   placeholder="Search users..."
-                  className="pl-9 w-full"
+                  className="pl-9 w-full text-sm sm:text-base"
                   value={userSearch}
                   onChange={(e) => setUserSearch(e.target.value)}
                 />
@@ -372,9 +384,8 @@ const SettingsForm = () => {
                   <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
                 </div>
               ) : usersData?.success && filteredUsers.length > 0 ? (
-                // usersData?.success && usersData.data.length > 0 ? (
                 <div className="overflow-x-auto">
-                  <Table>
+                  <Table className="min-w-full text-sm sm:text-base">
                     <TableHeader>
                       <TableRow>
                         <TableHead>User</TableHead>
@@ -387,19 +398,16 @@ const SettingsForm = () => {
                       {filteredUsers.map((user) => (
                         <TableRow key={user.id}>
                           <TableCell className="font-medium">
-                            <div className="flex items-center gap-2">
-                              <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
-                                {user.imageUrl ? (
-                                  <img
-                                    src={user.imageUrl}
-                                    alt={user.name || "User"}
-                                    className="w-full h-full object-cover"
-                                  />
-                                ) : (
-                                  <Users className="h-4 w-4 text-gray-500" />
-                                )}
-                              </div>
-                              <span>{user.name || "Unnamed User"}</span>
+                            <div className="flex items-center gap-2 flex-nowrap sm:flex-nowrap">
+                              <Avatar>
+                                <AvatarImage src={user.imageUrl} />
+                                <AvatarFallback>
+                                  <User />
+                                </AvatarFallback>
+                              </Avatar>
+                              <p >
+                                {user.name || "Unnamed User"}
+                              </p>
                             </div>
                           </TableCell>
                           <TableCell>{user.email}</TableCell>
@@ -415,34 +423,36 @@ const SettingsForm = () => {
                             </Badge>
                           </TableCell>
                           <TableCell className="text-right">
-                            {user.role === "ADMIN" ? (
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                className="text-red-600"
-                                onClick={() => {
-                                  setUserToDemote(user);
-                                  setConfirmRemoveDialog(true);
-                                }}
-                                disabled={updatingRole}
-                              >
-                                <UserX className="h-4 w-4 mr-2" />
-                                Remove Admin
-                              </Button>
-                            ) : (
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => {
-                                  setUserToPromote(user);
-                                  setConfirmAdminDialog(true);
-                                }}
-                                disabled={updatingRole}
-                              >
-                                <Shield className="h-4 w-4 mr-2" />
-                                Make Admin
-                              </Button>
-                            )}
+                            <div className="flex justify-end gap-2 flex-wrap">
+                              {user.role === "ADMIN" ? (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="text-red-600"
+                                  onClick={() => {
+                                    setUserToDemote(user);
+                                    setConfirmRemoveDialog(true);
+                                  }}
+                                  disabled={updatingRole}
+                                >
+                                  <UserX className="h-4 w-4 mr-2" />
+                                  Remove Admin
+                                </Button>
+                              ) : (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => {
+                                    setUserToPromote(user);
+                                    setConfirmAdminDialog(true);
+                                  }}
+                                  disabled={updatingRole}
+                                >
+                                  <Shield className="h-4 w-4 mr-2" />
+                                  Make Admin
+                                </Button>
+                              )}
+                            </div>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -451,7 +461,7 @@ const SettingsForm = () => {
                 </div>
               ) : (
                 <div className="py-12 text-center">
-                  <Users className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+                  <Users className="h-10 w-10 sm:h-12 sm:w-12 text-gray-300 mx-auto mb-4" />
                   <h3 className="text-lg font-medium text-gray-900 mb-1">
                     No users found
                   </h3>
@@ -470,7 +480,7 @@ const SettingsForm = () => {
             open={confirmAdminDialog}
             onOpenChange={setConfirmAdminDialog}
           >
-            <DialogContent>
+            <DialogContent className="max-w-sm sm:max-w-md">
               <DialogHeader>
                 <DialogTitle>Confirm Admin Privileges</DialogTitle>
                 <DialogDescription>
@@ -509,7 +519,7 @@ const SettingsForm = () => {
             open={confirmRemoveDialog}
             onOpenChange={setConfirmRemoveDialog}
           >
-            <DialogContent>
+            <DialogContent className="max-w-sm sm:max-w-md">
               <DialogHeader>
                 <DialogTitle>Remove Admin Privileges</DialogTitle>
                 <DialogDescription>
