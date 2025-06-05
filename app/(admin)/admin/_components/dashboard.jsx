@@ -42,8 +42,12 @@ export function Dashboard({ initialData }) {
         onValueChange={setActiveTab}
       >
         <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="test-drives">Test Drives</TabsTrigger>
+          <TabsTrigger value="overview" className={`cursor-pointer`}>
+            Overview
+          </TabsTrigger>
+          <TabsTrigger value="test-drives" className={`cursor-pointer`}>
+            Test Drives
+          </TabsTrigger>
         </TabsList>
 
         {/* Overview Tab */}
