@@ -178,7 +178,7 @@ const CarFilters = ({ filters }) => {
   return (
     <div className="flex lg:flex-col justify-between gap-4">
       {/* mobile Filters or mobile page */}
-      <div className="lg:hidden mb-4">
+      <div className="lg:hidden mb-4 ">
         <div className="flex items-center">
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
@@ -197,7 +197,7 @@ const CarFilters = ({ filters }) => {
             </SheetTrigger>
             <SheetContent
               side="left"
-              className="w-full sm:max-w-md overflow-y-auto"
+              className="w-full sm:max-w-md overflow-y-auto px-4"
             >
               <SheetHeader>
                 <SheetTitle>Filters</SheetTitle>
