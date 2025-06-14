@@ -55,7 +55,7 @@ const CarCard = ({ car }) => {
     await toggleSavedCarFn(car.id);
   };
   return (
-    <Card className="min-w-xs sm:min-w-sm overflow-hidden hover:shadow-lg transition group py-0">
+    <Card className="min-w-xs overflow-hidden hover:shadow-lg transition group py-0">
       <div className="relative h-48">
         {car.images && car.images.length > 0 ? (
           <div className="w-full h-full relative">
