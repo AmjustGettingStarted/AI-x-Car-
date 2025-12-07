@@ -25,6 +25,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import DarkVeil from "@/components/reactbits/dark-veil";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default async function Home() {
   const featuredCars = await getFeaturedCars();
@@ -86,32 +87,44 @@ export default async function Home() {
             opts={{
               align: "start",
               loop: true,
+              dragFree: true,
             }}
             className="hidden lg:block"
           >
-            <CarouselContent className="space-x-4">
-              {carMakes.map((make) => {
-                return (
-                  <CarouselItem className="max-w-[200px] bg-white rounded-lg shadow p-4 text-center hover:shadow-md transition">
-                    <Link
-                      href={`/cars?make=${make.name}`}
-                      key={make.name}
-                      className=""
+            <CarouselContent className="overflow-visible">
+              {carMakes.map((make, i) => (
+                <CarouselItem
+                  key={i}
+                  className="overflow-visible basis-[16.66%] shrink-0 px-2" // 6 items per view
+                >
+                  <Link href={`/cars?make=${make.name}`}>
+                    <Card
+                      className="p-2
+              bg-white rounded-xl border border-transparent 
+              shadow-md 
+              transition-all duration-300 
+              hover:shadow-xl hover:-translate-y-1
+            "
                     >
-                      <div className="min-h-16 min-w-[150px] mx-auto mb-2 relative">
-                        <Image
-                          src={make.image}
-                          fill
-                          alt={make.image}
-                          className="object-contain"
-                        />
-                      </div>
-                      <h3 className="font-medium">{make.name}</h3>
-                    </Link>
-                  </CarouselItem>
-                );
-              })}
+                      <CardContent className="p-2 text-center">
+                        <div className="h-16 w-full relative mb-2">
+                          <Image
+                            src={make.image}
+                            fill
+                            alt={make.name}
+                            className="object-contain"
+                          />
+                        </div>
+                        <h3 className="font-medium text-gray-700">
+                          {make.name}
+                        </h3>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                </CarouselItem>
+              ))}
             </CarouselContent>
+
             <CarouselPrevious />
             <CarouselNext />
           </Carousel>
