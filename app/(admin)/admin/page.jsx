@@ -7,6 +7,8 @@ export const metadata = {
   description: "Admin dashboard for Vehiql car marketplace",
 };
 
+export const dynamic = "force-dynamic";
+
 const AdminPage = async () => {
   // Fetch dashboard data
   const dashboardData = await getDashboardData();
@@ -16,7 +18,6 @@ const AdminPage = async () => {
       <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
       <Dashboard initialData={dashboardData} />
     </div>
-
   );
 };
 
