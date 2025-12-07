@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { MoveLeft } from "lucide-react";
 
 export default function NotFound() {
   return (
@@ -11,7 +12,9 @@ export default function NotFound() {
         moved.
       </p>
       <Link href="/">
-        <Button>Return Home</Button>
+        <Button className={"cursor-pointer group"}>
+          <MoveLeft className="group-hover:-translate-x-1" /> Return Home
+        </Button>
       </Link>
     </div>
   );
