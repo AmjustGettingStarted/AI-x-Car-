@@ -140,7 +140,10 @@ const HomeSearch = () => {
               }}
             />
           </div>
-          <Button type="submit" className="absolute right-2 rounded-full">
+          <Button
+            type="submit"
+            className="absolute cursor-pointer right-2 rounded-full"
+          >
             Search
           </Button>
         </div>
