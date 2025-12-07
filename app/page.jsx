@@ -236,7 +236,7 @@ export default async function Home() {
             {faqItems.map((item, i) => {
               return (
                 <AccordionItem value={`item-${i}`} key={i}>
-                  <AccordionTrigger className="hover:no-underline">
+                  <AccordionTrigger className="hover:no-underline cursor-pointer">
                     {item.question}
                   </AccordionTrigger>
                   <AccordionContent>{item.answer} </AccordionContent>
