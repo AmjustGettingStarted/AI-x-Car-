@@ -129,7 +129,7 @@ const HomeSearch = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10 pr-12 py-6 w-full rounded-full border-gray-300 bg-white/95 backdrop-blur-sm  sm:hidden"
           />
-          <div className="absolute right-[100px]">
+          <div className="absolute right-[100px] hover:bg-black rounded-full hover:text-white">
             <Camera
               size={35}
               onClick={() => setImageSearchActive(!imageSearchActive)}
@@ -140,7 +140,10 @@ const HomeSearch = () => {
               }}
             />
           </div>
-          <Button type="submit" className="absolute right-2 rounded-full">
+          <Button
+            type="submit"
+            className="absolute cursor-pointer right-2 rounded-full"
+          >
             Search
           </Button>
         </div>

@@ -24,15 +24,22 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import DarkVeil from "@/components/reactbits/dark-veil";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default async function Home() {
   const featuredCars = await getFeaturedCars();
 
   return (
     <div className="pt-20 flex flex-col">
-      {/* Header */}
-      <section className="relative dotted-background py-16 md:py-28 ">
-        <div className="max-w-4xl mx-auto text-center">
+      {/* HERO */}
+      <section className="relative py-16 md:py-28">
+        {/* Background effect */}
+        <div className="absolute inset-0 pointer-events-none -z-10">
+          <DarkVeil />
+        </div>
+
+        <div className="max-w-4xl mx-auto text-center relative z-10">
           <div className="mb-8">
             <h1 className="text-5xl md:text-8xl mb-4 gradient font-extrabold tracking-tighter pr-2 pb-2 text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-green-500">
               Find Your Dream Car with AIxCAR
@@ -41,6 +48,7 @@ export default async function Home() {
               Advanced AI Car Search and test drive from thousands of vehicles
             </p>
           </div>
+
           {/* Search */}
           <HomeSearch />
         </div>
@@ -79,32 +87,44 @@ export default async function Home() {
             opts={{
               align: "start",
               loop: true,
+              dragFree: true,
             }}
             className="hidden lg:block"
           >
-            <CarouselContent className="space-x-4">
-              {carMakes.map((make) => {
-                return (
-                  <CarouselItem className="max-w-[200px] bg-white rounded-lg shadow p-4 text-center hover:shadow-md transition">
-                    <Link
-                      href={`/cars?make=${make.name}`}
-                      key={make.name}
-                      className=""
+            <CarouselContent className="overflow-visible">
+              {carMakes.map((make, i) => (
+                <CarouselItem
+                  key={i}
+                  className="overflow-visible basis-[16.66%] shrink-0 px-2" // 6 items per view
+                >
+                  <Link href={`/cars?make=${make.name}`}>
+                    <Card
+                      className="p-2
+              bg-white rounded-xl border border-transparent 
+              shadow-md 
+              transition-all duration-300 
+              hover:shadow-xl hover:-translate-y-1
+            "
                     >
-                      <div className="min-h-16 min-w-[150px] mx-auto mb-2 relative">
-                        <Image
-                          src={make.image}
-                          fill
-                          alt={make.image}
-                          className="object-contain"
-                        />
-                      </div>
-                      <h3 className="font-medium">{make.name}</h3>
-                    </Link>
-                  </CarouselItem>
-                );
-              })}
+                      <CardContent className="p-2 text-center">
+                        <div className="h-16 w-full relative mb-2">
+                          <Image
+                            src={make.image}
+                            fill
+                            alt={make.name}
+                            className="object-contain"
+                          />
+                        </div>
+                        <h3 className="font-medium text-gray-700">
+                          {make.name}
+                        </h3>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                </CarouselItem>
+              ))}
             </CarouselContent>
+
             <CarouselPrevious />
             <CarouselNext />
           </Carousel>
@@ -229,7 +249,7 @@ export default async function Home() {
             {faqItems.map((item, i) => {
               return (
                 <AccordionItem value={`item-${i}`} key={i}>
-                  <AccordionTrigger className="hover:no-underline">
+                  <AccordionTrigger className="hover:no-underline cursor-pointer">
                     {item.question}
                   </AccordionTrigger>
                   <AccordionContent>{item.answer} </AccordionContent>
@@ -240,20 +260,28 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Second Hero  */}
-      <section className="py-16 dotted-background text-white">
-        <div className="container mx-auto px-4 text-center">
+      {/* Second Hero */}
+      <section className="relative py-16 text-white">
+        {/* Background effect */}
+        <div className="absolute inset-0 pointer-events-none -z-10">
+          <DarkVeil />
+        </div>
+
+        <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="text-3xl font-bold capitalize mb-4">
             Ready to find your Dream car?
           </h2>
+
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
             Join thousands of satisfied customers who found their perfect
             vehicle through our platform
           </p>
+
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Button size="lg" asChild variant="secondary">
               <Link href="/cars">View All Cars</Link>
             </Button>
+
             <SignedOut>
               <Button size="lg" asChild>
                 <Link href="/sign-up">Sign Up Now</Link>

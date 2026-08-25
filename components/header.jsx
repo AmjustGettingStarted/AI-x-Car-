@@ -45,7 +45,7 @@ const Header = async ({ isAdminPage = false }) => {
               </Button>
             </Link>
           ) : (
-            <SignedIn>
+            <SignedIn className="cursor-pointer">
               <Link href="/saved-cars">
                 <Button className="cursor-pointer">
                   <Heart size={18} />
@@ -73,7 +73,9 @@ const Header = async ({ isAdminPage = false }) => {
           )}
           <SignedOut>
             <SignInButton forceRedirectUrl="/">
-              <Button variant="outline">Login</Button>
+              <Button variant="outline" className="cursor-pointer">
+                Login
+              </Button>
             </SignInButton>
           </SignedOut>
           <SignedIn>
