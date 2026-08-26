@@ -5,16 +5,22 @@ import { usePathname } from "next/navigation";
 
 export default function HeaderWrapper({ children, className = "" }) {
   const pathname = usePathname();
-  const [isVisible, setIsVisible] = useState(true);
+
+  // Default to hidden before hydration to prevent the flash issue
+  const [isVisible, setIsVisible] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    // Only gate visibility on the home page during the first intro
+    setIsMounted(true);
+
     if (pathname === "/") {
       try {
         const alreadyPlayed = sessionStorage.getItem("hero_intro_played") === "true";
-        if (!alreadyPlayed) {
+        if (alreadyPlayed) {
+          setIsVisible(true);
+        } else {
+          // Keep hidden, wait for custom event
           setIsVisible(false);
-
           const onEnded = () => setIsVisible(true);
           window.addEventListener("hero-video-ended", onEnded);
           return () => {
@@ -22,6 +28,7 @@ export default function HeaderWrapper({ children, className = "" }) {
           };
         }
       } catch {
+        // Fallback
         setIsVisible(true);
       }
     } else {
@@ -29,13 +36,14 @@ export default function HeaderWrapper({ children, className = "" }) {
     }
   }, [pathname]);
 
+  const showHeader = isMounted && isVisible;
+
   return (
     <header
-      className={`fixed top-0 w-full z-50 border-b bg-white/80 backdrop-blur-md transition-all duration-700 ease-out ${
-        isVisible
+      className={`fixed top-0 w-full z-50 border-b bg-white/80 backdrop-blur-md transition-all duration-500 ease-out ${showHeader
           ? "opacity-100 translate-y-0 pointer-events-auto"
           : "opacity-0 -translate-y-3 pointer-events-none"
-      } ${className}`}
+        } ${className}`}
     >
       {children}
     </header>
