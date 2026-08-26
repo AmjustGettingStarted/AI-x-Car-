@@ -1,9 +1,22 @@
 import Header from "@/components/header";
 import "./globals.css";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
-const inter = Inter({ subsets: ["latin"] });
+
+// Main Global Font: Clash Display Variable
+const clashDisplay = localFont({
+  src: "../font/ClashDisplay-Variable.ttf",
+  variable: "--font-clash",
+  display: "swap",
+});
+
+// Display Header Font: Trento
+const trento = localFont({
+  src: "../font/Trento Typeface.ttf",
+  variable: "--font-trento",
+  display: "swap",
+});
 
 export const metadata = {
   title: "IGNITE AUTO | AI-Powered High-Performance Marketplace",
@@ -13,8 +26,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body className={`${inter.className} overflow-x-hidden`}>
+      <html lang="en" className={`${clashDisplay.variable} ${trento.variable}`}>
+        <body className="font-[family-name:var(--font-clash)] overflow-x-hidden bg-black text-white antialiased">
           <Header />
           <main className="min-h-screen">{children}</main>
           <Toaster richColors />
