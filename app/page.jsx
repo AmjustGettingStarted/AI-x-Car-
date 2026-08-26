@@ -1,5 +1,4 @@
 import * as React from "react";
-import HomeSearch from "@/components/home-search";
 import "../app/globals.css";
 import { Calendar, Car, ChevronRight, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -24,7 +23,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import DarkVeil from "@/components/reactbits/dark-veil";
 import HeroSection from "@/components/hero-section";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -244,10 +242,7 @@ export default async function Home() {
 
       {/* Second Hero */}
       <section className="relative py-16 text-white">
-        {/* Background effect */}
-        <div className="absolute inset-0 pointer-events-none -z-10">
-          <DarkVeil />
-        </div>
+
 
         <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="text-3xl font-bold capitalize mb-4">
