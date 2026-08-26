@@ -6,8 +6,8 @@ import { Toaster } from "sonner";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "AI x CAR",
-  description: "We don't pray for love, we just pray for cars.",
+  title: "IGNITE AUTO | AI-Powered High-Performance Marketplace",
+  description: "Experience the future of buying, selling, and booking test drives for premium vehicles with AI intelligence.",
 };
 
 export default function RootLayout({ children }) {
