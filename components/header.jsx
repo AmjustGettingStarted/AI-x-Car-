@@ -13,13 +13,15 @@ import logo from "@/public/logo.png";
 import { Button } from "./ui/button";
 import { ArrowLeft, CarFront, Heart, Layout } from "lucide-react";
 import { checkUser } from "@/lib/checkUser";
+import HeaderWrapper from "./header-wrapper";
+
 const Header = async ({ isAdminPage = false }) => {
   const user = await checkUser(); // checks if the user in the database and creates a new user if not
 
   const isAdmin = user?.role === "ADMIN";
 
   return (
-    <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b ">
+    <HeaderWrapper>
       <nav className="mx-auto p-4 flex flex-row items-center justify-between">
         <Link href={isAdminPage ? "/admin" : "/"} className="flex ">
           <Image
@@ -83,7 +85,7 @@ const Header = async ({ isAdminPage = false }) => {
           </SignedIn>
         </div>
       </nav>
-    </header>
+    </HeaderWrapper>
   );
 };
 

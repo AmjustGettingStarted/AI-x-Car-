@@ -25,34 +25,16 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import DarkVeil from "@/components/reactbits/dark-veil";
+import HeroSection from "@/components/hero-section";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default async function Home() {
   const featuredCars = await getFeaturedCars();
 
   return (
-    <div className="pt-20 flex flex-col">
+    <div className="flex flex-col">
       {/* HERO */}
-      <section className="relative py-16 md:py-28">
-        {/* Background effect */}
-        <div className="absolute inset-0 pointer-events-none -z-10">
-          <DarkVeil />
-        </div>
-
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <div className="mb-8">
-            <h1 className="text-5xl md:text-8xl mb-4 gradient font-extrabold tracking-tighter pr-2 pb-2 text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-green-500">
-              Find Your Dream Car with AIxCAR
-            </h1>
-            <p className="text-xl text-gray-500 mb-8 max-w-2xl mx-auto">
-              Advanced AI Car Search and test drive from thousands of vehicles
-            </p>
-          </div>
-
-          {/* Search */}
-          <HomeSearch />
-        </div>
-      </section>
+      <HeroSection />
 
       {/* Featured */}
       <section className="py-12">
