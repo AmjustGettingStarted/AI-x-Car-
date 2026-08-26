@@ -1,25 +1,24 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { Input } from "./ui/input";
-import { Camera, Upload } from "lucide-react";
+import { Camera, Upload, X, Sparkles, Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import useFetch from "@/hooks/use-fetch";
 import { processImageSearch } from "@/actions/home";
+import { BorderBeam } from "@/components/ui/border-beam";
 
 const HomeSearch = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [imageSearchActive, setImageSearchActive] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [imagePreview, setImagePreview] = useState("");
   const [searchImage, setSearchImage] = useState(null);
-  const [isUploading, setIsUploading] = useState(false);
 
   const router = useRouter();
 
-  // Use the useFetch hook for image processing
   const {
     loading: isProcessing,
     fn: processImageFn,
@@ -33,39 +32,32 @@ const HomeSearch = () => {
       toast.error("Please enter a search term");
       return;
     }
-
     router.push(`/cars?search=${encodeURIComponent(searchTerm)}`);
-    // Handle text search logic here
   };
 
   const handleImageSearch = async (e) => {
     e.preventDefault();
     if (!searchImage) {
-      toast.error("Please upload an image");
+      toast.error("Please upload an image first");
       return;
     }
-
     await processImageFn(searchImage);
   };
 
-  // Handle process result and errors with useEffect
   useEffect(() => {
     if (processResult?.success) {
       const params = new URLSearchParams();
-
-      // Add extracted params to the search
       if (processResult.data.make) params.set("make", processResult.data.make);
       if (processResult.data.bodyType)
         params.set("bodyType", processResult.data.bodyType);
       if (processResult.data.color)
         params.set("color", processResult.data.color);
 
-      // Redirect to search results
+      setIsModalOpen(false);
       router.push(`/cars?${params.toString()}`);
     }
   }, [processResult, router]);
 
-  // Hanlde Process Error
   useEffect(() => {
     if (processError) {
       toast.error(
@@ -75,7 +67,6 @@ const HomeSearch = () => {
   }, [processError]);
 
   const onDrop = (acceptedFiles) => {
-    // Do something with the files
     const file = acceptedFiles[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
@@ -87,15 +78,11 @@ const HomeSearch = () => {
       const reader = new FileReader();
       reader.onload = () => {
         setImagePreview(reader.result);
-        setIsUploading(false);
         toast.success("Image uploaded successfully");
       };
-
       reader.onerror = () => {
-        setIsUploading(false);
         toast.error("Failed to read the image");
       };
-
       reader.readAsDataURL(file);
     }
   };
@@ -110,100 +97,144 @@ const HomeSearch = () => {
     });
 
   return (
-    <div>
+    <div className="w-full relative">
+      {/* Search Bar Container */}
       <form onSubmit={handleTextSubmit}>
-        <div className="relative flex items-center ">
-          {/* Long Placeholder */}
+        <div className="relative flex items-center group rounded-full">
+          {/* Main Input - Dark Orange Glass Style */}
           <Input
             type="text"
-            placeholder="Enter make, model, or use our AI Image Search..."
+            placeholder="Enter make, model, or use AI Image Search..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="hidden sm:inline pl-10 pr-12 py-6 w-full rounded-full border-gray-300 bg-white/95 backdrop-blur-sm "
+            className="hidden sm:inline pl-6 pr-32 py-7 w-full rounded-full border border-orange-500/30 bg-black/60 backdrop-blur-xl text-white placeholder:text-gray-400 focus-visible:ring-1 focus-visible:ring-orange-500 shadow-[0_0_25px_rgba(217,70,0,0.2)] transition-all"
           />
-          {/* Short Placeholder for mobile view */}
           <Input
             type="text"
-            placeholder="Enter / AI Image Search"
+            placeholder="Search make, model, or AI Image..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 pr-12 py-6 w-full rounded-full border-gray-300 bg-white/95 backdrop-blur-sm  sm:hidden"
+            className="sm:hidden pl-5 pr-28 py-6 w-full rounded-full border border-orange-500/30 bg-black/60 backdrop-blur-xl text-white placeholder:text-gray-400 focus-visible:ring-1 focus-visible:ring-orange-500 shadow-[0_0_25px_rgba(217,70,0,0.2)]"
           />
-          <div className="absolute right-[100px] hover:bg-black rounded-full hover:text-white">
-            <Camera
-              size={35}
-              onClick={() => setImageSearchActive(!imageSearchActive)}
-              className="cursor-pointer rounded-xl p-1.5"
-              style={{
-                background: imageSearchActive ? "black" : "",
-                color: imageSearchActive ? "white" : "",
-              }}
-            />
+
+          {/* Glowing Border Beam */}
+          <BorderBeam
+            size={120}
+            duration={8}
+            delay={0}
+            borderWidth={1.5}
+            colorFrom="#ff6600"
+            colorTo="#ffaa40"
+          />
+
+          {/* AI Vision Camera Button */}
+          <div className="absolute right-24 sm:right-28 top-1/2 -translate-y-1/2">
+            <button
+              type="button"
+              onClick={() => setIsModalOpen(true)}
+              title="AI Reverse Image Search"
+              className="p-2 rounded-full text-orange-400 hover:text-white hover:bg-orange-500/20 border border-orange-500/30 hover:border-orange-500 transition-all duration-300 group/btn cursor-pointer"
+            >
+              <Camera size={20} className="transition-transform group-hover/btn:scale-110" />
+            </button>
           </div>
+
+          {/* Submit Search Button */}
           <Button
             type="submit"
-            className="absolute cursor-pointer right-2 rounded-full"
+            className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-[#d94600] to-[#b33600] hover:from-[#f04e00] hover:to-[#c73d00] text-white px-5 py-5 text-sm font-semibold shadow-md border border-orange-400/30 transition-all duration-300 cursor-pointer"
           >
             Search
           </Button>
         </div>
       </form>
-      {imageSearchActive && (
-        <div className="mt-4">
-          <form onSubmit={handleImageSearch}>
-            <div className="border-2 border-dashed border-gray-300 rounded-3xl p-6 text-center">
-              {imagePreview ? (
-                <div className="flex flex-col items-center">
-                  <img
-                    src={imagePreview}
-                    alt="car preview"
-                    className="h-40 object-contain mb-4"
-                  />
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      setSearchImage(null);
-                      setImagePreview("");
-                      toast.info("Image removed");
-                    }}
-                  >
-                    Remove Image
-                  </Button>
+
+      {/* Floating AI Vision Scan Popover Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
+          <div className="relative w-full max-w-lg p-6 bg-neutral-900/90 border border-orange-500/30 rounded-3xl shadow-[0_0_50px_rgba(217,70,0,0.3)] text-white">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/10">
+              <div className="flex items-center gap-2">
+                <div className="p-2 rounded-lg bg-orange-500/10 border border-orange-500/30">
+                  <Sparkles size={18} className="text-orange-400" />
                 </div>
-              ) : (
-                <div {...getRootProps()} className="cursor-pointer">
-                  <input {...getInputProps()} />
-                  <div className="flex flex-col items-center">
-                    <Upload className="h-12 w-12 text-gray-400 mb-2" />
-                    <p className="text-gray-500 mb-2">
-                      {isDragActive && !isDragReject
-                        ? "Leave the files here to upload"
-                        : "Drag & Drop a car Image or click "}
-                    </p>
-                    {isDragReject && (
-                      <p className="text-red-500 mb-2">Invalid image type</p>
-                    )}
-                    <p className="text-gray-400 text-sm">
-                      Supports: JPG, PNG (max 5MB)
-                    </p>
-                  </div>
+                <div>
+                  <h3 className="font-bold text-lg leading-tight">AI Vision Search</h3>
+                  <p className="text-xs text-gray-400">Scan any car photo to find instant matches</p>
                 </div>
-              )}
-            </div>
-            {imagePreview && (
-              <Button
-                type="submit"
-                className="w-full mt-2"
-                disabled={isUploading || isProcessing}
+              </div>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="p-1 text-gray-400 hover:text-white rounded-full hover:bg-white/10 transition-colors"
               >
-                {isUploading
-                  ? "Uploading..."
-                  : isProcessing
-                  ? "Analyzing Image"
-                  : "Search with this Image"}
-              </Button>
-            )}
-          </form>
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Upload Area */}
+            <form onSubmit={handleImageSearch}>
+              <div className="border-2 border-dashed border-orange-500/30 hover:border-orange-500/60 rounded-2xl p-6 text-center bg-black/40 transition-colors">
+                {imagePreview ? (
+                  <div className="flex flex-col items-center">
+                    <img
+                      src={imagePreview}
+                      alt="car preview"
+                      className="h-44 object-contain rounded-xl mb-4 border border-white/10 shadow-lg"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setSearchImage(null);
+                        setImagePreview("");
+                      }}
+                      className="border-red-500/40 text-red-400 hover:bg-red-500/20 hover:text-white"
+                    >
+                      Remove & Choose Another
+                    </Button>
+                  </div>
+                ) : (
+                  <div {...getRootProps()} className="cursor-pointer py-4">
+                    <input {...getInputProps()} />
+                    <div className="flex flex-col items-center">
+                      <Upload className="h-10 w-10 text-orange-400 mb-3 animate-bounce" />
+                      <p className="text-sm font-medium text-gray-200 mb-1">
+                        {isDragActive && !isDragReject
+                          ? "Drop the file here to scan"
+                          : "Drag & drop a vehicle photo, or click to browse"}
+                      </p>
+                      {isDragReject && (
+                        <p className="text-xs text-red-400 mb-1">Invalid image type</p>
+                      )}
+                      <p className="text-xs text-gray-400">
+                        Supports: JPG, PNG (max 5MB)
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Analyze Action */}
+              {imagePreview && (
+                <Button
+                  type="submit"
+                  disabled={isProcessing}
+                  className="w-full mt-5 bg-gradient-to-r from-[#d94600] to-[#b33600] hover:from-[#f04e00] hover:to-[#c73d00] text-white py-6 font-semibold shadow-lg shadow-orange-500/20 border border-orange-400/30 transition-all"
+                >
+                  {isProcessing ? (
+                    <span className="flex items-center gap-2">
+                      <Loader2 size={18} className="animate-spin text-white" />
+                      Analyzing Vehicle Intelligence...
+                    </span>
+                  ) : (
+                    "Find Car Matches with AI"
+                  )}
+                </Button>
+              )}
+            </form>
+          </div>
         </div>
       )}
     </div>
