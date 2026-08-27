@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function HeaderWrapper({ children, className = "", isAdminPage = false }) {
   const pathname = usePathname();
@@ -61,8 +62,7 @@ export default function HeaderWrapper({ children, className = "", isAdminPage = 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const showHeader = isMounted && isVisible;
-  const isHeaderHiddenOnScroll = isScrolled && scrollDirection === "down";
+  const showHeader = isMounted && isVisible && scrollDirection === "up";
   const isAdmin = isAdminPage || pathname?.startsWith("/admin");
 
   const glassStyles = isScrolled
@@ -72,13 +72,19 @@ export default function HeaderWrapper({ children, className = "", isAdminPage = 
       : "bg-transparent border-transparent text-white";
 
   return (
-    <header
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ease-in-out ${glassStyles} ${showHeader && !isHeaderHiddenOnScroll
-          ? "opacity-100 translate-y-0 pointer-events-auto"
-          : "opacity-0 -translate-y-full pointer-events-none"
-        } ${className}`}
+    <motion.header
+      initial={{ y: -100, opacity: 0 }}
+      animate={{
+        y: showHeader ? 0 : -100,
+        opacity: showHeader ? 1 : 0,
+      }}
+      transition={{
+        duration: 0.4,
+        ease: [0.25, 0.1, 0.25, 1.0], // Matches the smooth cubic-bezier curve from hero
+      }}
+      className={`fixed top-0 w-full z-50 transition-colors duration-300 ${glassStyles} ${className}`}
     >
       {children}
-    </header>
+    </motion.header>
   );
 }

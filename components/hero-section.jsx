@@ -2,8 +2,34 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import HomeSearch from "@/components/home-search";
-import { ArrowRight, MoveRight } from "lucide-react";
+import { MoveRight } from "lucide-react";
 import Link from "next/link";
+import { motion } from "framer-motion";
+
+// Container variant to handle staggered children animations
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2, // Delay between each child component animating in
+      delayChildren: 0.1,  // Small initial pause after video ends
+    },
+  },
+};
+
+// Item variant for slow, smooth upward fade-in
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.1, 0.25, 1.0], // Custom smooth cubic-bezier curve
+    },
+  },
+};
 
 export default function HeroSection({ children }) {
   const [isMounted, setIsMounted] = useState(false);
@@ -105,46 +131,50 @@ export default function HeroSection({ children }) {
         </button>
       )}
 
-      {/* HERO CONTENT LAYER */}
-      <div
-        className={`relative z-10 max-w-6xl mx-auto text-center px-4 w-full transition-all duration-700 ease-out ${videoEnded
-          ? "opacity-100 translate-y-0 pointer-events-auto"
-          : "opacity-0 translate-y-8 pointer-events-none"
-          }`}
+      {/* HERO CONTENT LAYER WITH MOTION STAGGER */}
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate={videoEnded ? "visible" : "hidden"}
+        className="relative z-10 max-w-6xl mx-auto text-center px-4 w-full"
       >
         {children ? (
           children
         ) : (
           <>
-            <h1 className="relative flex flex-col items-center justify-center font-[family-name:var(--font-trento)] text-white uppercase font-normal tracking-normal text-center select-none mb-16 gap-4">
-              {/* Line 1 */}
+            {/* Title Header */}
+            <motion.h1
+              variants={itemVariants}
+              className="relative flex flex-col items-center justify-center font-[family-name:var(--font-trento)] text-white uppercase font-normal tracking-normal text-center select-none mb-16 gap-4"
+            >
               <span className="text-[6px] sm:text-[8px] md:text-[10px] lg:text-[12px] block -translate-y-[10px] sm:-translate-y-[14px]">
                 WHERE LUXURY MEETS
               </span>
-
-              {/* Line 2 */}
               <span className="text-[6px] sm:text-[8px] md:text-[10px] lg:text-[12px] block translate-y-[10px] sm:translate-y-[14px]">
                 PERFORMANCE
               </span>
-            </h1>
+            </motion.h1>
 
-            {/* Search Input Container */}
-            <div className="max-w-2xl mx-auto mb-6">
+            {/* Search Bar Container */}
+            <motion.div variants={itemVariants} className="max-w-2xl mx-auto mb-6">
               <HomeSearch />
-            </div>
+            </motion.div>
 
-            {/* Browse Inventory Link */}
-            <div className="flex items-center justify-center gap-6 text-xs sm:text-sm text-slate-50/50">
+            {/* Subtext Link */}
+            <motion.div
+              variants={itemVariants}
+              className="flex items-center justify-center gap-6 text-xs sm:text-sm text-slate-50/50"
+            >
               <Link
                 href="/cars"
                 className="inline-flex items-center gap-1.5 hover:text-[#FF5F1F] transition-colors duration-200 underline-offset-4 hover:underline font-medium uppercase tracking-widest text-xs"
               >
                 Browse full inventory <MoveRight className="w-3.5 h-3.5" />
               </Link>
-            </div>
+            </motion.div>
           </>
         )}
-      </div>
+      </motion.div>
     </section>
   );
 }
