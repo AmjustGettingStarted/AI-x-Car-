@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import HomeSearch from "@/components/home-search";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, MoveRight } from "lucide-react";
 import Link from "next/link";
 
 export default function HeroSection({ children }) {
@@ -99,7 +99,7 @@ export default function HeroSection({ children }) {
       {!videoEnded && hasCheckedSession && (
         <button
           onClick={finishIntro}
-          className="absolute top-6 right-6 z-30 px-3.5 py-1.5 rounded-full text-xs font-medium text-white/80 hover:text-white bg-black/50 hover:bg-black/80 backdrop-blur-md border border-orange-500/30 transition-all duration-200 cursor-pointer"
+          className="absolute top-6 right-6 z-30 px-3.5 py-1.5 rounded-full text-xs font-medium text-white/80 hover:text-white bg-black/50 hover:bg-black/80 backdrop-blur-md border border-[#FF5F1F]/30 transition-all duration-200 cursor-pointer"
         >
           Skip Intro &rarr;
         </button>
@@ -116,15 +116,15 @@ export default function HeroSection({ children }) {
           children
         ) : (
           <>
-            <h1 className="relative flex flex-col items-center justify-center font-[family-name:var(--font-trento)] text-white uppercase font-normal tracking-normal text-center select-none mb-8 gap-4">
+            <h1 className="relative flex flex-col items-center justify-center font-[family-name:var(--font-trento)] text-white uppercase font-normal tracking-normal text-center select-none mb-16 gap-4">
               {/* Line 1 */}
-              <span className="text-[6px] sm:text-[8px] md:text-[10px] lg:text-[18px] block -translate-y-[10px] sm:-translate-y-[14px]">
-                WHERE LUXURY
+              <span className="text-[6px] sm:text-[8px] md:text-[10px] lg:text-[12px] block -translate-y-[10px] sm:-translate-y-[14px]">
+                WHERE LUXURY MEETS
               </span>
 
               {/* Line 2 */}
-              <span className="text-[6px] sm:text-[8px] md:text-[10px] lg:text-[18px] block translate-y-[10px] sm:translate-y-[14px]">
-                MEETS PERFORMANCE
+              <span className="text-[6px] sm:text-[8px] md:text-[10px] lg:text-[12px] block translate-y-[10px] sm:translate-y-[14px]">
+                PERFORMANCE
               </span>
             </h1>
 
@@ -134,12 +134,12 @@ export default function HeroSection({ children }) {
             </div>
 
             {/* Browse Inventory Link */}
-            <div className="flex items-center justify-center gap-6 text-xs sm:text-sm text-gray-400">
+            <div className="flex items-center justify-center gap-6 text-xs sm:text-sm text-slate-50/50">
               <Link
                 href="/cars"
-                className="inline-flex items-center gap-1.5 hover:text-orange-400 transition-colors duration-200 underline-offset-4 hover:underline font-medium uppercase tracking-widest text-xs"
+                className="inline-flex items-center gap-1.5 hover:text-[#FF5F1F] transition-colors duration-200 underline-offset-4 hover:underline font-medium uppercase tracking-widest text-xs"
               >
-                Browse full inventory <ArrowRight className="w-3.5 h-3.5" />
+                Browse full inventory <MoveRight className="w-3.5 h-3.5" />
               </Link>
             </div>
           </>
