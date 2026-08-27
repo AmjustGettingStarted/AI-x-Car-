@@ -21,16 +21,20 @@ const Header = async ({ isAdminPage = false }) => {
     <HeaderWrapper isAdminPage={isAdminPage}>
       <nav className="mx-auto max-w-7xl px-6 py-4 flex flex-row items-center justify-between">
         {/* Logo */}
-        <Link href={isAdminPage ? "/admin" : "/"} className="flex items-center gap-2 group">
+        <Link
+          href={isAdminPage ? "/admin" : "/"}
+          className="flex items-center gap-2 group"
+        >
           <Image
             src={logo}
             alt="logo"
             width={200}
             height={60}
-            className="h-10 w-auto object-contain cursor-pointer transition-transform duration-300 group-hover:scale-105"
+            className="h-10 w-auto object-contain cursor-pointer transition-transform duration-300 ease-out group-hover:scale-105"
           />
+
           {isAdminPage && (
-            <span className="text-[10px] font-semibold tracking-wider text-orange-500 uppercase px-2 py-0.5 rounded-full bg-orange-500/10 border border-orange-500/30">
+            <span className="text-[10px] font-semibold tracking-wider text-[#FF5F1F] uppercase px-2 py-0.5 rounded-full bg-[#FF5F1F]/10 border border-[#FF5F1F]/30">
               Admin
             </span>
           )}
@@ -40,26 +44,81 @@ const Header = async ({ isAdminPage = false }) => {
         <div className="flex items-center space-x-3 sm:space-x-4">
           <SignedIn>
             {isAdminPage ? (
-              /* Admin Page Navigation: Primary Deep Glow Button */
+              /* Admin Page Navigation */
               <Link href="/">
-                <Button className="cursor-pointer bg-gradient-to-r from-[#d94600] to-[#b33600] hover:from-[#f04e00] hover:to-[#c73d00] text-white font-medium shadow-[0_0_20px_rgba(217,70,0,0.35)] border border-orange-500/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
-                  <ArrowLeft size={18} className="text-white" />
-                  <span className="hidden md:inline">Back to App</span>
+                <Button
+                  variant="outline"
+                  className="
+                    group
+                    cursor-pointer
+                    border border-[#FF5F1F]/35
+                    bg-black/40
+                    hover:bg-[#FF5F1F]/10
+                    hover:border-[#FF5F1F]/80
+                    text-white
+                    hover:text-white
+                    backdrop-blur-md
+                    transition-all
+                    duration-300
+                    ease-out
+                    hover:-translate-y-0.5
+                    hover:shadow-[0_8px_30px_rgba(255,95,31,0.15)]
+                    active:translate-y-0
+                    active:scale-[0.98]
+                  "
+                >
+                  <ArrowLeft
+                    size={18}
+                    className="
+                      text-[#FF5F1F]
+                      transition-transform
+                      duration-300
+                      group-hover:-translate-x-0.5
+                    "
+                  />
+
+                  <span className="hidden md:inline font-medium">
+                    Back to App
+                  </span>
                 </Button>
               </Link>
             ) : (
-              /* Main App Navigation */
               <>
-                {/* Secondary Action: Dark Glassmorphism with Subtle Orange Stroke */}
+                {/* Saved Cars */}
                 <Link href="/saved-cars">
                   <Button
                     variant="outline"
-                    className="group cursor-pointer border border-orange-500/30 bg-black/40 hover:bg-orange-500/15 hover:border-orange-500/60 text-white hover:text-white transition-all duration-300 backdrop-blur-md"
+                    className="
+                      group
+                      cursor-pointer
+                      border border-[#FF5F1F]/35
+                      bg-black/40
+                      hover:bg-[#FF5F1F]/10
+                      hover:border-[#FF5F1F]/80
+                      text-white
+                      hover:text-white
+                      backdrop-blur-md
+                      transition-all
+                      duration-300
+                      ease-out
+                      hover:-translate-y-0.5
+                      hover:shadow-[0_8px_30px_rgba(255,95,31,0.15)]
+                      active:translate-y-0
+                      active:scale-[0.98]
+                    "
                   >
                     <Heart
                       size={18}
-                      className="text-orange-500 transition-transform duration-300 group-hover:scale-110"
+                      className="
+                        text-[#FF5F1F]
+                        transition-all
+                        duration-300
+                        ease-out
+                        group-hover:scale-110
+                        group-hover:-rotate-3
+                      "
                     />
+
                     <span className="hidden md:inline cursor-pointer font-medium">
                       Saved Cars
                     </span>
@@ -67,24 +126,85 @@ const Header = async ({ isAdminPage = false }) => {
                 </Link>
 
                 {!isAdmin ? (
+                  /* Reservations */
                   <Link href="/reservations">
                     <Button
                       variant="outline"
-                      className="group cursor-pointer border border-orange-500/30 bg-black/40 hover:bg-orange-500/15 hover:border-orange-500/60 text-white hover:text-white transition-all duration-300 backdrop-blur-md"
+                      className="
+                        group
+                        cursor-pointer
+                        border border-[#FF5F1F]/35
+                        bg-black/40
+                        hover:bg-[#FF5F1F]/10
+                        hover:border-[#FF5F1F]/80
+                        text-white
+                        hover:text-white
+                        backdrop-blur-md
+                        transition-all
+                        duration-300
+                        ease-out
+                        hover:-translate-y-0.5
+                        hover:shadow-[0_8px_30px_rgba(255,95,31,0.15)]
+                        active:translate-y-0
+                        active:scale-[0.98]
+                      "
                     >
                       <CarFront
                         size={18}
-                        className="text-orange-500 transition-transform duration-300 group-hover:scale-110"
+                        className="
+                          text-[#FF5F1F]
+                          transition-all
+                          duration-300
+                          ease-out
+                          group-hover:scale-110
+                          group-hover:-rotate-3
+                        "
                       />
-                      <span className="hidden md:inline font-medium">My Reservation</span>
+
+                      <span className="hidden md:inline font-medium">
+                        My Reservation
+                      </span>
                     </Button>
                   </Link>
                 ) : (
-                  /* Primary Action: Deep Glow Admin Button matching central hero column */
+                  /* Admin Portal - Styled like Saved Cars */
                   <Link href="/admin">
-                    <Button className="cursor-pointer bg-gradient-to-r from-[#d94600] to-[#b33600] hover:from-[#f04e00] hover:to-[#c73d00] text-white font-medium shadow-[0_0_20px_rgba(217,70,0,0.35)] border border-orange-500/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
-                      <Layout size={18} className="text-white" />
-                      <span className="hidden md:inline">Admin Portal</span>
+                    <Button
+                      variant="outline"
+                      className="
+                        group
+                        cursor-pointer
+                        border border-[#FF5F1F]/35
+                        bg-black/40
+                        hover:bg-[#FF5F1F]/10
+                        hover:border-[#FF5F1F]/80
+                        text-white
+                        hover:text-white
+                        backdrop-blur-md
+                        transition-all
+                        duration-300
+                        ease-out
+                        hover:-translate-y-0.5
+                        hover:shadow-[0_8px_30px_rgba(255,95,31,0.15)]
+                        active:translate-y-0
+                        active:scale-[0.98]
+                      "
+                    >
+                      <Layout
+                        size={18}
+                        className="
+                          text-[#FF5F1F]
+                          transition-all
+                          duration-300
+                          ease-out
+                          group-hover:scale-110
+                          group-hover:rotate-6
+                        "
+                      />
+
+                      <span className="hidden md:inline font-medium">
+                        Admin Portal
+                      </span>
                     </Button>
                   </Link>
                 )}
@@ -94,7 +214,28 @@ const Header = async ({ isAdminPage = false }) => {
 
           <SignedOut>
             <SignInButton forceRedirectUrl="/">
-              <Button className="cursor-pointer bg-gradient-to-r from-[#d94600] to-[#b33600] hover:from-[#f04e00] hover:to-[#c73d00] text-white font-medium px-5 shadow-[0_0_20px_rgba(217,70,0,0.35)] border border-orange-500/40 transition-all duration-300 hover:scale-105">
+              <Button
+                variant="outline"
+                className="
+                  group
+                  cursor-pointer
+                  border border-[#FF5F1F]/35
+                  bg-black/40
+                  hover:bg-[#FF5F1F]/10
+                  hover:border-[#FF5F1F]/80
+                  text-white
+                  hover:text-white
+                  backdrop-blur-md
+                  px-5
+                  transition-all
+                  duration-300
+                  ease-out
+                  hover:-translate-y-0.5
+                  hover:shadow-[0_8px_30px_rgba(255,95,31,0.15)]
+                  active:translate-y-0
+                  active:scale-[0.98]
+                "
+              >
                 Login
               </Button>
             </SignInButton>
@@ -104,7 +245,8 @@ const Header = async ({ isAdminPage = false }) => {
             <UserButton
               appearance={{
                 elements: {
-                  avatarBox: "w-10 h-10 border-2 border-orange-500/40 hover:border-orange-500 transition-all",
+                  avatarBox:
+                    "w-10 h-10 border-2 border-[#FF5F1F]/40 hover:border-[#FF5F1F] hover:scale-105 transition-all duration-300 ease-out",
                 },
               }}
             />
