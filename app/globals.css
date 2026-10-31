@@ -116,17 +116,17 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-clash), sans-serif;
   }
 }
 
 .dotted-background {
   background-color: #050301;
-  background-image: radial-gradient(
-    rgba(255, 255, 255, 0.2) 2px,
-    transparent 0.2px
-  );
+  background-image: radial-gradient(rgba(255, 255, 255, 0.2) 2px,
+      transparent 0.2px);
   background-size: 30px 30px;
 }
 
@@ -134,9 +134,13 @@
 /* gradient font-extrabold tracking-tighter pr-2 pb-2 text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-green-500 */
 
 .hide-scrollbar {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
 }
+
 .hide-scrollbar::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: none;
+  /* Chrome, Safari, Opera */
 }
