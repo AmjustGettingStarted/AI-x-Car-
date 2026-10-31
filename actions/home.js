@@ -68,3 +68,23 @@ export async function processImageSearch(file) {
     throw new Error("AI Search error:" + error.message);
   }
 }
+
+export async function getAvailableBodyTypeCounts() {
+  try {
+    const rows = await db.car.groupBy({
+      by: ["bodyType"],
+      where: { status: "AVAILABLE" },
+      _count: { _all: true },
+    });
+
+    return rows
+      .filter((row) => row.bodyType)
+      .map((row) => ({
+        bodyType: row.bodyType,
+        count: row._count._all,
+      }));
+  } catch (error) {
+    console.error("Error counting cars by body type:", error.message);
+    return [];
+  }
+}
