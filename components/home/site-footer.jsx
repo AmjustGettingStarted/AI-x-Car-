@@ -18,22 +18,23 @@ const SOCIALS = [
 
 function ColumnTitle({ children }) {
   return (
-    <p className="font-[family-name:var(--font-label)] text-[10px] uppercase tracking-[0.35em] text-[#ff4d1a]">
+    <p className="text-xs uppercase tracking-[0.3em] text-[#ff4d1a]">
       {children}
     </p>
   );
 }
 
-export default function SiteFooter({ reveal = false }) {
+export default function SiteFooter({ reveal = false, ref }) {
   return (
     <footer
+      ref={ref}
       className={
         reveal
-          ? "fixed inset-x-0 bottom-0 z-0 flex h-[100svh] flex-col justify-between overflow-hidden bg-[#050505] px-5 pb-6 pt-24 sm:px-10 sm:pb-8"
-          : "relative z-20 border-t border-white/10 bg-[#050505] px-5 py-14 sm:px-10"
+          ? "pointer-events-auto fixed inset-x-0 bottom-0 -z-10 bg-[#050505] px-5 pt-24 pb-10 sm:px-10"
+          : "relative z-20 border-t border-white/10 bg-[#050505] px-5 pt-24 pb-10 sm:px-10"
       }
     >
-      <p className="max-w-full whitespace-nowrap font-[family-name:var(--font-clash)] text-[11.5vw] font-semibold uppercase leading-[0.8] tracking-[-0.045em] text-white">
+      <p className="max-w-full font-display text-[clamp(3.5rem,14vw,12rem)] uppercase leading-[0.8] text-white">
         {BRAND_NAME}
       </p>
 
@@ -69,7 +70,7 @@ export default function SiteFooter({ reveal = false }) {
               </Link>
             </li>
             <li>
-              <span className="text-sm text-white/40" aria-disabled="true">
+              <span className="text-sm text-white/70" aria-disabled="true">
                 Contact
               </span>
             </li>
@@ -80,12 +81,12 @@ export default function SiteFooter({ reveal = false }) {
           <ColumnTitle>Legal</ColumnTitle>
           <ul className="mt-4 space-y-2">
             <li>
-              <span className="text-sm text-white/40" aria-disabled="true">
+              <span className="text-sm text-white/70" aria-disabled="true">
                 Privacy
               </span>
             </li>
             <li>
-              <span className="text-sm text-white/40" aria-disabled="true">
+              <span className="text-sm text-white/70" aria-disabled="true">
                 Terms
               </span>
             </li>
@@ -100,19 +101,18 @@ export default function SiteFooter({ reveal = false }) {
                 <span
                   aria-label={label}
                   role="img"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white/70"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/70"
                 >
                   <Icon className="h-4 w-4" aria-hidden="true" />
                 </span>
               </li>
             ))}
           </ul>
-          <p className="mt-3 text-xs text-white/35">Profiles coming soon</p>
         </div>
       </nav>
 
-      <p className="border-t border-white/10 pt-4 text-xs text-white/50">
-        &copy; {BUILD_YEAR} {BRAND_NAME}. Verified dealership inventory.
+      <p className="border-t border-white/10 pt-4 text-xs text-white/70">
+        &copy; {BUILD_YEAR} {BRAND_NAME}
       </p>
     </footer>
   );
