@@ -1,4 +1,4 @@
-import arcjet, { createMiddleware, detectBot, shield } from "@arcjet/next";
+import arcjet, { detectBot, shield } from "@arcjet/next";
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
@@ -27,26 +27,42 @@ const aj = arcjet({
   ],
 });
 
-const clerk = clerkMiddleware(async (auth, req) => {
+const KEEP_ALIVE_PATH = "/api/cron/keep-alive";
+
+const handler = clerkMiddleware(async (auth, req) => {
+  const pathname = req.nextUrl?.pathname ?? "";
+  if (pathname === KEEP_ALIVE_PATH || pathname === `${KEEP_ALIVE_PATH}/`) {
+    return NextResponse.next();
+  }
+
+  if (process.env.ARCJET_KEY) {
+    const decision = await aj.protect(req);
+    if (decision.isDenied()) {
+      if (decision.reason.isRateLimit()) {
+        return NextResponse.json(
+          { code: 429, message: "Too Many Requests" },
+          { status: 429 }
+        );
+      }
+      return NextResponse.json(
+        { code: 403, message: "Forbidden" },
+        { status: 403 }
+      );
+    }
+  }
+
   const { userId } = await auth();
 
   if (!userId && isProtectedRoute(req)) {
     const { redirectToSignIn } = await auth();
     return redirectToSignIn();
   }
+
   return NextResponse.next();
 });
 
-// Chain middlewares - ArcJet runs first, then Clerk
-const clerkWithArcjet = createMiddleware(aj, clerk);
-
-const KEEP_ALIVE_PATH = "/api/cron/keep-alive";
-
-// Clerk's Next.js 16 docs use this same clerkMiddleware helper from proxy.js.
-export function proxy(request, event) {
-  // LOCAL VERIFICATION ONLY. Revert before commit.
-  return NextResponse.next();
-}
+export default handler;
+export const proxy = handler;
 
 export const config = {
   matcher: [
@@ -56,3 +72,4 @@ export const config = {
     "/(api|trpc)(.*)",
   ],
 };
+
