@@ -1,4 +1,4 @@
-import { getAdminAnalytics, getDashboardData } from "@/actions/admin";
+import { getAdminAnalytics, getAdminDriveSeries, getDashboardData } from "@/actions/admin";
 import { BRAND_NAME } from "@/lib/brand";
 import { Dashboard } from "./_components/dashboard";
 
@@ -10,9 +10,10 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 const AdminPage = async () => {
-  const [dashboardData, analytics] = await Promise.all([
+  const [dashboardData, analytics, drives] = await Promise.all([
     getDashboardData(),
     getAdminAnalytics(),
+    getAdminDriveSeries(),
   ]);
 
   return (
@@ -23,7 +24,7 @@ const AdminPage = async () => {
       <h1 className="mb-6 font-[family-name:var(--font-clash)] text-3xl font-semibold uppercase tracking-tight sm:text-4xl">
         Dashboard
       </h1>
-      <Dashboard initialData={dashboardData} analytics={analytics} />
+      <Dashboard initialData={dashboardData} analytics={analytics} drives={drives} />
     </div>
   );
 };
