@@ -222,7 +222,6 @@ const CarsList = () => {
                               height={1080}
                               width={1920}
                               className="w-full h-full object-cover"
-                              priority
                             />
                           ) : (
                             <div className="w-full h-full bg-gray-200 flex items-center justify-center">

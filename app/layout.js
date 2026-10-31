@@ -1,4 +1,5 @@
 import Header from "@/components/header";
+import HeaderGate from "@/components/header-gate";
 import FooterGate from "@/components/home/footer-gate";
 import SiteFooter from "@/components/home/site-footer";
 import "./globals.css";
@@ -31,7 +32,9 @@ export default function RootLayout({ children }) {
     <ClerkProvider>
       <html lang="en" className={`${clashDisplay.variable} ${trento.variable}`}>
         <body className="font-[family-name:var(--font-clash)] overflow-x-hidden bg-[#050505] text-white antialiased">
-          <Header />
+          <HeaderGate>
+            <Header />
+          </HeaderGate>
           <main className="min-h-screen">{children}</main>
           <Toaster richColors theme="dark" />
 
