@@ -279,4 +279,108 @@ export async function getDashboardData() {
       error: error.message,
     };
   }
+}
+
+function dayKey(date) {
+  return date.toISOString().slice(0, 10);
+}
+
+function buildSeries(days) {
+  const start = new Date();
+  start.setUTCHours(0, 0, 0, 0);
+  const series = [];
+  for (let i = days - 1; i >= 0; i -= 1) {
+    const date = new Date(start);
+    date.setUTCDate(start.getUTCDate() - i);
+    series.push({ date: dayKey(date), bookings: 0, cars: 0 });
+  }
+  return series;
+}
+
+export async function getAdminAnalytics() {
+  try {
+    const { userId } = await auth();
+    if (!userId) throw new Error("Unauthorized");
+
+    const user = await db.user.findUnique({
+      where: { clerkUserId: userId },
+    });
+
+    if (!user || user.role !== "ADMIN") {
+      return { success: false, error: "Unauthorized" };
+    }
+
+    const since = new Date();
+    since.setUTCHours(0, 0, 0, 0);
+    since.setUTCDate(since.getUTCDate() - 89);
+
+    const [makes, bodies, statuses, createdCars, bookings, recent] =
+      await Promise.all([
+        db.car.groupBy({
+          by: ["make"],
+          _count: { _all: true },
+        }),
+        db.car.groupBy({
+          by: ["bodyType"],
+          _count: { _all: true },
+        }),
+        db.car.groupBy({
+          by: ["status"],
+          _count: { _all: true },
+        }),
+        db.car.findMany({
+          where: { createdAt: { gte: since } },
+          select: { createdAt: true },
+        }),
+        db.testDriveBooking.findMany({
+          where: { createdAt: { gte: since } },
+          select: { createdAt: true },
+        }),
+        db.testDriveBooking.findMany({
+          take: 8,
+          orderBy: { createdAt: "desc" },
+          include: {
+            car: { select: { year: true, make: true, model: true } },
+            user: { select: { name: true, email: true } },
+          },
+        }),
+      ]);
+
+    const series = buildSeries(90);
+    const index = new Map(series.map((row, i) => [row.date, i]));
+
+    for (const car of createdCars) {
+      const slot = index.get(dayKey(car.createdAt));
+      if (slot !== undefined) series[slot].cars += 1;
+    }
+    for (const booking of bookings) {
+      const slot = index.get(dayKey(booking.createdAt));
+      if (slot !== undefined) series[slot].bookings += 1;
+    }
+
+    const byCount = (rows, key) =>
+      rows
+        .map((row) => ({ name: row[key] || "Unknown", count: row._count._all }))
+        .sort((a, b) => b.count - a.count);
+
+    return {
+      success: true,
+      data: {
+        series,
+        byMake: byCount(makes, "make"),
+        byBody: byCount(bodies, "bodyType"),
+        byStatus: byCount(statuses, "status"),
+        recent: recent.map((booking) => ({
+          id: booking.id,
+          car: `${booking.car.year} ${booking.car.make} ${booking.car.model}`,
+          customer: booking.user.name || booking.user.email,
+          date: booking.createdAt.toISOString(),
+          status: booking.status,
+        })),
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching admin analytics:", error.message);
+    return { success: false, error: error.message };
+  }
 } 
