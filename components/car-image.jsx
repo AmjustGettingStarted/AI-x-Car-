@@ -7,6 +7,7 @@ export default function CarImage({
   sizes,
   priority = false,
   className = "",
+  foregroundClassName = "",
 }) {
   if (!src) {
     return (
@@ -31,7 +32,7 @@ export default function CarImage({
         fill
         priority={priority}
         sizes={sizes}
-        className="object-contain drop-shadow-[0_24px_40px_rgba(0,0,0,0.55)]"
+        className={`object-contain drop-shadow-[0_24px_40px_rgba(0,0,0,0.55)] ${foregroundClassName}`}
       />
     </div>
   );
