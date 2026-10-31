@@ -132,6 +132,16 @@
   display: none;
 }
 
+.cover-stage {
+  --cover-step: 52vw;
+}
+
+@media (min-width: 1024px) {
+  .cover-stage {
+    --cover-step: 21vw;
+  }
+}
+
 /* Brand marquee (Browse by Make). Pure CSS so no scroll listeners are needed. */
 @keyframes marquee-left {
   from {
