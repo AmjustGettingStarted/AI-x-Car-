@@ -1,10 +1,12 @@
 "use client";
 
 import { Fragment } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UserButton } from "@clerk/nextjs";
 import { ArrowLeft, Calendar, Car, Cog, LayoutDashboard } from "lucide-react";
+import logo from "@/public/logo.png";
 import { BRAND_NAME } from "@/lib/brand";
 import { Button } from "@/components/ui/button";
 import {
@@ -69,12 +71,22 @@ export default function AdminShell({ user, defaultOpen = true, children }) {
   return (
     <SidebarProvider defaultOpen={defaultOpen} className="bg-[#050505] text-white">
       <Sidebar collapsible="icon" className="border-white/[0.08] bg-[#0a0a0b]">
-        <SidebarHeader className="gap-1 bg-[#0a0a0b] px-4 py-5">
+        <SidebarHeader className="gap-1 bg-[#0a0a0b] px-4 py-5 group-data-[collapsible=icon]:p-2 group-data-[collapsible=icon]:items-center">
           <Link
             href="/admin"
-            className="truncate font-display text-lg font-semibold uppercase tracking-tight text-white"
+            className="group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:justify-center"
           >
-            {BRAND_NAME}
+            <Image
+              src={logo}
+              alt={BRAND_NAME}
+              width={28}
+              height={28}
+              priority
+              className="hidden size-7 object-contain group-data-[collapsible=icon]:block"
+            />
+            <span className="truncate font-display text-lg font-semibold uppercase tracking-tight text-white group-data-[collapsible=icon]:hidden">
+              {BRAND_NAME}
+            </span>
           </Link>
           <p className="font-[family-name:var(--font-label)] text-[10px] uppercase tracking-[0.32em] text-[#ff4d1a] group-data-[collapsible=icon]:hidden">
             Admin
