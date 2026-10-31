@@ -7,7 +7,10 @@ import WhyChoose from "@/components/home/why-choose";
 import BodyCoverflow from "@/components/home/body-coverflow";
 import FaqSection from "@/components/home/faq-section";
 import HomeCta from "@/components/home/home-cta";
+import Header from "@/components/header";
 import SiteFooter from "@/components/home/site-footer";
+
+export const dynamic = "force-dynamic";
 
 function withCounts(counts) {
   const byName = new Map(
@@ -41,6 +44,7 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col">
+      <Header />
       {/* Keeps the page above the fixed footer. No transform here: the brand
           reveal image has to stay viewport-fixed. */}
       <div className="relative z-10 flex flex-col bg-[#050505]">
