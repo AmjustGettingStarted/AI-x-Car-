@@ -5,9 +5,8 @@ import BrandReveal from "@/components/brand-reveal";
 import WhyChoose from "@/components/home/why-choose";
 import BodyCoverflow from "@/components/home/body-coverflow";
 import FaqSection from "@/components/home/faq-section";
-import HomeCta from "@/components/home/home-cta";
+import HomeClose from "@/components/home/home-close";
 import Header from "@/components/header";
-import SiteFooter from "@/components/home/site-footer";
 
 export const dynamic = "force-dynamic";
 
@@ -69,11 +68,8 @@ export default async function Home() {
         <WhyChoose />
         <BodyCoverflow types={withCounts(bodyTypeCounts)} />
         <FaqSection />
-        <HomeCta />
+        <HomeClose />
       </div>
-
-      <div aria-hidden="true" className="pointer-events-none h-[100svh]" />
-      <SiteFooter reveal />
     </div>
   );
 }

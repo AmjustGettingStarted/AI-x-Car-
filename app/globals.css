@@ -279,6 +279,47 @@
   }
 }
 
+@keyframes cta-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.cta-marquee {
+  overflow: hidden;
+  width: 100%;
+}
+
+.cta-marquee-track {
+  display: flex;
+  flex-flow: row nowrap;
+  width: max-content;
+  align-items: center;
+  animation: cta-marquee 60s linear infinite;
+}
+
+.cta-marquee-word {
+  padding-inline: 0.35em;
+  font-family: var(--font-clash), sans-serif;
+  font-size: clamp(3rem, 8vw, 8rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.35);
+}
+
+.cta-marquee:hover .cta-marquee-track,
+.cta-marquee:focus-within .cta-marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-marquee-track {
+    animation-play-state: paused;
+  }
+}
+
 /* Leftover light utilities inside the admin shell. */
 [data-admin] .bg-white,
 [data-admin] .bg-gray-50,
