@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import useFetch from "@/hooks/use-fetch";
+import { Skeleton } from "@/components/ui/skeleton";
 import { formatCurrency } from "@/lib/helper";
 import {
   CarIcon,
@@ -118,19 +119,19 @@ const CarsList = () => {
     switch (status) {
       case "AVAILABLE":
         return (
-          <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+          <Badge className="border-emerald-400/40 bg-emerald-400/10 text-emerald-200">
             Available
           </Badge>
         );
       case "UNAVAILABLE":
         return (
-          <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-100">
+          <Badge className="border-amber-400/40 bg-amber-400/10 text-amber-200">
             Unavailable
           </Badge>
         );
       case "SOLD":
         return (
-          <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">
+          <Badge className="border-[#1a5cff]/40 bg-[#1a5cff]/10 text-[#8eb0ff]">
             Sold
           </Badge>
         );
@@ -165,72 +166,97 @@ const CarsList = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-        <Button
-          onClick={() => router.push("/admin/cars/create")}
-          className="flex items-center"
-        >
-          <Plus className="h-4 w-4" /> Add Cars
-        </Button>
+      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <form
           action=""
           onSubmit={handleSearchSubmit}
-          className="w-full flex sm:w-auto"
+          className="flex w-full sm:w-auto"
         >
           <div className="relative flex-1">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500 " />
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-white/70" />
             <Input
               type="search"
-              placeholder="Search Cars ..."
-              className=" pl-9 w-full sm:w-60"
+              placeholder="Search cars"
+              className="w-full border-white/20 bg-[#0b0b0c] pl-9 text-white sm:w-60"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
         </form>
+        <Button
+          onClick={() => router.push("/admin/cars/create")}
+          className="bg-[#ff4d1a] text-white hover:bg-[#ff6a3d]"
+        >
+          <Plus className="h-4 w-4" /> Add car
+        </Button>
       </div>
       {/* Cars Table */}
-      <Card>
+      <Card className="border-white/10 bg-[#0b0b0c] text-white">
         <CardContent className="p-0">
           {loadingCars && !carsData ? (
-            <div className="py-12 flex items-center justify-center">
-              <Loader2 className=" h-8 w-8 text-gray-400 animate-spin" />
-            </div>
+            <Table>
+              <TableHeader>
+                <TableRow className="border-white/10 hover:bg-transparent">
+                  <TableHead className="w-28 text-white/70">Photo</TableHead>
+                  <TableHead className="text-white/70">Car</TableHead>
+                  <TableHead className="text-white/70">Year</TableHead>
+                  <TableHead className="text-white/70">Price</TableHead>
+                  <TableHead className="text-white/70">Status</TableHead>
+                  <TableHead className="text-white/70">Featured</TableHead>
+                  <TableHead className="text-right text-white/70">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {["a", "b", "c", "d", "e", "f"].map((key) => (
+                  <TableRow key={key} className="border-white/10">
+                    <TableCell><Skeleton className="h-14 w-24 rounded-md bg-white/10" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-36 bg-white/10" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-12 bg-white/10" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-16 bg-white/10" /></TableCell>
+                    <TableCell><Skeleton className="h-6 w-20 bg-white/10" /></TableCell>
+                    <TableCell><Skeleton className="h-8 w-8 rounded-full bg-white/10" /></TableCell>
+                    <TableCell className="text-right"><Skeleton className="ml-auto h-8 w-8 bg-white/10" /></TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           ) : carsData?.success && carsData.data.length > 0 ? (
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-12"></TableHead>
-                    <TableHead>Make & Model</TableHead>
-                    <TableHead>Year</TableHead>
-                    <TableHead>Price</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Featured</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                  <TableRow className="border-white/10 hover:bg-transparent">
+                    <TableHead className="w-28 text-white/70">Photo</TableHead>
+                    <TableHead className="text-white/70">Car</TableHead>
+                    <TableHead className="text-white/70">Year</TableHead>
+                    <TableHead className="text-white/70">Price</TableHead>
+                    <TableHead className="text-white/70">Status</TableHead>
+                    <TableHead className="text-white/70">Featured</TableHead>
+                    <TableHead className="text-right text-white/70">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {carsData.data.map((car) => {
                     return (
-                      <TableRow key={car.id}>
-                        <TableCell className="min-w-20 min-h-20 rounded-md ">
-                          {car.images && car.images.length > 0 ? (
-                            <Image
-                              src={car.images[0]}
-                              alt={`${car.make} ${car.model}`}
-                              height={1080}
-                              width={1920}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                              <CarIcon className="h-6 w-6 text-gray-400" />
-                            </div>
-                          )}
+                      <TableRow key={car.id} className="border-white/10">
+                        <TableCell>
+                          <div className="relative h-14 w-24 overflow-hidden rounded-md bg-[#111113]">
+                            {car.images && car.images.length > 0 ? (
+                              <Image
+                                src={car.images[0]}
+                                alt={`${car.make} ${car.model}`}
+                                fill
+                                sizes="96px"
+                                className="object-contain"
+                              />
+                            ) : (
+                              <div className="flex h-full w-full items-center justify-center">
+                                <CarIcon className="h-5 w-5 text-white/40" />
+                              </div>
+                            )}
+                          </div>
                         </TableCell>
-                        <TableCell className="font-medium ">
-                          {car.make}{" "}
+                        <TableCell className="font-medium text-white">
+                          <div className="text-sm text-white/70">{car.make}</div>
                           {car.model.length > 20 ? (
                             <TooltipProvider>
                               <Tooltip>
@@ -244,21 +270,21 @@ const CarsList = () => {
                             car.model
                           )}
                         </TableCell>
-                        <TableCell>{car.year}</TableCell>
-                        <TableCell>{formatCurrency(car.price)}</TableCell>
+                        <TableCell className="text-white/80">{car.year}</TableCell>
+                        <TableCell className="font-medium text-[#1a5cff]">{formatCurrency(car.price)}</TableCell>
                         <TableCell>{getStatusBadge(car.status)}</TableCell>
                         <TableCell>
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="p-0 w-9 h-9 cursor-pointer"
+                            className="h-9 w-9 cursor-pointer p-0 text-white hover:bg-white/10 hover:text-white"
                             onClick={() => handleToggleFeaturedCar(car)}
                             disabled={updatingCar}
                           >
                             {car.featured ? (
                               <Star className="h-5 w-5 text-amber-500 fill-amber-500" />
                             ) : (
-                              <StarOff className="h-5 w-5 text-gray-400" />
+                              <StarOff className="h-5 w-5 text-white/50" />
                             )}
                           </Button>
                         </TableCell>
@@ -268,7 +294,7 @@ const CarsList = () => {
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                className="w-8 h-8 p-0"
+                                className="h-8 w-8 p-0 text-white hover:bg-white/10 hover:text-white"
                               >
                                 <MoreHorizontal className="h-4 w-4" />
                               </Button>
@@ -330,18 +356,21 @@ const CarsList = () => {
               </Table>
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
-              <CarIcon className="h-12 w-12 text-gray-300 mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-1">
+            <div className="flex flex-col items-center justify-center px-4 py-12 text-center">
+              <CarIcon className="mb-4 h-12 w-12 text-white/30" />
+              <h3 className="mb-1 text-lg font-medium text-white">
                 No cars found
               </h3>
-              <p className="text-gray-500 mb-4">
+              <p className="mb-4 text-white/70">
                 {search
                   ? "No cars match your search criteria"
                   : "Your inventory is empty. Add cars to get started."}
               </p>
-              <Button onClick={() => router.push("/admin/cars/create")}>
-                Add Your First Car
+              <Button
+                onClick={() => router.push("/admin/cars/create")}
+                className="bg-[#ff4d1a] text-white hover:bg-[#ff6a3d]"
+              >
+                Add car
               </Button>
             </div>
           )}
