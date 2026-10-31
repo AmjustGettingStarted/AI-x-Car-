@@ -1,88 +1,61 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
-export default function HeaderWrapper({ children, className = "", isAdminPage = false }) {
+const EASE = [0.22, 1, 0.36, 1];
+
+export default function HeaderWrapper({ children, className = "" }) {
   const pathname = usePathname();
-
   const [isVisible, setIsVisible] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [scrollDirection, setScrollDirection] = useState("up");
-
-  const lastScrollY = useRef(0);
 
   useEffect(() => {
-    setIsMounted(true);
-
-    if (pathname === "/") {
-      try {
-        const alreadyPlayed =
-          sessionStorage.getItem("hero_intro_played") === "true";
-        if (alreadyPlayed) {
-          setIsVisible(true);
-        } else {
-          setIsVisible(false);
-          const onEnded = () => setIsVisible(true);
-          window.addEventListener("hero-video-ended", onEnded);
-          return () => {
-            window.removeEventListener("hero-video-ended", onEnded);
-          };
-        }
-      } catch {
-        setIsVisible(true);
-      }
-    } else {
+    if (pathname !== "/") {
       setIsVisible(true);
+      return;
     }
+
+    try {
+      if (sessionStorage.getItem("hero_intro_played") === "true") {
+        setIsVisible(true);
+        return;
+      }
+    } catch {
+      setIsVisible(true);
+      return;
+    }
+
+    setIsVisible(false);
+    const onEnded = () => setIsVisible(true);
+    window.addEventListener("hero-video-ended", onEnded);
+    return () => window.removeEventListener("hero-video-ended", onEnded);
   }, [pathname]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      if (currentScrollY > 30) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-
-      if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
-        setScrollDirection("down");
-      } else if (currentScrollY < lastScrollY.current) {
-        setScrollDirection("up");
-      }
-
-      lastScrollY.current = currentScrollY;
+    const onScroll = () => {
+      const next = window.scrollY > 24;
+      setIsScrolled((current) => (current === next ? current : next));
     };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const showHeader = isMounted && isVisible && scrollDirection === "up";
-  const isAdmin = isAdminPage || pathname?.startsWith("/admin");
-
-  const glassStyles = isScrolled
-    ? "bg-black/80 backdrop-blur-xl border-b border-orange-500/20 shadow-[0_8px_32px_0_rgba(255,102,0,0.1)] text-white"
-    : isAdmin
-      ? "bg-[#0b0b0c]/90 backdrop-blur-xl border-b border-white/10 text-white"
-      : "bg-transparent border-transparent text-white";
+  const overHero = pathname === "/" && !isScrolled;
+  const glassStyles = overHero
+    ? "border-transparent bg-transparent text-white"
+    : "border-b border-white/10 bg-[#0b0b0c]/80 text-white backdrop-blur-xl";
 
   return (
     <motion.header
-      initial={{ y: -100, opacity: 0 }}
-      animate={{
-        y: showHeader ? 0 : -100,
-        opacity: showHeader ? 1 : 0,
-      }}
-      transition={{
-        duration: 0.4,
-        ease: [0.25, 0.1, 0.25, 1.0], // Matches the smooth cubic-bezier curve from hero
-      }}
-      className={`fixed top-0 w-full z-50 transition-colors duration-300 ${glassStyles} ${className}`}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: isVisible ? 1 : 0 }}
+      transition={{ duration: 0.6, ease: EASE }}
+      className={`fixed top-0 z-50 w-full ${glassStyles} ${
+        isVisible ? "pointer-events-auto" : "pointer-events-none"
+      } ${className}`}
     >
       {children}
     </motion.header>

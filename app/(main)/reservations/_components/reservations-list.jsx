@@ -30,14 +30,16 @@ const ReservationsList = ({ initialData }) => {
   // No reservations
   if (initialData?.data?.length === 0) {
     return (
-      <div className="min-h-[400px] flex flex-col items-center justify-center text-center p-8 border rounded-lg bg-gray-50">
-        <div className="bg-gray-100 p-4 rounded-full mb-4">
-          <Calendar className="h-8 w-8 text-gray-500" />
+      <div className="flex min-h-[400px] flex-col items-center justify-center rounded-[2rem] border border-white/10 bg-[#0b0b0c] p-8 text-center">
+        <div className="mb-4 rounded-full border border-[#ff4d1a]/30 bg-[#ff4d1a]/10 p-4">
+          <Calendar className="h-8 w-8 text-[#ff4d1a]" />
         </div>
-        <h3 className="text-lg font-medium mb-2">No Reservations Found</h3>
-        <p className="text-gray-500 mb-6 max-w-md">
-          You don't have any test drive reservations yet. Browse our cars and
-          book a test drive to get started.
+        <h3 className="font-[family-name:var(--font-clash)] text-2xl font-semibold uppercase tracking-tight">
+          No reservations yet
+        </h3>
+        <p className="mb-6 mt-3 max-w-md text-sm text-white/60">
+          You have no test drive reservations yet. Browse the inventory and book
+          a drive.
         </p>
         <Button variant="default" asChild className={`cursor-pointer`}>
           <Link href="/cars">Browse Cars</Link>
@@ -50,9 +52,11 @@ const ReservationsList = ({ initialData }) => {
     <div className="space-y-6">
       {/* Upcoming Bookings */}
       <div>
-        <h2 className="text-2xl font-bold mb-4">Upcoming Test Drives</h2>
+        <h2 className="mb-4 font-[family-name:var(--font-clash)] text-2xl font-semibold uppercase tracking-tight">
+          Upcoming Test Drives
+        </h2>
         {upcomingBookings.length === 0 ? (
-          <p className="text-gray-500 italic">No upcoming test drives.</p>
+          <p className="text-sm text-white/50">No upcoming test drives.</p>
         ) : (
           <div className="space-y-3">
             {upcomingBookings.map((booking) => (
@@ -72,7 +76,9 @@ const ReservationsList = ({ initialData }) => {
       {/* Past Bookings */}
       {pastBookings.length > 0 && (
         <div>
-          <h2 className="text-2xl font-bold mb-4">Past Test Drives</h2>
+          <h2 className="mb-4 font-[family-name:var(--font-clash)] text-2xl font-semibold uppercase tracking-tight">
+            Past Test Drives
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {pastBookings.map((booking) => (
               <TestDriveCard

@@ -1,12 +1,12 @@
 import { getCarById } from "@/actions/car-listings";
+import { BRAND_NAME } from "@/lib/brand";
 import { notFound } from "next/navigation";
-import React from "react";
 import TestDriveForm from "./_component/test-drive-form";
 
 export async function generateMetadata() {
   return {
-    title: `Book Test Drive 📑 | AIxCAR`,
-    description: `Schedule a test drive in few seconds`,
+    title: `Book Test Drive | ${BRAND_NAME}`,
+    description: "Schedule a test drive in a few seconds",
   };
 }
 
@@ -20,8 +20,13 @@ const TestDrivePage = async ({ params }) => {
     notFound();
   }
   return (
-    <div className="container mx-auto px-4 py-12">
-      <h1 className="text-6xl mb-6 gradient-title">Book a Test Drive</h1>
+    <div className="px-2 py-4 sm:px-4">
+      <p className="mb-3 font-[family-name:var(--font-label)] text-[10px] uppercase tracking-[0.35em] text-[#ff4d1a]">
+        Booking
+      </p>
+      <h1 className="mb-8 font-[family-name:var(--font-clash)] text-5xl font-semibold uppercase tracking-tight sm:text-7xl">
+        Book a Test Drive
+      </h1>
       <TestDriveForm
         car={result.data}
         testDriveInfo={result.data.testDriveInfo}

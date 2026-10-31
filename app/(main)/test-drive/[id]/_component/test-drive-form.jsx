@@ -28,7 +28,9 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format, parseISO } from "date-fns";
 import { CalendarIcon, Car, CheckCircle2, Loader2 } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { BRAND_NAME } from "@/lib/brand";
 import React, { use, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -208,31 +210,34 @@ const TestDriveForm = ({ car, testDriveInfo }) => {
       <div className="md:col-span-1">
         <Card>
           <CardContent>
-            <h2 className="text-xl font-bold mb-4">Car Details</h2>
+            <h2 className="mb-4 font-[family-name:var(--font-clash)] text-xl font-semibold uppercase tracking-tight">
+              Car Details
+            </h2>
 
-            {/* to Render first image of the Car */}
-            <div className="aspect-video rounded-lg overflow-hidden relative mb-4">
+            <div className="relative mb-4 aspect-video overflow-hidden rounded-lg">
               {car.images && car.images.length > 0 ? (
-                <img
+                <Image
                   src={car.images[0]}
                   alt={`${car.year} ${car.make} ${car.model}`}
-                  className="object-cover w-full h-full"
+                  fill
+                  sizes="(min-width: 768px) 30vw, 100vw"
+                  className="object-cover"
                 />
               ) : (
-                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                  <Car className="h-12 w-12 text-gray-400" />
+                <div className="flex h-full w-full items-center justify-center bg-[#111113]">
+                  <Car className="h-12 w-12 text-white/30" />
                 </div>
               )}
             </div>
-            <h3 className="text-lg font-bold">
+            <h3 className="font-[family-name:var(--font-clash)] text-lg font-semibold uppercase tracking-tight">
               {car.year} {car.make} {car.model}
             </h3>
 
-            <div className="mt-2 text-xl font-bold text-blue-600">
+            <div className="mt-2 text-xl font-semibold text-[#1a5cff]">
               ${car.price.toLocaleString()}
             </div>
 
-            <div className="mt-4 text-sm text-gray-500">
+            <div className="mt-4 text-sm text-white/60">
               <div className="flex justify-between py-1 border-b">
                 <span>Mileage</span>
                 <span className="font-medium">
@@ -262,19 +267,21 @@ const TestDriveForm = ({ car, testDriveInfo }) => {
         {/* Dealership Info */}
         <Card className="mt-6">
           <CardContent className="p-6">
-            <h2 className="text-xl font-bold mb-4">Dealership Info</h2>
+            <h2 className="mb-4 font-[family-name:var(--font-clash)] text-xl font-semibold uppercase tracking-tight">
+              Dealership Info
+            </h2>
             <div className="text-sm">
               <p className="font-medium">
-                {dealership?.name || "Vehiql Motors"}
+                {dealership?.name || BRAND_NAME}
               </p>
-              <p className="text-gray-600 mt-1">
+              <p className="mt-1 text-white/60">
                 {dealership?.address || "Address not available"}
               </p>
-              <p className="text-gray-600 mt-3">
+              <p className="mt-3 text-white/60">
                 <span className="font-medium">Phone:</span>{" "}
                 {dealership?.phone || "Not available"}
               </p>
-              <p className="text-gray-600">
+              <p className="text-white/60">
                 <span className="font-medium">Email:</span>{" "}
                 {dealership?.email || "Not available"}
               </p>
@@ -287,7 +294,9 @@ const TestDriveForm = ({ car, testDriveInfo }) => {
       <div className="md:col-span-2">
         <Card>
           <CardContent className="p-6">
-            <h2 className="text-xl font-bold mb-6">Schedule Your Test Drive</h2>
+            <h2 className="mb-6 font-[family-name:var(--font-clash)] text-xl font-semibold uppercase tracking-tight">
+              Schedule Your Test Drive
+            </h2>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               {/* Date Selection */}
@@ -402,7 +411,7 @@ const TestDriveForm = ({ car, testDriveInfo }) => {
               {/* Submit Button */}
               <Button
                 type="submit"
-                className="w-full cursor-pointer"
+                className="w-full cursor-pointer bg-[#ff4d1a] text-white hover:bg-[#ff6a3d]"
                 disabled={bookingInProgress}
               >
                 {bookingInProgress ? (
@@ -417,12 +426,12 @@ const TestDriveForm = ({ car, testDriveInfo }) => {
             </form>
 
             {/* Instructions */}
-            <div className="mt-8 bg-gray-50 p-4 rounded-lg">
-              <h3 className="font-medium mb-2">What to expect</h3>
-              <ul className="space-y-2 text-sm text-gray-600">
+            <div className="mt-8 rounded-lg border border-white/10 bg-[#111113] p-4">
+              <h3 className="mb-2 font-medium">What to expect</h3>
+              <ul className="space-y-2 text-sm text-white/60">
                 <li className="flex items-start">
-                  <CheckCircle2 className="h-4 w-4 text-green-500 mr-2 mt-0.5" />
-                  Bring your driver's license for verification
+                  <CheckCircle2 className="mr-2 mt-0.5 h-4 w-4 text-emerald-400" />
+                  Bring your driver&apos;s license for verification
                 </li>
                 <li className="flex items-start">
                   <CheckCircle2 className="h-4 w-4 text-green-500 mr-2 mt-0.5" />
@@ -470,12 +479,12 @@ const TestDriveForm = ({ car, testDriveInfo }) => {
                 </div>
                 <div className="flex justify-between">
                   <span className="font-medium">Dealership:</span>
-                  <span>{dealership?.name || "Vehiql Motors"}</span>
+                  <span>{dealership?.name || BRAND_NAME}</span>
                 </div>
               </div>
 
-              <div className="mt-4 bg-blue-50 p-3 rounded text-sm text-blue-700">
-                Please arrive 10 minutes early with your driver's license.
+              <div className="mt-4 rounded border border-[#1a5cff]/30 bg-[#1a5cff]/10 p-3 text-sm text-[#c5d4ff]">
+                Please arrive 10 minutes early with your driver&apos;s license.
               </div>
             </div>
           )}
