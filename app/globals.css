@@ -248,6 +248,26 @@
   }
 }
 
+@keyframes why-idle {
+  from {
+    transform: translateY(-6px);
+  }
+
+  to {
+    transform: translateY(6px);
+  }
+}
+
+.why-idle {
+  animation: why-idle 6s ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .why-idle {
+    animation: none;
+  }
+}
+
 /* Leftover light utilities inside the admin shell. */
 [data-admin] .bg-white,
 [data-admin] .bg-gray-50,
