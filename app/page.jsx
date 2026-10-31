@@ -5,7 +5,8 @@ import BrandReveal from "@/components/brand-reveal";
 import WhyChoose from "@/components/home/why-choose";
 import BodyCoverflow from "@/components/home/body-coverflow";
 import FaqSection from "@/components/home/faq-section";
-import HomeClose from "@/components/home/home-close";
+import HomeCta from "@/components/home/home-cta";
+import SiteFooter from "@/components/home/site-footer";
 import Header from "@/components/header";
 
 export const dynamic = "force-dynamic";
@@ -49,8 +50,8 @@ export default async function Home() {
   return (
     <div className="flex flex-col">
       <Header />
-      {/* Keeps the page above the fixed footer. No transform here: the brand
-          reveal image has to stay viewport-fixed. */}
+      {/* No transform or overflow here. The brand studio stays viewport-fixed,
+          and the closing image stays sticky inside #cta. */}
       <div className="relative z-10 flex flex-col">
         <HeroSection />
 
@@ -68,7 +69,13 @@ export default async function Home() {
         <WhyChoose />
         <BodyCoverflow types={withCounts(bodyTypeCounts)} />
         <FaqSection />
-        <HomeClose />
+        <HomeCta />
+        <section
+          id="footer"
+          className="relative z-20 -mt-[100svh] min-h-svh overflow-hidden rounded-t-[2.5rem] border-t border-white/10 bg-[#050505]"
+        >
+          <SiteFooter className="border-0 bg-transparent" />
+        </section>
       </div>
     </div>
   );

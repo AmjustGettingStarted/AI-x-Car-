@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
       <html lang="en" className={`${clashDisplay.variable} ${trento.variable}`}>
-        <body className="font-[family-name:var(--font-clash)] overflow-x-hidden bg-[#050505] text-white antialiased">
+        <body className="overflow-x-clip bg-[#050505] font-[family-name:var(--font-clash)] text-white antialiased">
           <main className="min-h-screen">{children}</main>
           <Toaster richColors theme="dark" />
         </body>
