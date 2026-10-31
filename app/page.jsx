@@ -1,4 +1,3 @@
-import { bodyTypes } from "@/lib/data";
 import { getAvailableBodyTypeCounts, getFeaturedCars } from "@/actions/home";
 import FeaturedCars from "@/components/featured-cars";
 import HeroSection from "@/components/hero-section";
@@ -6,34 +5,39 @@ import BrandReveal from "@/components/brand-reveal";
 import WhyChoose from "@/components/home/why-choose";
 import BodyCoverflow from "@/components/home/body-coverflow";
 import FaqSection from "@/components/home/faq-section";
-import HomeCta from "@/components/home/home-cta";
+import HomeClose from "@/components/home/home-close";
 import Header from "@/components/header";
-import SiteFooter from "@/components/home/site-footer";
 
 export const dynamic = "force-dynamic";
 
-function withCounts(counts) {
-  const byName = new Map(
-    counts.map((row) => [row.bodyType.trim().toLowerCase(), row.count])
-  );
-  const knownNames = new Set(bodyTypes.map((type) => type.name.toLowerCase()));
-  const known = bodyTypes.map((type) => ({
-    ...type,
-    count: byName.get(type.name.toLowerCase()) ?? 0,
-  }));
-  const extras = counts
-    .filter(
-      (row) => row.bodyType && !knownNames.has(row.bodyType.trim().toLowerCase())
-    )
-    .map((row) => ({
-      id: row.bodyType,
-      name: row.bodyType,
-      image: null,
-      count: row.count,
-    }))
-    .sort((a, b) => a.name.localeCompare(b.name));
+const FALLBACK_BODY_TYPES = [
+  "SUV",
+  "Sedan",
+  "Hatchback",
+  "Convertible",
+  "Coupe",
+  "Supercar",
+  "Pickup",
+  "MPV",
+];
 
-  return [...known, ...extras];
+function withCounts(counts) {
+  const source = counts.length
+    ? [...counts].sort((a, b) => a.bodyType.localeCompare(b.bodyType))
+    : FALLBACK_BODY_TYPES.map((bodyType) => ({ bodyType, count: 0 }));
+  const seen = new Set();
+  const items = [];
+
+  for (const row of source) {
+    const name = row.bodyType?.trim();
+    if (!name) continue;
+    const key = name.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    items.push({ name, count: row.count ?? 0 });
+  }
+
+  return items;
 }
 
 export default async function Home() {
@@ -47,7 +51,7 @@ export default async function Home() {
       <Header />
       {/* Keeps the page above the fixed footer. No transform here: the brand
           reveal image has to stay viewport-fixed. */}
-      <div className="relative z-10 flex flex-col bg-[#050505]">
+      <div className="relative z-10 flex flex-col">
         <HeroSection />
 
         <section
@@ -64,11 +68,8 @@ export default async function Home() {
         <WhyChoose />
         <BodyCoverflow types={withCounts(bodyTypeCounts)} />
         <FaqSection />
-        <HomeCta />
+        <HomeClose />
       </div>
-
-      <div aria-hidden="true" className="pointer-events-none h-[100svh]" />
-      <SiteFooter reveal />
     </div>
   );
 }

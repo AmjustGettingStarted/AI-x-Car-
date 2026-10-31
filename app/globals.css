@@ -139,13 +139,24 @@
   display: none;
 }
 
-.cover-stage {
-  --cover-step: 52vw;
+@keyframes body-glow {
+  from {
+    opacity: 0.8;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
-@media (min-width: 1024px) {
-  .cover-stage {
-    --cover-step: 21vw;
+.cover-glow {
+  animation: body-glow 2.8s ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cover-glow {
+    animation: none;
+    opacity: 0.9;
   }
 }
 
@@ -210,6 +221,102 @@
 
   .marquee {
     mask-image: none;
+  }
+}
+
+/* Browse by Make. Stays one horizontal row; reduced motion pauses, it does not wrap. */
+@keyframes brand-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.brand-marquee {
+  overflow: hidden;
+  width: 100%;
+}
+
+.brand-marquee-track {
+  display: flex;
+  flex-flow: row nowrap;
+  width: max-content;
+  gap: 1rem;
+  animation: brand-marquee 45s linear infinite;
+}
+
+.brand-marquee-track[data-direction="reverse"] {
+  animation-direction: reverse;
+}
+
+.brand-marquee:hover .brand-marquee-track,
+.brand-marquee:focus-within .brand-marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes why-idle {
+  from {
+    transform: translateY(-6px);
+  }
+
+  to {
+    transform: translateY(6px);
+  }
+}
+
+.why-idle {
+  animation: why-idle 6s ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .why-idle {
+    animation: none;
+  }
+}
+
+@keyframes cta-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.cta-marquee {
+  overflow: hidden;
+  width: 100%;
+}
+
+.cta-marquee-track {
+  display: flex;
+  flex-flow: row nowrap;
+  width: max-content;
+  align-items: center;
+  animation: cta-marquee 60s linear infinite;
+}
+
+.cta-marquee-word {
+  padding-inline: 0.35em;
+  font-family: var(--font-clash), sans-serif;
+  font-size: clamp(3rem, 8vw, 8rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.35);
+}
+
+.cta-marquee:hover .cta-marquee-track,
+.cta-marquee:focus-within .cta-marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-marquee-track {
+    animation-play-state: paused;
   }
 }
 
