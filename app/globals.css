@@ -213,6 +213,41 @@
   }
 }
 
+/* Browse by Make. Stays one horizontal row; reduced motion pauses, it does not wrap. */
+@keyframes brand-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.brand-marquee {
+  overflow: hidden;
+  width: 100%;
+}
+
+.brand-marquee-track {
+  display: flex;
+  flex-flow: row nowrap;
+  width: max-content;
+  gap: 1rem;
+  animation: brand-marquee 45s linear infinite;
+}
+
+.brand-marquee-track[data-direction="reverse"] {
+  animation-direction: reverse;
+}
+
+.brand-marquee:hover .brand-marquee-track,
+.brand-marquee:focus-within .brand-marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-marquee-track {
+    animation-play-state: paused;
+  }
+}
+
 /* Leftover light utilities inside the admin shell. */
 [data-admin] .bg-white,
 [data-admin] .bg-gray-50,
