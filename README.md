@@ -1,152 +1,75 @@
-# Gemini AI-Integrated Car Marketplace: AI-x-Car  
+# Ignite Auto
 
-AI-x-Car is a **next-gen car marketplace** where users can **buy, sell, and book test drives effortlessly**. Designed with **speed, automation, and AI-powered precision**, this platform leverages **Gemini AI** to completely transform the car-buying experience.  
+Admin-managed car dealership marketplace. Dealers and admins list inventory. Customers browse cars, save listings, and book test drives.
 
----
+## Features
 
-## 🔹 AI-Powered Features  
+- AI image search: upload a car photo and get make, model, and details back
+- Admin AI entry: upload a photo while adding a car and fill the listing from the image
+- Test drive booking
+- Saved cars
+- Admin dashboard for inventory, bookings, and dealership settings
 
-- ✅ **Auto-Upload & Fetch Car Details** → Upload an image, and Gemini AI **automatically extracts car details** (make, model, year, price, etc.).  
-- ✅ **Reverse Image Search for Car Details** → AI scans the Image to **verify if the similar car exists**, making searches more reliable.  
-- ✅ **Smart Test Drive Booking** → AI optimizes available slots to **quickly schedule test drives** with dealerships.
+## Stack
 
----
+- Next.js 16 App Router and React 19
+- Tailwind CSS v4
+- Prisma 6 and PostgreSQL
+- Clerk authentication
+- Arcjet bot protection and rate limiting
+- Supabase storage for car images (`lib/supabase.js`)
+- Google Gemini (`@google/genai`) for image identification
 
-## 💡 Tech Stack & Efficiency  
+## Environment
 
-Built on **Next.js**, AI-x-Car delivers **fast, interactive, and scalable experiences** with **Prisma ORM, Clerk authentication, and a PostgreSQL database** for secure transactions.  
+Create `.env.local`. Names only:
 
-🔹 **Core Technologies**  
-- **Next.js** → React framework for server-side rendering, routing, and API routes.  
-- **React** → UI library for building interactive user interfaces.  
-- **Prisma ORM** → Type-safe database access for PostgreSQL.  
-- **PostgreSQL** → Relational database for storing users, cars, bookings, etc.  
-- **Clerk** → Authentication and user management.  
-- **Arcjet** → Advanced security solution providing rate limiting, bot mitigation, spam prevention, and email validation 
-- **Tailwind CSS** → Utility-first CSS framework for rapid UI development.  
-- **Lucide Icons** → Modern SVG icons.  
-- **Sonner** → Toast notifications.  
-- **date-fns** → JavaScript date utility library.  
-- **Vercel** → Deployment platform (recommended).  
+```
+DATABASE_URL
+DIRECT_URL
+NEXT_PUBLIC_SUPABASE_URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY
+GEMINI_API_KEY
+ARCJET_KEY
+CRON_SECRET
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+CLERK_SECRET_KEY
+```
 
-🚀 **AI-x-Car isn’t just another car marketplace—it’s an AI-driven revolution in automotive sales.**  
-Whether you're buying, selling, or verifying listings, **Gemini AI ensures accuracy, automation, and efficiency like never before.**  
+`DATABASE_URL`, `DIRECT_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `GEMINI_API_KEY`, `ARCJET_KEY`, and `CRON_SECRET` are read by this repo. Clerk reads `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY`. `NODE_ENV` is read in `lib/prisma.js` and is set by Next.js.
 
----
+`CRON_SECRET` authorizes `GET /api/cron/keep-alive` (`Authorization: Bearer <CRON_SECRET>`). Set the same value in Vercel so the daily cron can call the route. The GitHub backup workflow also needs repository secrets `CRON_SECRET` and `APP_URL` (deployed origin, no trailing path).
 
+## Setup
 
-# 📦 Project Structure
+```sh
+npm install --legacy-peer-deps
+npx prisma migrate dev
+npm run dev
+```
 
-This project is organized as follows:
+`postinstall` runs `prisma generate`. Apply the `KeepAlive` migration before the cron route can write.
 
----
+## Keep-alive
 
-## 🗂️ Root Files
+Supabase free projects pause after about a week without activity. `app/api/cron/keep-alive/route.js` checks `CRON_SECRET`, upserts `KeepAlive` id `1`, writes and reads `note`, clears `note`, then lists one object through the Supabase client. The route is excluded from Clerk and Arcjet in `proxy.js`.
 
-- **`.env`** — Environment variables (DB, API keys, etc.)  
-- **`.gitignore`** — Git ignored files  
-- **`components.json`** — Component registry/configuration  
-- **`eslint.config.mjs`** — ESLint configuration  
-- **`jsconfig.json`** — JavaScript config (paths/aliases)  
-- **`middleware.js`** — Next.js middleware for request handling  
-- **`next.config.mjs`** — Next.js configuration  
-- **`package.json`** — Project dependencies and scripts  
-- **`postcss.config.mjs`** — PostCSS configuration for Tailwind  
-- **`tailwind.config.ts`** — Tailwind CSS configuration  
-- **`README.md`** — Project documentation (you're here)  
+`vercel.json` calls that route once per day. `.github/workflows/keep-alive.yml` is a backup every 2 days. GitHub disables scheduled workflows after about 60 days without repository activity, so the Vercel cron is the one to rely on.
 
----
+## Project structure
 
-## 📁 `/actions` — API Logic
-
-- **`admin.js`** — Admin-related actions  
-- **`car-listings.js`** — Car listing CRUD & wishlist logic  
-- **`cars.js`** — Car data fetching & manipulation  
-- **`home.js`** — Homepage data logic  
-- **`settings.js`** — User settings actions  
-- **`test-drive.js`** — Test drive booking logic  
-
----
-
-## 📁 `/app` — Next.js App Directory
-
-- **`favicon.ico`** — Favicon  
-- **`globals.css`** — Global CSS  
-- **`layout.js`** — Root layout (header, footer, providers)  
-
-### 📁 `(main)/cars/[id]/` — Dynamic Car Details Page
-
-- **`page.jsx`** — Car details page  
-- **`_components/car-details.jsx`** — Car details UI and logic  
-- **`_components/emi-calculator.jsx`** — EMI calculator component  
-
----
-
-## 📁 `/components` — Reusable UI Components
-
-- **`header.jsx`** — App header (nav, auth, logo)  
-- **`/ui/`** — UI primitives (e.g., Button, Card, etc.)
-
----
-
-## 📁 `/hooks` — Custom Hooks
-
-- Custom React hooks (e.g., `useFetch`)
-
----
-
-## 📁 `/lib` — Helpers & Prisma Client
-
-- **`checkUser.js`** — User verification/creation  
-- **`helper.js`** — Utility functions  
-
-### 📁 `/generated/prisma/` — Auto-generated Prisma Client
-
-- **`index.js`**  
-- **`edge.js`**  
-- **`client.js`**  
-- **`default.js`**  
-- **`/runtime/`**
-
----
-
-## 📁 `/prisma` — Schema & Migrations
-
-- Contains `schema.prisma` and all migrations
-
----
-
-## 📁 `/public` — Static Assets
-
-- Images, logos, and other static content
-
----
-
-## 📁 `/.next` — Next.js Build Output
-
-- Auto-generated during build
-
-
----
-
-## 📝 Key Files & Directories
-
-- **`app/layout.js`**: Root layout, includes [`Header`](components/header.jsx), global styles, and providers.
-- **`components/header.jsx`**: Navigation bar with authentication, logo, and role-based links.
-- **`actions/`**: Server-side logic for cars, admin, test drives, etc.
-- **`lib/generated/prisma/`**: Prisma ORM client for database access (auto-generated).
-- **`app/(main)/cars/[id]/_components/car-details.jsx`**: Car detail UI, wishlist, share, and quick stats.
-- **`app/(main)/cars/[id]/page.jsx`**: Fetches car data and generates metadata for SEO.
-- **`hooks/use-fetch.js`**: Custom hook for data fetching (not shown, but referenced).
-- **`tailwind.config.ts`**: Tailwind CSS configuration for custom styles.
-- **`next.config.mjs`**: Next.js configuration, including image domains and security headers.
-
----
-
-## 🛠️ Getting Started
-
-1. **Install dependencies:**
-   ```sh
-   npm install --legacy-peer-deps
-
-   ```
+```
+app/
+  (main)/          public and customer pages (cars, saved cars, reservations, test drives)
+  (admin)/admin/   dashboard, inventory, test drives, settings
+  (auth)/          Clerk sign-in and sign-up
+  api/cron/keep-alive/
+  waitlist/
+  page.jsx         home
+actions/           server actions
+components/        shared UI
+lib/               Prisma, Supabase, Gemini, Arcjet
+prisma/            schema and migrations
+proxy.js           Clerk and Arcjet (Next.js 16 proxy)
+vercel.json        daily keep-alive cron
+```
