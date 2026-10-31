@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Instagram, Twitter, Youtube } from "lucide-react";
 import { BRAND_NAME } from "@/lib/brand";
+import { cn } from "@/lib/utils";
 
 const BUILD_YEAR = new Date().getFullYear();
 
@@ -24,15 +25,13 @@ function ColumnTitle({ children }) {
   );
 }
 
-export default function SiteFooter({ reveal = false, ref }) {
+export default function SiteFooter({ className }) {
   return (
     <footer
-      ref={ref}
-      className={
-        reveal
-          ? "pointer-events-auto fixed inset-x-0 bottom-0 -z-10 bg-[#050505] px-5 pt-24 pb-10 sm:px-10"
-          : "relative z-20 border-t border-white/10 bg-[#050505] px-5 pt-24 pb-10 sm:px-10"
-      }
+      className={cn(
+        "relative z-20 border-t border-white/10 bg-[#050505] px-5 pt-24 pb-10 sm:px-10",
+        className,
+      )}
     >
       <p className="max-w-full font-display text-[clamp(3.5rem,14vw,12rem)] uppercase leading-[0.8] text-white">
         {BRAND_NAME}

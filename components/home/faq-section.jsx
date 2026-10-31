@@ -52,10 +52,11 @@ function FaqItem({ item, index }) {
 export default function FaqSection() {
   return (
     <section
+      id="faq"
       aria-labelledby="faq-title"
-      className="relative z-30 bg-[#050505] py-40"
+      className="relative z-20 rounded-b-[2.5rem] border-b border-white/10 bg-[#050505] shadow-[0_40px_90px_rgba(255,77,26,0.22)]"
     >
-      <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-20">
+      <div className="mx-auto grid max-w-7xl gap-12 px-4 py-40 sm:px-6 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-20">
         <div>
           <div className="lg:sticky lg:top-32">
             <p className="mb-4 text-xs uppercase tracking-[0.3em] text-[#ff4d1a]">
