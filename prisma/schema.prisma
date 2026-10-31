@@ -159,3 +159,10 @@ enum BookingStatus {
   CANCELLED
   NO_SHOW
 }
+
+// Pinged by /api/cron/keep-alive so the free Supabase project does not pause.
+model KeepAlive {
+  id       Int      @id
+  pingedAt DateTime
+  note     String?
+}

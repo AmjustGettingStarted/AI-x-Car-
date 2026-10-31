@@ -1,18 +1,12 @@
 "use server";
+import { identifyCarFromImage, toListingDetails } from "@/lib/gemini";
 import { serializeCarData } from "@/lib/helper";
 import { db } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase";
 import { auth } from "@clerk/nextjs/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { v4 as uuidv4 } from "uuid";
-
-async function fileToBase64(file) {
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
-  return buffer.toString("base64");
-}
 
 // Gemini AI integration for car image processing
 export async function processCarImageWithAI(file) {
@@ -79,30 +73,20 @@ export async function processCarImageWithAI(file) {
         "confidence",
       ];
 
-      const missingFields = requiredFields.filter(
-        (field) => !(field in carDetails)
-      );
-
-      if (missingFields.length > 0) {
-        throw new Error(
-          `AI response missing required fields: ${missingFields.join(", ")}`
-        );
-      }
-
-      // Return success response with data
-      return {
-        success: true,
-        data: carDetails,
-      };
-    } catch (error) {
-      console.error("Failed to parse AI response: ", parseError);
+    const identified = await identifyCarFromImage(file);
+    if (!identified) {
       return {
         success: false,
         error: "Failed to parse AI response",
       };
     }
+
+    return {
+      success: true,
+      data: toListingDetails(identified),
+    };
   } catch (error) {
-    console.error();
+    console.error(error);
     throw new Error("Gemini API error:" + error.message);
   }
 }

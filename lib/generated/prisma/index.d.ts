@@ -43,6 +43,11 @@ export type UserSavedCar = $Result.DefaultSelection<Prisma.$UserSavedCarPayload>
  * 
  */
 export type TestDriveBooking = $Result.DefaultSelection<Prisma.$TestDriveBookingPayload>
+/**
+ * Model KeepAlive
+ * 
+ */
+export type KeepAlive = $Result.DefaultSelection<Prisma.$KeepAlivePayload>
 
 /**
  * Enums
@@ -290,6 +295,16 @@ export class PrismaClient<
     * ```
     */
   get testDriveBooking(): Prisma.TestDriveBookingDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.keepAlive`: Exposes CRUD operations for the **KeepAlive** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more KeepAlives
+    * const keepAlives = await prisma.keepAlive.findMany()
+    * ```
+    */
+  get keepAlive(): Prisma.KeepAliveDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -735,7 +750,8 @@ export namespace Prisma {
     DealershipInfo: 'DealershipInfo',
     WorkingHour: 'WorkingHour',
     UserSavedCar: 'UserSavedCar',
-    TestDriveBooking: 'TestDriveBooking'
+    TestDriveBooking: 'TestDriveBooking',
+    KeepAlive: 'KeepAlive'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -754,7 +770,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "car" | "dealershipInfo" | "workingHour" | "userSavedCar" | "testDriveBooking"
+      modelProps: "user" | "car" | "dealershipInfo" | "workingHour" | "userSavedCar" | "testDriveBooking" | "keepAlive"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1202,6 +1218,80 @@ export namespace Prisma {
           }
         }
       }
+      KeepAlive: {
+        payload: Prisma.$KeepAlivePayload<ExtArgs>
+        fields: Prisma.KeepAliveFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.KeepAliveFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$KeepAlivePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.KeepAliveFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$KeepAlivePayload>
+          }
+          findFirst: {
+            args: Prisma.KeepAliveFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$KeepAlivePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.KeepAliveFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$KeepAlivePayload>
+          }
+          findMany: {
+            args: Prisma.KeepAliveFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$KeepAlivePayload>[]
+          }
+          create: {
+            args: Prisma.KeepAliveCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$KeepAlivePayload>
+          }
+          createMany: {
+            args: Prisma.KeepAliveCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.KeepAliveCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$KeepAlivePayload>[]
+          }
+          delete: {
+            args: Prisma.KeepAliveDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$KeepAlivePayload>
+          }
+          update: {
+            args: Prisma.KeepAliveUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$KeepAlivePayload>
+          }
+          deleteMany: {
+            args: Prisma.KeepAliveDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.KeepAliveUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.KeepAliveUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$KeepAlivePayload>[]
+          }
+          upsert: {
+            args: Prisma.KeepAliveUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$KeepAlivePayload>
+          }
+          aggregate: {
+            args: Prisma.KeepAliveAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateKeepAlive>
+          }
+          groupBy: {
+            args: Prisma.KeepAliveGroupByArgs<ExtArgs>
+            result: $Utils.Optional<KeepAliveGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.KeepAliveCountArgs<ExtArgs>
+            result: $Utils.Optional<KeepAliveCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1292,6 +1382,7 @@ export namespace Prisma {
     workingHour?: WorkingHourOmit
     userSavedCar?: UserSavedCarOmit
     testDriveBooking?: TestDriveBookingOmit
+    keepAlive?: KeepAliveOmit
   }
 
   /* Types for Logging */
@@ -8320,6 +8411,1009 @@ export namespace Prisma {
 
 
   /**
+   * Model KeepAlive
+   */
+
+  export type AggregateKeepAlive = {
+    _count: KeepAliveCountAggregateOutputType | null
+    _avg: KeepAliveAvgAggregateOutputType | null
+    _sum: KeepAliveSumAggregateOutputType | null
+    _min: KeepAliveMinAggregateOutputType | null
+    _max: KeepAliveMaxAggregateOutputType | null
+  }
+
+  export type KeepAliveAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type KeepAliveSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type KeepAliveMinAggregateOutputType = {
+    id: number | null
+    pingedAt: Date | null
+    note: string | null
+  }
+
+  export type KeepAliveMaxAggregateOutputType = {
+    id: number | null
+    pingedAt: Date | null
+    note: string | null
+  }
+
+  export type KeepAliveCountAggregateOutputType = {
+    id: number
+    pingedAt: number
+    note: number
+    _all: number
+  }
+
+
+  export type KeepAliveAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type KeepAliveSumAggregateInputType = {
+    id?: true
+  }
+
+  export type KeepAliveMinAggregateInputType = {
+    id?: true
+    pingedAt?: true
+    note?: true
+  }
+
+  export type KeepAliveMaxAggregateInputType = {
+    id?: true
+    pingedAt?: true
+    note?: true
+  }
+
+  export type KeepAliveCountAggregateInputType = {
+    id?: true
+    pingedAt?: true
+    note?: true
+    _all?: true
+  }
+
+  export type KeepAliveAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which KeepAlive to aggregate.
+     */
+    where?: KeepAliveWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of KeepAlives to fetch.
+     */
+    orderBy?: KeepAliveOrderByWithRelationInput | KeepAliveOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: KeepAliveWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` KeepAlives from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` KeepAlives.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned KeepAlives
+    **/
+    _count?: true | KeepAliveCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: KeepAliveAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: KeepAliveSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: KeepAliveMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: KeepAliveMaxAggregateInputType
+  }
+
+  export type GetKeepAliveAggregateType<T extends KeepAliveAggregateArgs> = {
+        [P in keyof T & keyof AggregateKeepAlive]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateKeepAlive[P]>
+      : GetScalarType<T[P], AggregateKeepAlive[P]>
+  }
+
+
+
+
+  export type KeepAliveGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: KeepAliveWhereInput
+    orderBy?: KeepAliveOrderByWithAggregationInput | KeepAliveOrderByWithAggregationInput[]
+    by: KeepAliveScalarFieldEnum[] | KeepAliveScalarFieldEnum
+    having?: KeepAliveScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: KeepAliveCountAggregateInputType | true
+    _avg?: KeepAliveAvgAggregateInputType
+    _sum?: KeepAliveSumAggregateInputType
+    _min?: KeepAliveMinAggregateInputType
+    _max?: KeepAliveMaxAggregateInputType
+  }
+
+  export type KeepAliveGroupByOutputType = {
+    id: number
+    pingedAt: Date
+    note: string | null
+    _count: KeepAliveCountAggregateOutputType | null
+    _avg: KeepAliveAvgAggregateOutputType | null
+    _sum: KeepAliveSumAggregateOutputType | null
+    _min: KeepAliveMinAggregateOutputType | null
+    _max: KeepAliveMaxAggregateOutputType | null
+  }
+
+  type GetKeepAliveGroupByPayload<T extends KeepAliveGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<KeepAliveGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof KeepAliveGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], KeepAliveGroupByOutputType[P]>
+            : GetScalarType<T[P], KeepAliveGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type KeepAliveSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    pingedAt?: boolean
+    note?: boolean
+  }, ExtArgs["result"]["keepAlive"]>
+
+  export type KeepAliveSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    pingedAt?: boolean
+    note?: boolean
+  }, ExtArgs["result"]["keepAlive"]>
+
+  export type KeepAliveSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    pingedAt?: boolean
+    note?: boolean
+  }, ExtArgs["result"]["keepAlive"]>
+
+  export type KeepAliveSelectScalar = {
+    id?: boolean
+    pingedAt?: boolean
+    note?: boolean
+  }
+
+  export type KeepAliveOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "pingedAt" | "note", ExtArgs["result"]["keepAlive"]>
+
+  export type $KeepAlivePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "KeepAlive"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      pingedAt: Date
+      note: string | null
+    }, ExtArgs["result"]["keepAlive"]>
+    composites: {}
+  }
+
+  type KeepAliveGetPayload<S extends boolean | null | undefined | KeepAliveDefaultArgs> = $Result.GetResult<Prisma.$KeepAlivePayload, S>
+
+  type KeepAliveCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<KeepAliveFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: KeepAliveCountAggregateInputType | true
+    }
+
+  export interface KeepAliveDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['KeepAlive'], meta: { name: 'KeepAlive' } }
+    /**
+     * Find zero or one KeepAlive that matches the filter.
+     * @param {KeepAliveFindUniqueArgs} args - Arguments to find a KeepAlive
+     * @example
+     * // Get one KeepAlive
+     * const keepAlive = await prisma.keepAlive.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends KeepAliveFindUniqueArgs>(args: SelectSubset<T, KeepAliveFindUniqueArgs<ExtArgs>>): Prisma__KeepAliveClient<$Result.GetResult<Prisma.$KeepAlivePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one KeepAlive that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {KeepAliveFindUniqueOrThrowArgs} args - Arguments to find a KeepAlive
+     * @example
+     * // Get one KeepAlive
+     * const keepAlive = await prisma.keepAlive.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends KeepAliveFindUniqueOrThrowArgs>(args: SelectSubset<T, KeepAliveFindUniqueOrThrowArgs<ExtArgs>>): Prisma__KeepAliveClient<$Result.GetResult<Prisma.$KeepAlivePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first KeepAlive that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {KeepAliveFindFirstArgs} args - Arguments to find a KeepAlive
+     * @example
+     * // Get one KeepAlive
+     * const keepAlive = await prisma.keepAlive.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends KeepAliveFindFirstArgs>(args?: SelectSubset<T, KeepAliveFindFirstArgs<ExtArgs>>): Prisma__KeepAliveClient<$Result.GetResult<Prisma.$KeepAlivePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first KeepAlive that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {KeepAliveFindFirstOrThrowArgs} args - Arguments to find a KeepAlive
+     * @example
+     * // Get one KeepAlive
+     * const keepAlive = await prisma.keepAlive.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends KeepAliveFindFirstOrThrowArgs>(args?: SelectSubset<T, KeepAliveFindFirstOrThrowArgs<ExtArgs>>): Prisma__KeepAliveClient<$Result.GetResult<Prisma.$KeepAlivePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more KeepAlives that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {KeepAliveFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all KeepAlives
+     * const keepAlives = await prisma.keepAlive.findMany()
+     * 
+     * // Get first 10 KeepAlives
+     * const keepAlives = await prisma.keepAlive.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const keepAliveWithIdOnly = await prisma.keepAlive.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends KeepAliveFindManyArgs>(args?: SelectSubset<T, KeepAliveFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KeepAlivePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a KeepAlive.
+     * @param {KeepAliveCreateArgs} args - Arguments to create a KeepAlive.
+     * @example
+     * // Create one KeepAlive
+     * const KeepAlive = await prisma.keepAlive.create({
+     *   data: {
+     *     // ... data to create a KeepAlive
+     *   }
+     * })
+     * 
+     */
+    create<T extends KeepAliveCreateArgs>(args: SelectSubset<T, KeepAliveCreateArgs<ExtArgs>>): Prisma__KeepAliveClient<$Result.GetResult<Prisma.$KeepAlivePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many KeepAlives.
+     * @param {KeepAliveCreateManyArgs} args - Arguments to create many KeepAlives.
+     * @example
+     * // Create many KeepAlives
+     * const keepAlive = await prisma.keepAlive.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends KeepAliveCreateManyArgs>(args?: SelectSubset<T, KeepAliveCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many KeepAlives and returns the data saved in the database.
+     * @param {KeepAliveCreateManyAndReturnArgs} args - Arguments to create many KeepAlives.
+     * @example
+     * // Create many KeepAlives
+     * const keepAlive = await prisma.keepAlive.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many KeepAlives and only return the `id`
+     * const keepAliveWithIdOnly = await prisma.keepAlive.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends KeepAliveCreateManyAndReturnArgs>(args?: SelectSubset<T, KeepAliveCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KeepAlivePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a KeepAlive.
+     * @param {KeepAliveDeleteArgs} args - Arguments to delete one KeepAlive.
+     * @example
+     * // Delete one KeepAlive
+     * const KeepAlive = await prisma.keepAlive.delete({
+     *   where: {
+     *     // ... filter to delete one KeepAlive
+     *   }
+     * })
+     * 
+     */
+    delete<T extends KeepAliveDeleteArgs>(args: SelectSubset<T, KeepAliveDeleteArgs<ExtArgs>>): Prisma__KeepAliveClient<$Result.GetResult<Prisma.$KeepAlivePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one KeepAlive.
+     * @param {KeepAliveUpdateArgs} args - Arguments to update one KeepAlive.
+     * @example
+     * // Update one KeepAlive
+     * const keepAlive = await prisma.keepAlive.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends KeepAliveUpdateArgs>(args: SelectSubset<T, KeepAliveUpdateArgs<ExtArgs>>): Prisma__KeepAliveClient<$Result.GetResult<Prisma.$KeepAlivePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more KeepAlives.
+     * @param {KeepAliveDeleteManyArgs} args - Arguments to filter KeepAlives to delete.
+     * @example
+     * // Delete a few KeepAlives
+     * const { count } = await prisma.keepAlive.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends KeepAliveDeleteManyArgs>(args?: SelectSubset<T, KeepAliveDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more KeepAlives.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {KeepAliveUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many KeepAlives
+     * const keepAlive = await prisma.keepAlive.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends KeepAliveUpdateManyArgs>(args: SelectSubset<T, KeepAliveUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more KeepAlives and returns the data updated in the database.
+     * @param {KeepAliveUpdateManyAndReturnArgs} args - Arguments to update many KeepAlives.
+     * @example
+     * // Update many KeepAlives
+     * const keepAlive = await prisma.keepAlive.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more KeepAlives and only return the `id`
+     * const keepAliveWithIdOnly = await prisma.keepAlive.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends KeepAliveUpdateManyAndReturnArgs>(args: SelectSubset<T, KeepAliveUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KeepAlivePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one KeepAlive.
+     * @param {KeepAliveUpsertArgs} args - Arguments to update or create a KeepAlive.
+     * @example
+     * // Update or create a KeepAlive
+     * const keepAlive = await prisma.keepAlive.upsert({
+     *   create: {
+     *     // ... data to create a KeepAlive
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the KeepAlive we want to update
+     *   }
+     * })
+     */
+    upsert<T extends KeepAliveUpsertArgs>(args: SelectSubset<T, KeepAliveUpsertArgs<ExtArgs>>): Prisma__KeepAliveClient<$Result.GetResult<Prisma.$KeepAlivePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of KeepAlives.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {KeepAliveCountArgs} args - Arguments to filter KeepAlives to count.
+     * @example
+     * // Count the number of KeepAlives
+     * const count = await prisma.keepAlive.count({
+     *   where: {
+     *     // ... the filter for the KeepAlives we want to count
+     *   }
+     * })
+    **/
+    count<T extends KeepAliveCountArgs>(
+      args?: Subset<T, KeepAliveCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], KeepAliveCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a KeepAlive.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {KeepAliveAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends KeepAliveAggregateArgs>(args: Subset<T, KeepAliveAggregateArgs>): Prisma.PrismaPromise<GetKeepAliveAggregateType<T>>
+
+    /**
+     * Group by KeepAlive.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {KeepAliveGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends KeepAliveGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: KeepAliveGroupByArgs['orderBy'] }
+        : { orderBy?: KeepAliveGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, KeepAliveGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetKeepAliveGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the KeepAlive model
+   */
+  readonly fields: KeepAliveFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for KeepAlive.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__KeepAliveClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the KeepAlive model
+   */
+  interface KeepAliveFieldRefs {
+    readonly id: FieldRef<"KeepAlive", 'Int'>
+    readonly pingedAt: FieldRef<"KeepAlive", 'DateTime'>
+    readonly note: FieldRef<"KeepAlive", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * KeepAlive findUnique
+   */
+  export type KeepAliveFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KeepAlive
+     */
+    select?: KeepAliveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the KeepAlive
+     */
+    omit?: KeepAliveOmit<ExtArgs> | null
+    /**
+     * Filter, which KeepAlive to fetch.
+     */
+    where: KeepAliveWhereUniqueInput
+  }
+
+  /**
+   * KeepAlive findUniqueOrThrow
+   */
+  export type KeepAliveFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KeepAlive
+     */
+    select?: KeepAliveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the KeepAlive
+     */
+    omit?: KeepAliveOmit<ExtArgs> | null
+    /**
+     * Filter, which KeepAlive to fetch.
+     */
+    where: KeepAliveWhereUniqueInput
+  }
+
+  /**
+   * KeepAlive findFirst
+   */
+  export type KeepAliveFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KeepAlive
+     */
+    select?: KeepAliveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the KeepAlive
+     */
+    omit?: KeepAliveOmit<ExtArgs> | null
+    /**
+     * Filter, which KeepAlive to fetch.
+     */
+    where?: KeepAliveWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of KeepAlives to fetch.
+     */
+    orderBy?: KeepAliveOrderByWithRelationInput | KeepAliveOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for KeepAlives.
+     */
+    cursor?: KeepAliveWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` KeepAlives from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` KeepAlives.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of KeepAlives.
+     */
+    distinct?: KeepAliveScalarFieldEnum | KeepAliveScalarFieldEnum[]
+  }
+
+  /**
+   * KeepAlive findFirstOrThrow
+   */
+  export type KeepAliveFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KeepAlive
+     */
+    select?: KeepAliveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the KeepAlive
+     */
+    omit?: KeepAliveOmit<ExtArgs> | null
+    /**
+     * Filter, which KeepAlive to fetch.
+     */
+    where?: KeepAliveWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of KeepAlives to fetch.
+     */
+    orderBy?: KeepAliveOrderByWithRelationInput | KeepAliveOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for KeepAlives.
+     */
+    cursor?: KeepAliveWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` KeepAlives from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` KeepAlives.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of KeepAlives.
+     */
+    distinct?: KeepAliveScalarFieldEnum | KeepAliveScalarFieldEnum[]
+  }
+
+  /**
+   * KeepAlive findMany
+   */
+  export type KeepAliveFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KeepAlive
+     */
+    select?: KeepAliveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the KeepAlive
+     */
+    omit?: KeepAliveOmit<ExtArgs> | null
+    /**
+     * Filter, which KeepAlives to fetch.
+     */
+    where?: KeepAliveWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of KeepAlives to fetch.
+     */
+    orderBy?: KeepAliveOrderByWithRelationInput | KeepAliveOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing KeepAlives.
+     */
+    cursor?: KeepAliveWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` KeepAlives from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` KeepAlives.
+     */
+    skip?: number
+    distinct?: KeepAliveScalarFieldEnum | KeepAliveScalarFieldEnum[]
+  }
+
+  /**
+   * KeepAlive create
+   */
+  export type KeepAliveCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KeepAlive
+     */
+    select?: KeepAliveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the KeepAlive
+     */
+    omit?: KeepAliveOmit<ExtArgs> | null
+    /**
+     * The data needed to create a KeepAlive.
+     */
+    data: XOR<KeepAliveCreateInput, KeepAliveUncheckedCreateInput>
+  }
+
+  /**
+   * KeepAlive createMany
+   */
+  export type KeepAliveCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many KeepAlives.
+     */
+    data: KeepAliveCreateManyInput | KeepAliveCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * KeepAlive createManyAndReturn
+   */
+  export type KeepAliveCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KeepAlive
+     */
+    select?: KeepAliveSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the KeepAlive
+     */
+    omit?: KeepAliveOmit<ExtArgs> | null
+    /**
+     * The data used to create many KeepAlives.
+     */
+    data: KeepAliveCreateManyInput | KeepAliveCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * KeepAlive update
+   */
+  export type KeepAliveUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KeepAlive
+     */
+    select?: KeepAliveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the KeepAlive
+     */
+    omit?: KeepAliveOmit<ExtArgs> | null
+    /**
+     * The data needed to update a KeepAlive.
+     */
+    data: XOR<KeepAliveUpdateInput, KeepAliveUncheckedUpdateInput>
+    /**
+     * Choose, which KeepAlive to update.
+     */
+    where: KeepAliveWhereUniqueInput
+  }
+
+  /**
+   * KeepAlive updateMany
+   */
+  export type KeepAliveUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update KeepAlives.
+     */
+    data: XOR<KeepAliveUpdateManyMutationInput, KeepAliveUncheckedUpdateManyInput>
+    /**
+     * Filter which KeepAlives to update
+     */
+    where?: KeepAliveWhereInput
+    /**
+     * Limit how many KeepAlives to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * KeepAlive updateManyAndReturn
+   */
+  export type KeepAliveUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KeepAlive
+     */
+    select?: KeepAliveSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the KeepAlive
+     */
+    omit?: KeepAliveOmit<ExtArgs> | null
+    /**
+     * The data used to update KeepAlives.
+     */
+    data: XOR<KeepAliveUpdateManyMutationInput, KeepAliveUncheckedUpdateManyInput>
+    /**
+     * Filter which KeepAlives to update
+     */
+    where?: KeepAliveWhereInput
+    /**
+     * Limit how many KeepAlives to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * KeepAlive upsert
+   */
+  export type KeepAliveUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KeepAlive
+     */
+    select?: KeepAliveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the KeepAlive
+     */
+    omit?: KeepAliveOmit<ExtArgs> | null
+    /**
+     * The filter to search for the KeepAlive to update in case it exists.
+     */
+    where: KeepAliveWhereUniqueInput
+    /**
+     * In case the KeepAlive found by the `where` argument doesn't exist, create a new KeepAlive with this data.
+     */
+    create: XOR<KeepAliveCreateInput, KeepAliveUncheckedCreateInput>
+    /**
+     * In case the KeepAlive was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<KeepAliveUpdateInput, KeepAliveUncheckedUpdateInput>
+  }
+
+  /**
+   * KeepAlive delete
+   */
+  export type KeepAliveDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KeepAlive
+     */
+    select?: KeepAliveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the KeepAlive
+     */
+    omit?: KeepAliveOmit<ExtArgs> | null
+    /**
+     * Filter which KeepAlive to delete.
+     */
+    where: KeepAliveWhereUniqueInput
+  }
+
+  /**
+   * KeepAlive deleteMany
+   */
+  export type KeepAliveDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which KeepAlives to delete
+     */
+    where?: KeepAliveWhereInput
+    /**
+     * Limit how many KeepAlives to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * KeepAlive without action
+   */
+  export type KeepAliveDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KeepAlive
+     */
+    select?: KeepAliveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the KeepAlive
+     */
+    omit?: KeepAliveOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -8422,6 +9516,15 @@ export namespace Prisma {
   };
 
   export type TestDriveBookingScalarFieldEnum = (typeof TestDriveBookingScalarFieldEnum)[keyof typeof TestDriveBookingScalarFieldEnum]
+
+
+  export const KeepAliveScalarFieldEnum: {
+    id: 'id',
+    pingedAt: 'pingedAt',
+    note: 'note'
+  };
+
+  export type KeepAliveScalarFieldEnum = (typeof KeepAliveScalarFieldEnum)[keyof typeof KeepAliveScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -9060,6 +10163,50 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"TestDriveBooking"> | Date | string
   }
 
+  export type KeepAliveWhereInput = {
+    AND?: KeepAliveWhereInput | KeepAliveWhereInput[]
+    OR?: KeepAliveWhereInput[]
+    NOT?: KeepAliveWhereInput | KeepAliveWhereInput[]
+    id?: IntFilter<"KeepAlive"> | number
+    pingedAt?: DateTimeFilter<"KeepAlive"> | Date | string
+    note?: StringNullableFilter<"KeepAlive"> | string | null
+  }
+
+  export type KeepAliveOrderByWithRelationInput = {
+    id?: SortOrder
+    pingedAt?: SortOrder
+    note?: SortOrderInput | SortOrder
+  }
+
+  export type KeepAliveWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: KeepAliveWhereInput | KeepAliveWhereInput[]
+    OR?: KeepAliveWhereInput[]
+    NOT?: KeepAliveWhereInput | KeepAliveWhereInput[]
+    pingedAt?: DateTimeFilter<"KeepAlive"> | Date | string
+    note?: StringNullableFilter<"KeepAlive"> | string | null
+  }, "id">
+
+  export type KeepAliveOrderByWithAggregationInput = {
+    id?: SortOrder
+    pingedAt?: SortOrder
+    note?: SortOrderInput | SortOrder
+    _count?: KeepAliveCountOrderByAggregateInput
+    _avg?: KeepAliveAvgOrderByAggregateInput
+    _max?: KeepAliveMaxOrderByAggregateInput
+    _min?: KeepAliveMinOrderByAggregateInput
+    _sum?: KeepAliveSumOrderByAggregateInput
+  }
+
+  export type KeepAliveScalarWhereWithAggregatesInput = {
+    AND?: KeepAliveScalarWhereWithAggregatesInput | KeepAliveScalarWhereWithAggregatesInput[]
+    OR?: KeepAliveScalarWhereWithAggregatesInput[]
+    NOT?: KeepAliveScalarWhereWithAggregatesInput | KeepAliveScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"KeepAlive"> | number
+    pingedAt?: DateTimeWithAggregatesFilter<"KeepAlive"> | Date | string
+    note?: StringNullableWithAggregatesFilter<"KeepAlive"> | string | null
+  }
+
   export type UserCreateInput = {
     id?: string
     clerkUserId: string
@@ -9584,6 +10731,48 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type KeepAliveCreateInput = {
+    id: number
+    pingedAt: Date | string
+    note?: string | null
+  }
+
+  export type KeepAliveUncheckedCreateInput = {
+    id: number
+    pingedAt: Date | string
+    note?: string | null
+  }
+
+  export type KeepAliveUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    pingedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type KeepAliveUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    pingedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type KeepAliveCreateManyInput = {
+    id: number
+    pingedAt: Date | string
+    note?: string | null
+  }
+
+  export type KeepAliveUpdateManyMutationInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    pingedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type KeepAliveUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    pingedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -10136,6 +11325,32 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumBookingStatusFilter<$PrismaModel>
     _max?: NestedEnumBookingStatusFilter<$PrismaModel>
+  }
+
+  export type KeepAliveCountOrderByAggregateInput = {
+    id?: SortOrder
+    pingedAt?: SortOrder
+    note?: SortOrder
+  }
+
+  export type KeepAliveAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type KeepAliveMaxOrderByAggregateInput = {
+    id?: SortOrder
+    pingedAt?: SortOrder
+    note?: SortOrder
+  }
+
+  export type KeepAliveMinOrderByAggregateInput = {
+    id?: SortOrder
+    pingedAt?: SortOrder
+    note?: SortOrder
+  }
+
+  export type KeepAliveSumOrderByAggregateInput = {
+    id?: SortOrder
   }
 
   export type UserSavedCarCreateNestedManyWithoutUserInput = {

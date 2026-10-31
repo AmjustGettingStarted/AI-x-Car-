@@ -2,8 +2,8 @@
 import aj from "@/lib/arcjet";
 import { serializeCarData } from "@/lib/helper";
 import { db } from "@/lib/prisma";
+import { identifyCarFromImage, toSearchDetails } from "@/lib/gemini";
 import { request } from "@arcjet/next";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export async function getFeaturedCars(limit = 15) {
   try {
@@ -20,12 +20,6 @@ export async function getFeaturedCars(limit = 15) {
   } catch (error) {
     throw new Error("Error fetching featured cars:" + error.message);
   }
-}
-
-async function fileToBase64(file) {
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
-  return buffer.toString("base64");
 }
 
 export async function processImageSearch(file) {
@@ -106,6 +100,11 @@ export async function processImageSearch(file) {
         error: "Failed to parse AI response",
       };
     }
+
+    return {
+      success: true,
+      data: toSearchDetails(identified),
+    };
   } catch (error) {
     throw new Error("AI Search error:" + error.message);
   }
