@@ -13,10 +13,13 @@ import { toggleSavedCar } from "@/actions/car-listings";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-function WishlistButton({ car, onSavedChange }) {
-  const [isSaved, setIsSaved] = useState(Boolean(car.wishlisted));
+function WishlistButton({ car, onSavedChange, optimistic = false }) {
+  const [isSaved, setIsSaved] = useState(Boolean(car.wishlisted ?? car.wishListed));
   const router = useRouter();
   const { isSignedIn } = useAuth();
+  const handled = React.useRef(null);
+  const pending = React.useRef(null);
+  const toastedError = React.useRef(null);
   const {
     loading: isToggling,
     fn: toggleSavedCarFn,
@@ -25,18 +28,39 @@ function WishlistButton({ car, onSavedChange }) {
   } = useFetch(toggleSavedCar);
 
   useEffect(() => {
-    if (toggleResult?.success && toggleResult.saved !== isSaved) {
-      setIsSaved(toggleResult.saved);
-      toast.success(toggleResult.message);
-      onSavedChange?.(toggleResult.saved);
+    if (!toggleResult || handled.current === toggleResult) return;
+    handled.current = toggleResult;
+
+    if (!toggleResult.success) {
+      if (optimistic && pending.current !== null) {
+        const previous = pending.current;
+        pending.current = null;
+        setIsSaved(previous);
+        onSavedChange?.(previous);
+        toast.error(toggleResult.error || "Failed to update favorites");
+      }
+      return;
     }
-  }, [toggleResult, isSaved, onSavedChange]);
+
+    pending.current = null;
+    if (toggleResult.saved !== isSaved) {
+      setIsSaved(toggleResult.saved);
+    }
+    onSavedChange?.(toggleResult.saved);
+    toast.success(toggleResult.message);
+  }, [toggleResult, isSaved, onSavedChange, optimistic]);
 
   useEffect(() => {
-    if (toggleError) {
-      toast.error("Failed to update favorites");
+    if (!toggleError || toastedError.current === toggleError) return;
+    toastedError.current = toggleError;
+    if (pending.current !== null) {
+      const previous = pending.current;
+      pending.current = null;
+      setIsSaved(previous);
+      onSavedChange?.(previous);
     }
-  }, [toggleError]);
+    toast.error("Failed to update favorites");
+  }, [toggleError, onSavedChange]);
 
   const handleToggleSave = async (e) => {
     e.preventDefault();
@@ -49,6 +73,12 @@ function WishlistButton({ car, onSavedChange }) {
     }
 
     if (isToggling) return;
+
+    if (optimistic) {
+      pending.current = isSaved;
+      setIsSaved(!isSaved);
+    }
+
     await toggleSavedCarFn(car.id);
   };
 
@@ -83,6 +113,7 @@ const PremiumCarCard = React.forwardRef(function PremiumCarCard(
     tilt = false,
     onSavedChange,
     sizes = "(min-width: 1024px) 80vw, 88vw",
+    layout = "overlay",
   },
   ref
 ) {
@@ -105,6 +136,70 @@ const PremiumCarCard = React.forwardRef(function PremiumCarCard(
   function onPointerLeave() {
     rotateX.set(0);
     rotateY.set(0);
+  }
+
+  const chips = [
+    car.bodyType,
+    Number.isFinite(Number(car.mileage)) ? `${Number(car.mileage).toLocaleString()} miles` : null,
+    car.color,
+  ].filter(Boolean);
+
+  if (layout === "stack") {
+    return (
+      <article
+        ref={ref}
+        className={`group flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-[#0b0b0c] transition-[transform,border-color] duration-300 hover:border-[#ff4d1a] motion-safe:hover:-translate-y-1 ${className}`}
+      >
+        <div className="relative aspect-[4/3] overflow-hidden">
+          <Link
+            href={`/cars/${car.id}`}
+            aria-label={`View ${car.make} ${car.model}`}
+            className="absolute inset-0 z-0"
+          >
+            <CarImage
+              src={image}
+              alt={`${car.make} ${car.model}`}
+              sizes={sizes}
+              priority={priority}
+              foregroundClassName="transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover:scale-[1.04]"
+            />
+          </Link>
+          <div className="absolute right-4 top-4 z-10">
+            <WishlistButton car={car} onSavedChange={onSavedChange} optimistic />
+          </div>
+        </div>
+        <div className="flex flex-1 flex-col bg-[#0b0b0c] p-5">
+          <h3 className="line-clamp-2 text-balance font-display text-xl font-semibold uppercase leading-tight text-white">
+            {car.make} {car.model}
+          </h3>
+          <p className="mt-2 text-lg font-semibold leading-none text-[#1a5cff]">
+            ${Number(car.price).toLocaleString()}
+          </p>
+          <p className="mt-3 text-sm text-white/70">
+            {car.year}
+            <span className="mx-2 text-white/40">/</span>
+            {car.transmission}
+            <span className="mx-2 text-white/40">/</span>
+            {car.fuelType}
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {chips.map((label, index) => (
+              <Badge key={`${label}-${index}`} className="border-transparent bg-white/10 text-white">
+                {label}
+              </Badge>
+            ))}
+          </div>
+          <Button
+            asChild
+            className="mt-5 h-12 w-full cursor-pointer bg-[#ff4d1a] text-white hover:bg-[#ff6a3d]"
+          >
+            <Link href={`/cars/${car.id}`}>
+              View car <ArrowRight className="h-4 w-4" />
+            </Link>
+          </Button>
+        </div>
+      </article>
+    );
   }
 
   return (
@@ -154,19 +249,11 @@ const PremiumCarCard = React.forwardRef(function PremiumCarCard(
               {car.fuelType}
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
-              {[
-                car.bodyType,
-                Number.isFinite(Number(car.mileage))
-                  ? `${Number(car.mileage).toLocaleString()} miles`
-                  : null,
-                car.color,
-              ]
-                .filter(Boolean)
-                .map((label) => (
-                  <Badge key={label} className="border-transparent bg-white/10 text-white">
-                    {label}
-                  </Badge>
-                ))}
+              {chips.map((label, index) => (
+                <Badge key={`${label}-${index}`} className="border-transparent bg-white/10 text-white">
+                  {label}
+                </Badge>
+              ))}
             </div>
           </div>
 
