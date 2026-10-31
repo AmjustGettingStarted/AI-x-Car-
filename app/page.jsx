@@ -52,7 +52,7 @@ export default async function Home() {
 
         <section
           aria-labelledby="featured-cars"
-          className="relative z-20 rounded-t-[2.5rem] bg-[#050505] shadow-[0_-40px_80px_-40px_rgba(0,0,0,0.9)] sm:rounded-t-[3.5rem]"
+          className="relative z-20 rounded-t-[2.5rem] bg-[#050505] shadow-[0_-40px_80px_rgba(0,0,0,0.6)]"
         >
           <h2 id="featured-cars" className="sr-only">
             Featured Cars
