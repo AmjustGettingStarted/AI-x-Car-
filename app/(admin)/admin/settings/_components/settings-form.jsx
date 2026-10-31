@@ -37,6 +37,7 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import useFetch from "@/hooks/use-fetch";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   CheckCircle,
   Clock,
@@ -134,11 +135,6 @@ const SettingsForm = () => {
     data: usersData,
     error: usersError,
   } = useFetch(getUsers);
-
-  useEffect(() => {
-    console.log("usersData:", usersData);
-    console.log("usersError:", usersError);
-  }, [usersData, usersError]);
 
   const {
     loading: updatingRole,
@@ -238,7 +234,7 @@ const SettingsForm = () => {
   return (
     <div className="space-y-6">
       <Tabs defaultValue="hours">
-        <TabsList>
+        <TabsList className="bg-[#111113]">
           <TabsTrigger value="hours">
             <Clock className="w-4 h-4 mr-2" /> Working Hours
           </TabsTrigger>
@@ -249,11 +245,11 @@ const SettingsForm = () => {
 
         {/* Hours Tab */}
         <TabsContent value="hours" className="space-y-6 mt-6">
-          <Card>
+          <Card className="border-white/10 bg-[#0b0b0c] text-white">
             <CardHeader>
               <CardTitle>Working Hours</CardTitle>
-              <CardDescription>
-                Set your dealership's working hours for each day of the week
+              <CardDescription className="text-white/70">
+                Set your dealership&apos;s working hours for each day of the week
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -261,7 +257,7 @@ const SettingsForm = () => {
                 {DAYS.map((day, index) => (
                   <div
                     key={day.value}
-                    className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center py-3 px-2 sm:px-4 rounded-lg hover:bg-slate-50"
+                    className="grid grid-cols-1 items-center gap-4 rounded-lg px-2 py-3 hover:bg-white/5 sm:grid-cols-12 sm:px-4"
                   >
                     {/* Day Label */}
                     <div className="col-span-3 sm:col-span-2">
@@ -292,7 +288,7 @@ const SettingsForm = () => {
                         <div className="col-span-12 sm:col-span-8 flex items-center justify-between">
                           <div className="flex items-center space-x-2">
                             <Clock
-                              className="hidden md:inline text-gray-400"
+                              className="hidden text-[#ff4d1a] md:inline"
                               size={15}
                             />
                             <Input
@@ -330,7 +326,7 @@ const SettingsForm = () => {
 
                     {/* Closed All Day Text */}
                     {!workingHours[index]?.isOpen && (
-                      <div className="col-span-11 sm:col-span-8 text-gray-500 italic text-sm">
+                      <div className="col-span-11 text-sm text-white/70 italic sm:col-span-8">
                         Closed all day
                       </div>
                     )}
@@ -339,8 +335,12 @@ const SettingsForm = () => {
               </div>
 
               {/* Save Working Hours Button - Centered on Mobile */}
-              <div className="mt-6 flex justify-center sm:justify-end">
-                <Button onClick={handleSaveHours} disabled={savingHours}>
+              <div className="sticky bottom-0 z-20 -mx-6 mt-6 flex justify-end border-t border-white/10 bg-[#0a0a0b]/90 px-6 py-4 backdrop-blur">
+                <Button
+                  onClick={handleSaveHours}
+                  disabled={savingHours}
+                  className="bg-[#ff4d1a] text-white hover:bg-[#ff6a3d]"
+                >
                   {savingHours ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -360,43 +360,45 @@ const SettingsForm = () => {
 
         {/* Admin Tab */}
         <TabsContent value="admins" className="space-y-6 mt-6">
-          <Card>
+          <Card className="border-white/10 bg-[#0b0b0c] text-white">
             <CardHeader>
               <CardTitle>Admin Users.</CardTitle>
-              <CardDescription>
+              <CardDescription className="text-white/70">
                 Manage users with Admin Privileges.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="mb-6 relative w-full">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-white/70" />
                 <Input
                   type="search"
                   placeholder="Search users..."
-                  className="pl-9 w-full text-sm sm:text-base"
+                  className="w-full border-white/20 bg-[#111113] pl-9 text-sm text-white sm:text-base"
                   value={userSearch}
                   onChange={(e) => setUserSearch(e.target.value)}
                 />
               </div>
 
               {fetchingUsers ? (
-                <div className="py-12 flex justify-center">
-                  <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+                <div className="space-y-3">
+                  {["a", "b", "c", "d"].map((key) => (
+                    <Skeleton key={key} className="h-12 w-full bg-white/10" />
+                  ))}
                 </div>
               ) : usersData?.success && filteredUsers.length > 0 ? (
                 <div className="overflow-x-auto">
                   <Table className="min-w-full text-sm sm:text-base">
                     <TableHeader>
-                      <TableRow>
-                        <TableHead>User</TableHead>
-                        <TableHead>Email</TableHead>
-                        <TableHead>Role</TableHead>
-                        <TableHead className="text-right">Actions</TableHead>
+                      <TableRow className="border-white/10 hover:bg-transparent">
+                        <TableHead className="text-white/70">User</TableHead>
+                        <TableHead className="text-white/70">Email</TableHead>
+                        <TableHead className="text-white/70">Role</TableHead>
+                        <TableHead className="text-right text-white/70">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {filteredUsers.map((user) => (
-                        <TableRow key={user.id}>
+                        <TableRow key={user.id} className="border-white/10">
                           <TableCell className="font-medium">
                             <div className="flex items-center gap-2 flex-nowrap sm:flex-nowrap">
                               <Avatar>
@@ -415,8 +417,8 @@ const SettingsForm = () => {
                             <Badge
                               className={
                                 user.role === "ADMIN"
-                                  ? "bg-green-800"
-                                  : "bg-gray-800"
+                                  ? "border-[#ff4d1a]/40 bg-[#ff4d1a]/15 text-[#ffb199]"
+                                  : "border-white/15 bg-white/5 text-white/80"
                               }
                             >
                               {user.role}
@@ -428,7 +430,7 @@ const SettingsForm = () => {
                                 <Button
                                   variant="outline"
                                   size="sm"
-                                  className="text-red-600"
+                                  className="border-rose-400/40 text-rose-200 hover:bg-rose-400/10 hover:text-rose-100"
                                   onClick={() => {
                                     setUserToDemote(user);
                                     setConfirmRemoveDialog(true);
@@ -442,6 +444,7 @@ const SettingsForm = () => {
                                 <Button
                                   variant="outline"
                                   size="sm"
+                                  className="border-white/30 text-white hover:bg-white/10 hover:text-white"
                                   onClick={() => {
                                     setUserToPromote(user);
                                     setConfirmAdminDialog(true);
@@ -461,11 +464,11 @@ const SettingsForm = () => {
                 </div>
               ) : (
                 <div className="py-12 text-center">
-                  <Users className="h-10 w-10 sm:h-12 sm:w-12 text-gray-300 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-1">
+                  <Users className="h-10 w-10 sm:h-12 sm:w-12 text-white/40 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-white mb-1">
                     No users found
                   </h3>
-                  <p className="text-gray-500">
+                  <p className="text-white/70">
                     {userSearch
                       ? "No users match your search criteria"
                       : "There are no users registered yet"}

@@ -320,6 +320,27 @@
   }
 }
 
+@keyframes admin-progress {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(320%);
+  }
+}
+
+.admin-progress-bar {
+  animation: admin-progress 1.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-progress-bar {
+    animation: none;
+    width: 100%;
+    opacity: 0.85;
+  }
+}
+
 /* Leftover light utilities inside the admin shell. */
 [data-admin] .bg-white,
 [data-admin] .bg-gray-50,

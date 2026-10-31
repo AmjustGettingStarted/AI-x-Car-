@@ -72,13 +72,13 @@ const TestDriveCard = ({
           {/* Car Image - Left */}
           <div className="sm:w-1/4 relative h-40 sm:h-auto">
             {booking.car.images && booking.car.images.length > 0 ? (
-              <div className="relative w-full h-full">
+              <div className="relative h-full w-full bg-[#111113]">
                 <Image
                   src={booking.car.images[0]}
                   alt={`${booking.car.make} ${booking.car.model}`}
                   fill
                   sizes="(min-width: 640px) 25vw, 100vw"
-                  className="object-cover"
+                  className="object-contain"
                 />
               </div>
             ) : (
@@ -101,18 +101,18 @@ const TestDriveCard = ({
             {renderStatusSelector()}
 
             <div className="space-y-2 my-2">
-              <div className="flex items-center text-white/60">
-                <Calendar className="h-4 w-4 mr-2" />
+              <div className="flex items-center text-white/70">
+                <Calendar className="mr-2 h-4 w-4 text-[#ff4d1a]" />
                 {format(new Date(booking.bookingDate), "EEEE, MMMM d, yyyy")}
               </div>
-              <div className="flex items-center text-white/60">
-                <Clock className="h-4 w-4 mr-2" />
+              <div className="flex items-center text-white/70">
+                <Clock className="mr-2 h-4 w-4 text-[#ff4d1a]" />
                 {formatTime(booking.startTime)} - {formatTime(booking.endTime)}
               </div>
               {/* Show customer info in admin view */}
               {isAdmin && booking.user && (
-                <div className="flex items-center text-white/60">
-                  <User className="h-4 w-4 mr-2" />
+                <div className="flex items-center text-white/70">
+                  <User className="mr-2 h-4 w-4 text-[#ff4d1a]" />
                   {booking.user.name || booking.user.email}
                 </div>
               )}
@@ -125,13 +125,13 @@ const TestDriveCard = ({
               {booking.notes && (
                 <div className="w-full rounded bg-white/5 p-2 text-sm">
                   <p className="font-medium">Notes:</p>
-                  <p className="text-white/60">{booking.notes}</p>
+                  <p className="text-white/70">{booking.notes}</p>
                 </div>
               )}
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full my-2 cursor-pointer"
+                className="my-2 w-full cursor-pointer border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"
                 asChild
               >
                 <Link

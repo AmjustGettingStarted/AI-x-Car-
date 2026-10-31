@@ -107,16 +107,16 @@ const AiEntry = () => {
 
   return (
     <>
-      <Card>
+      <Card className="border-white/10 bg-[#0b0b0c] text-white">
         <CardHeader>
           <CardTitle>AI-Powered Car Details Extraction</CardTitle>
-          <CardDescription>
+          <CardDescription className="text-white/70">
             Upload an image of a car and let AI extact its details.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
-            <div className="border-2 border-dashed rounded-lg p-6 text-center">
+            <div className="min-h-[280px] rounded-3xl border-2 border-dashed border-white/20 p-8 text-center transition hover:border-[#ff4d1a] hover:bg-[#ff4d1a]/10">
               {imagePreview ? (
                 <div className="flex flex-col items-center">
                   <img
@@ -132,7 +132,7 @@ const AiEntry = () => {
                         setImagePreview(null), setUploadedAiImage(null);
                         toast.success("Image removed successfully");
                       }}
-                      className="bg-red-500 text-white px-4 py-2 rounded-lg"
+                      className="border-white/20 bg-transparent text-white hover:bg-white/10"
                     >
                       Remove
                     </Button>
@@ -158,37 +158,42 @@ const AiEntry = () => {
               ) : (
                 <div
                   {...getAiRootProps()}
-                  className="cursor-pointer hover:bg-gray-50 transition"
+                  className="cursor-pointer"
                 >
                   <input {...getAiInputProps()} />
                   <div className="flex flex-col items-center justify-center">
-                    <Camera className="h-12 w-12 text-gray-400 mb-2" />
-                    <p className="text-gray-600 text-sm">
+                    <Camera className="mb-3 h-12 w-12 text-[#ff4d1a]" />
+                    <p className="text-sm text-white">
                       Drag & Drop or click to upload a car Image.
                     </p>
-                    <p className="text-gray-500 text-xs mt-1">
+                    <p className="mt-1 text-xs text-white/70">
                       Supports: JPG, PNG, WEBP (max 5MB)
                     </p>
                   </div>
                 </div>
               )}
+              {processImageLoading ? (
+                <div className="mx-auto mt-6 h-1.5 w-full max-w-sm overflow-hidden rounded-full bg-white/10">
+                  <div className="admin-progress-bar h-full w-1/3 rounded-full bg-[#ff4d1a]" />
+                </div>
+              ) : null}
             </div>
-            <div className="bg-gray-50 p-4 rounded-md">
-              <h3 className="font-medium mb-2">How it works</h3>
-              <ol className="space-y-2 text-sm text-gray-600 list-decimal pl-4">
+            <div className="rounded-md border border-white/10 bg-white/[0.03] p-4">
+              <h3 className="mb-2 font-medium text-white">How it works</h3>
+              <ol className="list-decimal space-y-2 pl-4 text-sm text-white/70">
                 <li>Upload a clear image of the car</li>
-                <li>Click "Extract Details" to analyze with Gemini AI</li>
+                <li>Click &quot;Extract Details&quot; to analyze with Gemini AI</li>
                 <li>Review the extracted information</li>
                 <li>Fill in any missing details manually</li>
                 <li>Add the car to your inventory</li>
               </ol>
             </div>
 
-            <div className="bg-amber-50 p-4 rounded-md">
-              <h3 className="font-medium text-amber-800 mb-1">
+            <div className="rounded-md border border-[#ff4d1a]/30 bg-[#ff4d1a]/10 p-4">
+              <h3 className="mb-1 font-medium text-[#ffb199]">
                 Tips for best results
               </h3>
-              <ul className="space-y-1 text-sm text-amber-700">
+              <ul className="space-y-1 text-sm text-white/80">
                 <li>• Use clear, well-lit images</li>
                 <li>• Try to capture the entire vehicle</li>
                 <li>• For difficult models, use multiple views</li>

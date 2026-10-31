@@ -20,7 +20,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import useFetch from "@/hooks/use-fetch";
-import { AlertCircle, CalendarRange, Loader2, Search } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { AlertCircle, CalendarRange, Search } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -104,11 +105,11 @@ const TestDriveList = () => {
         <div className="flex flex-col sm:flex-row gap-4 w-full">
           {/* Status Filter */}
           <Select
-            value={statusFilter}
+            value={statusFilter || "ALL"}
             onValueChange={setStatusFilter}
             className="w-full sm:w-48"
           >
-            <SelectTrigger>
+            <SelectTrigger className="w-full border-white/20 bg-[#0b0b0c] text-white sm:w-48">
               <SelectValue placeholder="All Statuses" />
             </SelectTrigger>
             <SelectContent>
@@ -124,11 +125,11 @@ const TestDriveList = () => {
           {/* Search Form */}
           <form onSubmit={handleSearchSubmit} className="flex w-full">
             <div className="relative flex-1">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-white/70" />
               <Input
                 type="search"
                 placeholder="Search by car or customer..."
-                className="pl-9 w-full"
+                className="w-full border-white/20 bg-[#0b0b0c] pl-9 text-white"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -140,21 +141,23 @@ const TestDriveList = () => {
         </div>
       </div>
       {/* Test Drives List */}
-      <Card>
+      <Card className="border-white/10 bg-[#0b0b0c] text-white">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <CalendarRange className="h-5 w-5" />
+            <CalendarRange className="h-5 w-5 text-[#ff4d1a]" />
             Test Drive Bookings
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-white/70">
             Manage all test drive reservations and update their status
           </CardDescription>
         </CardHeader>
 
         <CardContent>
           {fetchingTestDrives && !testDrivesData ? (
-            <div className="flex justify-center items-center py-12">
-              <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+            <div className="space-y-3">
+              {["a", "b", "c", "d"].map((key) => (
+                <Skeleton key={key} className="h-28 w-full rounded-xl bg-white/10" />
+              ))}
             </div>
           ) : testDrivesError ? (
             <Alert variant="destructive">
@@ -165,12 +168,12 @@ const TestDriveList = () => {
               </AlertDescription>
             </Alert>
           ) : testDrivesData?.data?.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
-              <CalendarRange className="h-12 w-12 text-gray-300 mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-1">
+            <div className="flex flex-col items-center justify-center px-4 py-12 text-center">
+              <CalendarRange className="mb-4 h-12 w-12 text-white/30" />
+              <h3 className="mb-1 text-lg font-medium text-white">
                 No test drives found
               </h3>
-              <p className="text-gray-500 mb-4">
+              <p className="mb-4 text-white/70">
                 {statusFilter || search
                   ? "No test drives match your search criteria"
                   : "There are no test drive bookings yet."}
