@@ -85,6 +85,22 @@ export default function HeroSection({ children }) {
     return () => window.removeEventListener("resize", measure);
   }, []);
 
+  useEffect(() => {
+    if (!isMounted || !useVideo) return;
+    const video = videoRef.current;
+    if (!video) return;
+    const start = () => {
+      if (endedRef.current) return;
+      video.load();
+    };
+    if (typeof window.requestIdleCallback === "function") {
+      const id = window.requestIdleCallback(start, { timeout: 1200 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const id = window.setTimeout(start, 400);
+    return () => window.clearTimeout(id);
+  }, [isMounted, useVideo]);
+
   const finishIntro = ({ failed = false } = {}) => {
     if (endedRef.current) return;
     endedRef.current = true;
@@ -120,12 +136,6 @@ export default function HeroSection({ children }) {
     finishIntro();
   };
 
-  if (!isMounted) {
-    return (
-      <section className="sticky top-0 z-0 h-[100svh] w-full bg-[#050505]" />
-    );
-  }
-
   return (
     <section
       className="sticky top-0 z-0 flex h-[100svh] w-full flex-col items-center justify-end overflow-hidden pb-10 sm:pb-14"
@@ -143,17 +153,16 @@ export default function HeroSection({ children }) {
 
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/20 to-black/40" />
 
-        {useVideo && (
+        {isMounted && useVideo && (
           <video
             ref={videoRef}
             src={HERO_VIDEO}
             poster={HERO_POSTER}
-            autoPlay
             muted
             playsInline
             controls={false}
             loop={false}
-            preload="auto"
+            preload="none"
             onCanPlay={handleVideoCanPlay}
             onEnded={handleVideoEnded}
             onError={() => finishIntro({ failed: true })}

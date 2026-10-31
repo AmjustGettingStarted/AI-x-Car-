@@ -1,6 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
 
 function EmiCalculator({ price = 1000 }) {
   const [loanAmount, setLoanAmount] = useState(price);
@@ -79,222 +82,125 @@ function EmiCalculator({ price = 1000 }) {
     return new Intl.NumberFormat("en-US").format(num);
   };
 
+  const field = "border-white/10 bg-[#111113] text-white";
+
   return (
-    <div className="w-full max-h-[80vh] overflow-y-auto pr-1">
-      <div className="w-full">
-        <div className="flex items-center mb-6">
-          <i className="fas fa-car text-gray-900 dark:text-white text-2xl mr-3"></i>
+    <div className="space-y-4 text-white">
+      <div className="space-y-3 rounded-2xl border border-white/10 bg-[#111113] p-4">
+        <Label htmlFor="emi-price">Vehicle Price</Label>
+        <Input
+          id="emi-price"
+          type="number"
+          value={loanAmount}
+          onChange={(e) => handleLoanAmountChange(parseFloat(e.target.value))}
+          className={field}
+        />
+        <Slider
+          min={1000}
+          max={150000}
+          step={100}
+          value={[loanAmount]}
+          onValueChange={([value]) => handleLoanAmountChange(value)}
+        />
+      </div>
+
+      <div className="space-y-3 rounded-2xl border border-white/10 bg-[#111113] p-4">
+        <Label htmlFor="emi-down">Down Payment</Label>
+        <Input
+          id="emi-down"
+          type="number"
+          value={downPayment}
+          onChange={(e) => handleDownPaymentChange(parseFloat(e.target.value))}
+          className={field}
+        />
+        <Slider
+          min={0}
+          max={loanAmount || 0}
+          step={100}
+          value={[Math.min(downPayment, loanAmount || 0)]}
+          onValueChange={([value]) => handleDownPaymentChange(value)}
+        />
+        <p className="text-sm text-white/50">
+          Down payment: {downPaymentPercent.toFixed(1)}% of vehicle price
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="space-y-3 rounded-2xl border border-white/10 bg-[#111113] p-4">
+          <Label htmlFor="emi-rate">Interest Rate</Label>
+          <Input
+            id="emi-rate"
+            type="number"
+            value={interestRate}
+            onChange={(e) => handleInterestRateChange(parseFloat(e.target.value))}
+            className={field}
+          />
+          <Slider
+            min={0.1}
+            max={25}
+            step={0.1}
+            value={[interestRate]}
+            onValueChange={([value]) => handleInterestRateChange(value)}
+          />
         </div>
-
-        <div className="space-y-4">
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
-            <h2 className="text-lg font-inter font-semibold text-gray-900 dark:text-white mb-3">
-              Vehicle Price
-            </h2>
-            <div className="space-y-3">
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <span className="text-gray-700 dark:text-gray-300">$</span>
-                </div>
-                <input
-                  type="number"
-                  value={loanAmount}
-                  onChange={(e) =>
-                    handleLoanAmountChange(parseFloat(e.target.value))
-                  }
-                  className="w-full pl-8 pr-4 py-2 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:outline-none focus:border-gray-900 dark:focus:border-gray-400"
-                />
-              </div>
-              <input
-                type="range"
-                min="1000"
-                max="150000"
-                value={loanAmount}
-                onChange={(e) =>
-                  handleLoanAmountChange(parseFloat(e.target.value))
-                }
-                className="w-full"
-              />
-            </div>
-          </div>
-
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
-            <h2 className="text-lg font-inter font-semibold text-gray-900 dark:text-white mb-3">
-              Down Payment
-            </h2>
-            <div className="space-y-3">
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <span className="text-gray-700 dark:text-gray-300">$</span>
-                </div>
-                <input
-                  type="number"
-                  value={downPayment}
-                  onChange={(e) =>
-                    handleDownPaymentChange(parseFloat(e.target.value))
-                  }
-                  className="w-full pl-8 pr-4 py-2 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:outline-none focus:border-gray-900 dark:focus:border-gray-400"
-                />
-              </div>
-              <input
-                type="range"
-                min="0"
-                max={loanAmount}
-                value={downPayment}
-                onChange={(e) =>
-                  handleDownPaymentChange(parseFloat(e.target.value))
-                }
-                className="w-full"
-              />
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Down payment: {downPaymentPercent.toFixed(1)}% of vehicle price
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
-              <h2 className="text-lg font-inter font-semibold text-gray-900 dark:text-white mb-3">
-                Interest Rate
-              </h2>
-              <div className="space-y-3">
-                <div className="relative">
-                  <input
-                    type="number"
-                    value={interestRate}
-                    onChange={(e) =>
-                      handleInterestRateChange(parseFloat(e.target.value))
-                    }
-                    className="w-full pr-8 py-2 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:outline-none focus:border-gray-900 dark:focus:border-gray-400"
-                  />
-                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                    <span className="text-gray-700 dark:text-gray-300">%</span>
-                  </div>
-                </div>
-                <input
-                  type="range"
-                  min="0.1"
-                  max="25"
-                  step="0.1"
-                  value={interestRate}
-                  onChange={(e) =>
-                    handleInterestRateChange(parseFloat(e.target.value))
-                  }
-                  className="w-full"
-                />
-              </div>
-            </div>
-
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
-              <h2 className="text-lg font-inter font-semibold text-gray-900 dark:text-white mb-3">
-                Loan Term
-              </h2>
-              <div className="space-y-3">
-                <div className="relative">
-                  <input
-                    type="number"
-                    value={loanTenure}
-                    onChange={(e) =>
-                      handleLoanTenureChange(parseFloat(e.target.value))
-                    }
-                    className="w-full pr-12 py-2 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:outline-none focus:border-gray-900 dark:focus:border-gray-400"
-                  />
-                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                    <span className="text-gray-700 dark:text-gray-300">
-                      Years
-                    </span>
-                  </div>
-                </div>
-                <input
-                  type="range"
-                  min="1"
-                  max="8"
-                  value={loanTenure}
-                  onChange={(e) =>
-                    handleLoanTenureChange(parseFloat(e.target.value))
-                  }
-                  className="w-full"
-                />
-              </div>
-            </div>
-          </div>
-
-          {error && (
-            <div className="text-red-500 dark:text-red-400 text-sm mt-3">
-              {error}
-            </div>
-          )}
-
-          {results && (
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 mt-4">
-              <div className="text-center mb-4">
-                <div className="text-sm font-inter text-gray-700 dark:text-gray-300">
-                  Monthly Payment
-                </div>
-                <div className="text-3xl font-bold text-gray-900 dark:text-white mt-1">
-                  ${formatNumber(results.emi)}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-white dark:bg-gray-900 p-3 rounded-lg">
-                  <div className="text-sm font-inter text-gray-700 dark:text-gray-300">
-                    Vehicle Price
-                  </div>
-                  <div className="text-lg font-bold text-gray-900 dark:text-white mt-1">
-                    ${formatNumber(loanAmount)}
-                  </div>
-                </div>
-
-                <div className="bg-white dark:bg-gray-900 p-3 rounded-lg">
-                  <div className="text-sm font-inter text-gray-700 dark:text-gray-300">
-                    Down Payment
-                  </div>
-                  <div className="text-lg font-bold text-gray-900 dark:text-white mt-1">
-                    ${formatNumber(results.downPayment)}
-                  </div>
-                </div>
-
-                <div className="bg-white dark:bg-gray-900 p-3 rounded-lg">
-                  <div className="text-sm font-inter text-gray-700 dark:text-gray-300">
-                    Loan Amount
-                  </div>
-                  <div className="text-lg font-bold text-gray-900 dark:text-white mt-1">
-                    ${formatNumber(results.loanPrincipal)}
-                  </div>
-                </div>
-
-                <div className="bg-white dark:bg-gray-900 p-3 rounded-lg">
-                  <div className="text-sm font-inter text-gray-700 dark:text-gray-300">
-                    Total Interest
-                  </div>
-                  <div className="text-lg font-bold text-gray-900 dark:text-white mt-1">
-                    ${formatNumber(results.totalInterest)}
-                  </div>
-                </div>
-
-                <div className="bg-white dark:bg-gray-900 p-3 rounded-lg md:col-span-2">
-                  <div className="text-sm font-inter text-gray-700 dark:text-gray-300">
-                    Total Amount (Down Payment + Total Payments)
-                  </div>
-                  <div className="text-lg font-bold text-gray-900 dark:text-white mt-1">
-                    $
-                    {formatNumber(
-                      parseFloat(results.downPayment) +
-                        parseFloat(results.totalPayment)
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          <p className="text-sm text-gray-700 dark:text-gray-300 text-center font-inter">
-            This is an estimate. Actual EMI may vary based on your credit score
-            and lender terms.
-          </p>
+        <div className="space-y-3 rounded-2xl border border-white/10 bg-[#111113] p-4">
+          <Label htmlFor="emi-term">Loan Term (years)</Label>
+          <Input
+            id="emi-term"
+            type="number"
+            value={loanTenure}
+            onChange={(e) => handleLoanTenureChange(parseFloat(e.target.value))}
+            className={field}
+          />
+          <Slider
+            min={1}
+            max={8}
+            step={1}
+            value={[loanTenure]}
+            onValueChange={([value]) => handleLoanTenureChange(value)}
+          />
         </div>
       </div>
+
+      {error ? <p className="text-sm text-red-400">{error}</p> : null}
+
+      {results ? (
+        <div className="rounded-2xl border border-white/10 bg-[#111113] p-4">
+          <p className="text-center text-xs uppercase tracking-[0.2em] text-white/50">
+            Monthly Payment
+          </p>
+          <p className="mt-1 text-center font-[family-name:var(--font-clash)] text-4xl font-semibold text-[#1a5cff]">
+            ${formatNumber(results.emi)}
+          </p>
+          <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
+            {[
+              ["Vehicle Price", loanAmount],
+              ["Down Payment", results.downPayment],
+              ["Loan Amount", results.loanPrincipal],
+              ["Total Interest", results.totalInterest],
+            ].map(([label, value]) => (
+              <div key={label} className="rounded-xl border border-white/10 bg-[#0b0b0c] p-3">
+                <p className="text-white/50">{label}</p>
+                <p className="mt-1 font-semibold">${formatNumber(value)}</p>
+              </div>
+            ))}
+            <div className="col-span-2 rounded-xl border border-white/10 bg-[#0b0b0c] p-3">
+              <p className="text-white/50">Total amount</p>
+              <p className="mt-1 font-semibold">
+                $
+                {formatNumber(
+                  parseFloat(results.downPayment) + parseFloat(results.totalPayment)
+                )}
+              </p>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      <p className="text-center text-sm text-white/50">
+        This is an estimate. Actual EMI may vary based on your credit score and
+        lender terms.
+      </p>
     </div>
   );
 }

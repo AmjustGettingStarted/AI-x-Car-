@@ -28,15 +28,15 @@ const formatTime = (timeString) => {
 const getStatusBadge = (status) => {
   switch (status) {
     case "PENDING":
-      return <Badge className="bg-amber-100 text-amber-800">Pending</Badge>;
+      return <Badge className="border-amber-400/40 bg-amber-400/10 text-amber-200">Pending</Badge>;
     case "CONFIRMED":
-      return <Badge className="bg-green-100 text-green-800">Confirmed</Badge>;
+      return <Badge className="border-emerald-400/40 bg-emerald-400/10 text-emerald-200">Confirmed</Badge>;
     case "COMPLETED":
-      return <Badge className="bg-blue-100 text-blue-800">Completed</Badge>;
+      return <Badge className="border-[#1a5cff]/40 bg-[#1a5cff]/10 text-[#8eb0ff]">Completed</Badge>;
     case "CANCELLED":
-      return <Badge className="bg-gray-100 text-gray-800">Cancelled</Badge>;
+      return <Badge className="border-white/15 bg-white/5 text-white/70">Cancelled</Badge>;
     case "NO_SHOW":
-      return <Badge className="bg-red-100 text-red-800">No Show</Badge>;
+      return <Badge className="border-rose-400/40 bg-rose-400/10 text-rose-200">No Show</Badge>;
     default:
       return <Badge variant="outline">{status}</Badge>;
   }
@@ -64,7 +64,7 @@ const TestDriveCard = ({
   return (
     <>
       <Card
-        className={`overflow-hidden ${
+        className={`overflow-hidden border-white/10 bg-[#0b0b0c] ${
           isPast ? "opacity-80 hover:opacity-100 transition-opacity" : ""
         }`}
       >
@@ -82,8 +82,8 @@ const TestDriveCard = ({
                 />
               </div>
             ) : (
-              <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                <Car className="h-12 w-12 text-gray-400" />
+              <div className="flex h-full w-full items-center justify-center bg-[#111113]">
+                <Car className="h-12 w-12 text-white/30" />
               </div>
             )}
             <div className="absolute top-2 right-2 sm:hidden">
@@ -95,23 +95,23 @@ const TestDriveCard = ({
             <div className="hidden sm:block mb-2">
               {getStatusBadge(booking.status)}
             </div>
-            <h3 className="text-lg font-bold mb-1">
+            <h3 className="mb-1 font-[family-name:var(--font-clash)] text-lg font-semibold uppercase tracking-tight">
               {booking.car.year} {booking.car.make} {booking.car.model}{" "}
             </h3>
             {renderStatusSelector()}
 
             <div className="space-y-2 my-2">
-              <div className="flex items-center text-gray-600">
+              <div className="flex items-center text-white/60">
                 <Calendar className="h-4 w-4 mr-2" />
                 {format(new Date(booking.bookingDate), "EEEE, MMMM d, yyyy")}
               </div>
-              <div className="flex items-center text-gray-600">
+              <div className="flex items-center text-white/60">
                 <Clock className="h-4 w-4 mr-2" />
                 {formatTime(booking.startTime)} - {formatTime(booking.endTime)}
               </div>
               {/* Show customer info in admin view */}
               {isAdmin && booking.user && (
-                <div className="flex items-center text-gray-600">
+                <div className="flex items-center text-white/60">
                   <User className="h-4 w-4 mr-2" />
                   {booking.user.name || booking.user.email}
                 </div>
@@ -120,12 +120,12 @@ const TestDriveCard = ({
           </div>
           {/* Action Buttons - Right */}
           {showActions && (
-            <div className="p-4 border-t sm:border-t-0 sm:border-l sm:w-1/4 sm:flex sm:flex-col sm:justify-center sm:items-center sm:space-y-2">
+            <div className="flex flex-col border-t border-white/10 p-4 sm:w-1/4 sm:items-center sm:justify-center sm:space-y-2 sm:border-l sm:border-t-0">
               {/* Show notes if any */}
               {booking.notes && (
-                <div className="bg-gray-50 p-2 rounded text-sm w-full">
+                <div className="w-full rounded bg-white/5 p-2 text-sm">
                   <p className="font-medium">Notes:</p>
-                  <p className="text-gray-600">{booking.notes}</p>
+                  <p className="text-white/60">{booking.notes}</p>
                 </div>
               )}
               <Button

@@ -197,10 +197,15 @@ const CarFilters = ({ filters }) => {
             </SheetTrigger>
             <SheetContent
               side="left"
-              className="w-full sm:max-w-md overflow-y-auto px-4"
+              className="w-full overflow-y-auto border-white/10 bg-[#0b0b0c] px-4 text-white sm:max-w-md"
             >
               <SheetHeader>
-                <SheetTitle>Filters</SheetTitle>
+                <SheetTitle className="font-[family-name:var(--font-clash)] uppercase tracking-tight text-white">
+                  Filters
+                </SheetTitle>
+                <SheetDescription className="text-white/50">
+                  Narrow the dealership inventory.
+                </SheetDescription>
               </SheetHeader>
               <div className="py-6">
                 <CarFilterControls
@@ -210,7 +215,7 @@ const CarFilters = ({ filters }) => {
                   onClearFilter={handleClearFilter}
                 />
               </div>
-              <SheetFooter className="sm:justify-between flex-row pt-2 border-t space-x-4 mt-auto">
+              <SheetFooter className="mt-auto flex-row space-x-4 border-t border-white/10 pt-2 sm:justify-between">
                 <Button
                   type="button"
                   variant="outline"
@@ -258,17 +263,17 @@ const CarFilters = ({ filters }) => {
 
       {/* Desktop Filters */}
       <div className="hidden lg:block sticky top-24">
-        <div className="border rounded-lg overflow-hidden bg-white">
-          <div className="p-4 border-b bg-gray-50 flex justify-between items-center">
-            <h3 className="font-medium flex items-center">
-              <Sliders className="w-4 h-4 mr-2" />
+        <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#0b0b0c]">
+          <div className="flex items-center justify-between border-b border-white/10 bg-[#111113] p-4">
+            <h3 className="flex items-center font-medium">
+              <Sliders className="mr-2 h-4 w-4 text-[#ff4d1a]" />
               Filters
             </h3>
             {activeFilterCount > 0 && (
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 text-sm text-gray-600 cursor-pointer"
+                className="h-8 cursor-pointer text-sm text-white/60"
                 onClick={clearFilters}
               >
                 <X className="mr-1 h-3 w-3" />
@@ -284,7 +289,7 @@ const CarFilters = ({ filters }) => {
               onClearFilter={handleClearFilter}
             />
           </div>
-          <div className="p-4 border-t">
+          <div className="border-t border-white/10 p-4">
             <Button className="w-full cursor-pointer" onClick={applyFilters}>
               Apply Filters
             </Button>
