@@ -1,29 +1,44 @@
-import React from "react";
-import SavedCarsList from "./_component/saved-cars-list";
-import { getSavedCars } from "@/actions/car-listings";
+import { Suspense } from "react";
+import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
+import { getSavedCars } from "@/actions/car-listings";
+import { BRAND_NAME } from "@/lib/brand";
+import { Skeleton } from "@/components/ui/skeleton";
+import SavedCarsList from "./_component/saved-cars-list";
+
 export const metadata = {
-  title: " 💝 Saved Cars | AIxCAR",
-  description: "View your saed cars and favorites",
+  title: `Saved Cars | ${BRAND_NAME}`,
+  description: "Cars you saved from the dealership inventory.",
 };
-const SavedCarsPage = async () => {
-  // Check authentication on server
+
+function SavedCarsFallback() {
+  return (
+    <div className="px-2 pb-16">
+      <Skeleton className="mb-4 h-4 w-32 bg-white/10" />
+      <Skeleton className="mb-8 h-16 w-72 bg-white/10" />
+      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {Array.from({ length: 6 }, (_, index) => (
+          <Skeleton key={index} className="h-[32rem] rounded-[2rem] bg-white/5" />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+async function SavedCarsContent() {
   const { userId } = await auth();
   if (!userId) {
     redirect("/sign-in?redirect=/saved-cars");
   }
 
-  // Fetch saved cars on the server
   const savedCarsResult = await getSavedCars();
+  return <SavedCarsList initialData={savedCarsResult} />;
+}
 
+export default function SavedCarsPage() {
   return (
-    <div className="container mx-auto px-4 py-12">
-      <h1 className="text-6xl mb-6 gradient font-extrabold tracking-tighter pr-2 pb-2 text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-green-500">
-        Your Saved Cars
-      </h1>
-      <SavedCarsList initialData={savedCarsResult} />
-    </div>
+    <Suspense fallback={<SavedCarsFallback />}>
+      <SavedCarsContent />
+    </Suspense>
   );
-};
-
-export default SavedCarsPage;
+}

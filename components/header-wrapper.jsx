@@ -68,7 +68,7 @@ export default function HeaderWrapper({ children, className = "", isAdminPage = 
   const glassStyles = isScrolled
     ? "bg-black/80 backdrop-blur-xl border-b border-orange-500/20 shadow-[0_8px_32px_0_rgba(255,102,0,0.1)] text-white"
     : isAdmin
-      ? "bg-white/80 backdrop-blur-md border-b border-slate-200 text-slate-900"
+      ? "bg-[#0b0b0c]/90 backdrop-blur-xl border-b border-white/10 text-white"
       : "bg-transparent border-transparent text-white";
 
   return (

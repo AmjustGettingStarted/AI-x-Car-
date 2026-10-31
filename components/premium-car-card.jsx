@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import { CarIcon, Heart, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import useFetch from "@/hooks/use-fetch";
@@ -13,7 +13,7 @@ import { toggleSavedCar } from "@/actions/car-listings";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-function WishlistButton({ car }) {
+function WishlistButton({ car, onSavedChange }) {
   const [isSaved, setIsSaved] = useState(Boolean(car.wishlisted));
   const router = useRouter();
   const { isSignedIn } = useAuth();
@@ -28,8 +28,9 @@ function WishlistButton({ car }) {
     if (toggleResult?.success && toggleResult.saved !== isSaved) {
       setIsSaved(toggleResult.saved);
       toast.success(toggleResult.message);
+      onSavedChange?.(toggleResult.saved);
     }
-  }, [toggleResult, isSaved]);
+  }, [toggleResult, isSaved, onSavedChange]);
 
   useEffect(() => {
     if (toggleError) {
@@ -73,15 +74,51 @@ function WishlistButton({ car }) {
 }
 
 const PremiumCarCard = React.forwardRef(function PremiumCarCard(
-  { car, imageX, scale, opacity, className = "", priority = false },
+  {
+    car,
+    imageX,
+    scale,
+    opacity,
+    className = "",
+    priority = false,
+    tilt = false,
+    onSavedChange,
+    sizes = "(min-width: 1024px) 80vw, 88vw",
+  },
   ref
 ) {
   const image = car.images?.[0];
+  const rotateX = useMotionValue(0);
+  const rotateY = useMotionValue(0);
+  const springX = useSpring(rotateX, { stiffness: 180, damping: 24, mass: 0.4 });
+  const springY = useSpring(rotateY, { stiffness: 180, damping: 24, mass: 0.4 });
+
+  function onPointerMove(event) {
+    if (!tilt) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const px = (event.clientX - rect.left) / rect.width - 0.5;
+    const py = (event.clientY - rect.top) / rect.height - 0.5;
+    rotateY.set(px * 8);
+    rotateX.set(py * -8);
+  }
+
+  function onPointerLeave() {
+    rotateX.set(0);
+    rotateY.set(0);
+  }
 
   return (
     <motion.article
       ref={ref}
-      style={{ scale, opacity }}
+      onPointerMove={onPointerMove}
+      onPointerLeave={onPointerLeave}
+      style={{
+        scale,
+        opacity,
+        rotateX: tilt ? springX : 0,
+        rotateY: tilt ? springY : 0,
+      }}
       className={`group relative h-full w-full overflow-hidden rounded-[2rem] border border-white/10 bg-[#0b0b0c] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9)] ${className}`}
     >
       <Link
@@ -99,8 +136,8 @@ const PremiumCarCard = React.forwardRef(function PremiumCarCard(
               alt={`${car.make} ${car.model}`}
               fill
               priority={priority}
-              sizes="(min-width: 1024px) 80vw, 88vw"
-              className="object-cover object-center transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]"
+              sizes={sizes}
+              className="object-cover object-center transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110"
             />
           </motion.div>
         ) : (
@@ -112,7 +149,7 @@ const PremiumCarCard = React.forwardRef(function PremiumCarCard(
       </Link>
 
       <div className="absolute right-4 top-4 z-10 sm:right-6 sm:top-6">
-        <WishlistButton car={car} />
+        <WishlistButton car={car} onSavedChange={onSavedChange} />
       </div>
 
       <div className="absolute inset-x-3 bottom-3 z-10 sm:inset-x-5 sm:bottom-5">

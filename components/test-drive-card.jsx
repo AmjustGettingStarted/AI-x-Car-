@@ -77,6 +77,7 @@ const TestDriveCard = ({
                   src={booking.car.images[0]}
                   alt={`${booking.car.make} ${booking.car.model}`}
                   fill
+                  sizes="(min-width: 640px) 25vw, 100vw"
                   className="object-cover"
                 />
               </div>

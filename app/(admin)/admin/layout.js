@@ -1,8 +1,6 @@
 import { getAdmin } from "@/actions/admin";
-import Header from "@/components/header";
 import { notFound } from "next/navigation";
-import React from "react";
-import Sidebar from "./_components/sidebar";
+import AdminShell from "./_components/admin-shell";
 
 const AdminLayout = async ({ children }) => {
   const admin = await getAdmin();
@@ -10,14 +8,19 @@ const AdminLayout = async ({ children }) => {
   if (!admin.authorized) {
     return notFound();
   }
+
+  const user = admin.user;
+
   return (
-    <div className="h-full">
-      <Header isAdminPage={true} />
-      <div className="flex h-full md:w-56  flex-col top-20 fixed inset-y-0 z-50">
-        <Sidebar />
-      </div>
-      <main className="md:pl-56 pt-[80px] h-full">{children}</main>
-    </div>
+    <AdminShell
+      user={{
+        name: user?.name || "",
+        email: user?.email || "",
+        imageUrl: user?.imageUrl || "",
+      }}
+    >
+      {children}
+    </AdminShell>
   );
 };
 

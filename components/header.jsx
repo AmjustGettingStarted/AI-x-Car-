@@ -12,6 +12,7 @@ import { Button } from "./ui/button";
 import { ArrowLeft, CarFront, Heart, Layout } from "lucide-react";
 import { checkUser } from "@/lib/checkUser";
 import HeaderWrapper from "./header-wrapper";
+import { BRAND_NAME } from "@/lib/brand";
 
 const Header = async ({ isAdminPage = false }) => {
   const user = await checkUser();
@@ -23,6 +24,7 @@ const Header = async ({ isAdminPage = false }) => {
         {/* Logo */}
         <Link
           href={isAdminPage ? "/admin" : "/"}
+          aria-label={BRAND_NAME}
           className="flex items-center gap-2 group"
         >
           <Image
@@ -45,16 +47,16 @@ const Header = async ({ isAdminPage = false }) => {
           <SignedIn>
             {isAdminPage ? (
               /* Admin Page Navigation */
-              <Link href="/">
-                <Button
+              <Button
+                  asChild
                   variant="outline"
                   className="
                     group
                     cursor-pointer
-                    border border-[#FF5F1F]/35
-                    bg-black/40
-                    hover:bg-[#FF5F1F]/10
-                    hover:border-[#FF5F1F]/80
+                    border border-white/25
+                    bg-[#111113]
+                    hover:bg-[#ff4d1a]/15
+                    hover:border-[#ff4d1a]
                     text-white
                     hover:text-white
                     backdrop-blur-md
@@ -62,11 +64,12 @@ const Header = async ({ isAdminPage = false }) => {
                     duration-300
                     ease-out
                     hover:-translate-y-0.5
-                    hover:shadow-[0_8px_30px_rgba(255,95,31,0.15)]
+                    hover:shadow-[0_8px_30px_rgba(255,77,26,0.2)]
                     active:translate-y-0
                     active:scale-[0.98]
                   "
                 >
+                <Link href="/">
                   <ArrowLeft
                     size={18}
                     className="
@@ -80,13 +83,13 @@ const Header = async ({ isAdminPage = false }) => {
                   <span className="hidden md:inline font-medium">
                     Back to App
                   </span>
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             ) : (
               <>
                 {/* Saved Cars */}
-                <Link href="/saved-cars">
-                  <Button
+                <Button
+                    asChild
                     variant="outline"
                     className="
                       group
@@ -107,6 +110,7 @@ const Header = async ({ isAdminPage = false }) => {
                       active:scale-[0.98]
                     "
                   >
+                    <Link href="/saved-cars">
                     <Heart
                       size={18}
                       className="
@@ -122,13 +126,13 @@ const Header = async ({ isAdminPage = false }) => {
                     <span className="hidden md:inline cursor-pointer font-medium">
                       Saved Cars
                     </span>
-                  </Button>
-                </Link>
+                  </Link>
+                </Button>
 
                 {!isAdmin ? (
                   /* Reservations */
-                  <Link href="/reservations">
-                    <Button
+                  <Button
+                      asChild
                       variant="outline"
                       className="
                         group
@@ -149,6 +153,7 @@ const Header = async ({ isAdminPage = false }) => {
                         active:scale-[0.98]
                       "
                     >
+                      <Link href="/reservations">
                       <CarFront
                         size={18}
                         className="
@@ -164,12 +169,12 @@ const Header = async ({ isAdminPage = false }) => {
                       <span className="hidden md:inline font-medium">
                         My Reservation
                       </span>
-                    </Button>
-                  </Link>
+                    </Link>
+                  </Button>
                 ) : (
                   /* Admin Portal - Styled like Saved Cars */
-                  <Link href="/admin">
-                    <Button
+                  <Button
+                      asChild
                       variant="outline"
                       className="
                         group
@@ -190,6 +195,7 @@ const Header = async ({ isAdminPage = false }) => {
                         active:scale-[0.98]
                       "
                     >
+                      <Link href="/admin">
                       <Layout
                         size={18}
                         className="
@@ -205,8 +211,8 @@ const Header = async ({ isAdminPage = false }) => {
                       <span className="hidden md:inline font-medium">
                         Admin Portal
                       </span>
-                    </Button>
-                  </Link>
+                    </Link>
+                  </Button>
                 )}
               </>
             )}
