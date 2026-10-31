@@ -3,6 +3,9 @@ import "./globals.css";
 import localFont from "next/font/local";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
+import { BRAND_NAME } from "@/lib/brand";
+
+const BUILD_YEAR = new Date().getFullYear();
 
 // Main Global Font: Clash Display Variable
 const clashDisplay = localFont({
@@ -19,22 +22,24 @@ const trento = localFont({
 });
 
 export const metadata = {
-  title: "IGNITE AUTO | AI-Powered High-Performance Marketplace",
-  description: "Experience the future of buying, selling, and booking test drives for premium vehicles with AI intelligence.",
+  title: `${BRAND_NAME.toUpperCase()} | AI-Powered High-Performance Marketplace`,
+  description: `Browse verified dealership inventory, search by photo, and book test drives with ${BRAND_NAME}.`,
 };
 
 export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
       <html lang="en" className={`${clashDisplay.variable} ${trento.variable}`}>
-        <body className="font-[family-name:var(--font-clash)] overflow-x-hidden bg-black text-white antialiased">
+        <body className="font-[family-name:var(--font-clash)] overflow-x-hidden bg-[#050505] text-white antialiased">
           <Header />
           <main className="min-h-screen">{children}</main>
-          <Toaster richColors />
+          <Toaster richColors theme="dark" />
 
-          <footer className="bg-[#27251F] text-white py-4">
-            <div className="container mx-auto text-center">
-              <p>&copy; 2025 AI x CAR | Viva La Vida</p>
+          <footer className="relative z-20 bg-[#050505] border-t border-white/10 text-white/60 py-6">
+            <div className="container mx-auto px-4 text-center text-sm">
+              <p>
+                &copy; {BUILD_YEAR} {BRAND_NAME}. Verified dealership inventory.
+              </p>
             </div>
           </footer>
         </body>
