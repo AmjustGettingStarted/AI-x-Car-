@@ -2,8 +2,8 @@
 import aj from "@/lib/arcjet";
 import { serializeCarData } from "@/lib/helper";
 import { db } from "@/lib/prisma";
+import { identifyCarFromImage, toSearchDetails } from "@/lib/gemini";
 import { request } from "@arcjet/next";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export async function getFeaturedCars(limit = 15) {
   try {
@@ -20,12 +20,6 @@ export async function getFeaturedCars(limit = 15) {
   } catch (error) {
     throw new Error("Error fetching featured cars:" + error.message);
   }
-}
-
-async function fileToBase64(file) {
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
-  return buffer.toString("base64");
 }
 
 export async function processImageSearch(file) {
@@ -57,55 +51,19 @@ export async function processImageSearch(file) {
       throw new Error("Gemini API key is not configured");
     }
 
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-
-    const base64Image = await fileToBase64(file);
-    const imagePart = {
-      inlineData: {
-        data: base64Image,
-        mimeType: file.type,
-      },
-    };
-
-    const prompt = ` 
-     Analyze this car image and extract the following information for a search query:
-      1. Make (manufacturer)
-      2. Body type (SUV, Sedan, Hatchback, etc.)
-      3. Color
-
-      Format your response as a clean JSON object with these fields:
-      {
-        "make": "",
-        "bodyType": "",
-        "color": "",
-        "confidence": 0.0
-      }
-
-      For confidence, provide a value between 0 and 1 representing how confident you are in your overall identification.
-      Only respond with the JSON object, nothing else`;
-
-    const result = await model.generateContent([imagePart, prompt]);
-    const response = await result.response;
-    const text = response.text();
-    const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
-
-    try {
-      const carDetails = JSON.parse(cleanedText);
-
-      // Return success response with data
-      return {
-        success: true,
-        data: carDetails,
-      };
-    } catch (parseError) {
-      console.error("Failed to parse AI response:", parseError);
-      console.log("Raw response:", text);
+    const identified = await identifyCarFromImage(file);
+    if (!identified) {
+      console.error("Failed to parse AI response");
       return {
         success: false,
         error: "Failed to parse AI response",
       };
     }
+
+    return {
+      success: true,
+      data: toSearchDetails(identified),
+    };
   } catch (error) {
     throw new Error("AI Search error:" + error.message);
   }

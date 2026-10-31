@@ -38,7 +38,18 @@ const clerk = clerkMiddleware(async (auth, req) => {
 });
 
 // Chain middlewares - ArcJet runs first, then Clerk
-export default createMiddleware(aj, clerk);
+const clerkWithArcjet = createMiddleware(aj, clerk);
+
+const KEEP_ALIVE_PATH = "/api/cron/keep-alive";
+
+// Clerk's Next.js 16 docs use this same clerkMiddleware helper from proxy.js.
+export function proxy(request, event) {
+  const pathname = request.nextUrl?.pathname ?? "";
+  if (pathname === KEEP_ALIVE_PATH || pathname === `${KEEP_ALIVE_PATH}/`) {
+    return NextResponse.next();
+  }
+  return clerkWithArcjet(request, event);
+}
 
 export const config = {
   matcher: [
