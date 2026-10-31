@@ -383,4 +383,59 @@ export async function getAdminAnalytics() {
     console.error("Error fetching admin analytics:", error.message);
     return { success: false, error: error.message };
   }
+}
+
+// Read-only. Booked counts use createdAt (UTC day). Completed has no
+// completedAt, so COMPLETED rows are bucketed by bookingDate.
+export async function getAdminDriveSeries() {
+  try {
+    const { userId } = await auth();
+    if (!userId) throw new Error("Unauthorized");
+
+    const user = await db.user.findUnique({
+      where: { clerkUserId: userId },
+    });
+
+    if (!user || user.role !== "ADMIN") {
+      return { success: false, error: "Unauthorized" };
+    }
+
+    const since = new Date();
+    since.setUTCHours(0, 0, 0, 0);
+    since.setUTCDate(since.getUTCDate() - 89);
+
+    const bookings = await db.testDriveBooking.findMany({
+      where: {
+        OR: [
+          { createdAt: { gte: since } },
+          { status: "COMPLETED", bookingDate: { gte: since } },
+        ],
+      },
+      select: { createdAt: true, bookingDate: true, status: true },
+    });
+
+    const start = new Date();
+    start.setUTCHours(0, 0, 0, 0);
+    const series = [];
+    for (let i = 89; i >= 0; i -= 1) {
+      const date = new Date(start);
+      date.setUTCDate(start.getUTCDate() - i);
+      series.push({ date: dayKey(date), booked: 0, completed: 0 });
+    }
+    const index = new Map(series.map((row, i) => [row.date, i]));
+
+    for (const booking of bookings) {
+      const bookedSlot = index.get(dayKey(booking.createdAt));
+      if (bookedSlot !== undefined) series[bookedSlot].booked += 1;
+      if (booking.status === "COMPLETED") {
+        const completedSlot = index.get(dayKey(booking.bookingDate));
+        if (completedSlot !== undefined) series[completedSlot].completed += 1;
+      }
+    }
+
+    return { success: true, data: { series, completedBy: "bookingDate" } };
+  } catch (error) {
+    console.error("Error fetching drive series:", error.message);
+    return { success: false, error: error.message };
+  }
 } 
