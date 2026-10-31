@@ -1,4 +1,3 @@
-import { bodyTypes } from "@/lib/data";
 import { getAvailableBodyTypeCounts, getFeaturedCars } from "@/actions/home";
 import FeaturedCars from "@/components/featured-cars";
 import HeroSection from "@/components/hero-section";
@@ -12,28 +11,34 @@ import SiteFooter from "@/components/home/site-footer";
 
 export const dynamic = "force-dynamic";
 
-function withCounts(counts) {
-  const byName = new Map(
-    counts.map((row) => [row.bodyType.trim().toLowerCase(), row.count])
-  );
-  const knownNames = new Set(bodyTypes.map((type) => type.name.toLowerCase()));
-  const known = bodyTypes.map((type) => ({
-    ...type,
-    count: byName.get(type.name.toLowerCase()) ?? 0,
-  }));
-  const extras = counts
-    .filter(
-      (row) => row.bodyType && !knownNames.has(row.bodyType.trim().toLowerCase())
-    )
-    .map((row) => ({
-      id: row.bodyType,
-      name: row.bodyType,
-      image: null,
-      count: row.count,
-    }))
-    .sort((a, b) => a.name.localeCompare(b.name));
+const FALLBACK_BODY_TYPES = [
+  "SUV",
+  "Sedan",
+  "Hatchback",
+  "Convertible",
+  "Coupe",
+  "Supercar",
+  "Pickup",
+  "MPV",
+];
 
-  return [...known, ...extras];
+function withCounts(counts) {
+  const source = counts.length
+    ? [...counts].sort((a, b) => a.bodyType.localeCompare(b.bodyType))
+    : FALLBACK_BODY_TYPES.map((bodyType) => ({ bodyType, count: 0 }));
+  const seen = new Set();
+  const items = [];
+
+  for (const row of source) {
+    const name = row.bodyType?.trim();
+    if (!name) continue;
+    const key = name.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    items.push({ name, count: row.count ?? 0 });
+  }
+
+  return items;
 }
 
 export default async function Home() {
