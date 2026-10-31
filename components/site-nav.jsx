@@ -96,12 +96,9 @@ export default function SiteNav({ isAdmin = false }) {
 
       <SignedOut>
         <SignInButton forceRedirectUrl="/">
-          <Button
-            variant="outline"
-            className="cursor-pointer border-[#ff4d1a]/35 bg-black/40 text-white hover:border-[#ff4d1a] hover:bg-[#ff4d1a]/10 hover:text-white"
-          >
+          <span className="inline-flex h-9 cursor-pointer items-center rounded-md border border-[#ff4d1a]/35 bg-black/40 px-4 text-sm text-white hover:border-[#ff4d1a] hover:bg-[#ff4d1a]/10">
             Login
-          </Button>
+          </span>
         </SignInButton>
       </SignedOut>
 
