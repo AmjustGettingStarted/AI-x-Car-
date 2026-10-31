@@ -27,11 +27,80 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { toast } from "sonner";
+import { BRAND_NAME } from "@/lib/brand";
 import EmiCalculator from "./emi-calculator";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { format } from "date-fns";
+
+function CarGallery({ car, currentImageIndex, setCurrentImageIndex }) {
+  const frameRef = useRef(null);
+  const [locked, setLocked] = useState(false);
+  const { scrollYProgress } = useScroll({
+    target: frameRef,
+    offset: ["start end", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], locked ? [0, 0] : [-40, 40]);
+
+  useEffect(() => {
+    setLocked(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }, []);
+
+  const image = car.images?.[currentImageIndex];
+
+  return (
+    <div>
+      <div
+        ref={frameRef}
+        className="relative mb-4 aspect-[4/3] overflow-hidden rounded-[2rem] border border-white/10 bg-[#111113] sm:aspect-video"
+      >
+        {image ? (
+          <motion.div style={{ y }} className="absolute inset-[-12%]">
+            <Image
+              src={image}
+              alt={`${car.year} ${car.make} ${car.model}`}
+              fill
+              sizes="(min-width: 1024px) 58vw, 100vw"
+              className="object-cover"
+            />
+          </motion.div>
+        ) : (
+          <div className="flex h-full w-full items-center justify-center">
+            <Car className="h-24 w-24 text-white/20" />
+          </div>
+        )}
+      </div>
+      {car.images && car.images.length > 1 && (
+        <div className="hide-scrollbar flex gap-2 overflow-x-auto pb-2">
+          {car.images.map((thumb, index) => (
+            <button
+              key={`${thumb}-${index}`}
+              type="button"
+              aria-label={`Show image ${index + 1}`}
+              aria-pressed={index === currentImageIndex}
+              className={`relative h-20 w-24 shrink-0 cursor-pointer overflow-hidden rounded-md ${
+                index === currentImageIndex
+                  ? "ring-2 ring-[#ff4d1a]"
+                  : "opacity-60 hover:opacity-100"
+              }`}
+              onClick={() => setCurrentImageIndex(index)}
+            >
+              <Image
+                src={thumb}
+                alt=""
+                fill
+                sizes="96px"
+                className="object-cover"
+              />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 const CarDetails = ({ car, testDriveInfo }) => {
   const router = useRouter();
@@ -81,7 +150,7 @@ const CarDetails = ({ car, testDriveInfo }) => {
       navigator
         .share({
           title: `${car.year} ${car.make} ${car.model}`,
-          text: `Check out this ${car.year} ${car.make} ${car.model} on Vehiql!`,
+          text: `Check out this ${car.year} ${car.make} ${car.model} on ${BRAND_NAME}!`,
           url: window.location.href,
         })
         .catch((error) => {
@@ -107,64 +176,29 @@ const CarDetails = ({ car, testDriveInfo }) => {
     <div>
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="w-full lg:w-7/12">
-          <div className="aspect-video rounded-lg overflow-hidden relative mb-4">
-            {car.images && car.images.length > 0 ? (
-              <Image
-                src={car.images[currentImageIndex]}
-                alt={`${car.year} ${car.make} ${car.model}`}
-                fill
-                className="object-cover"
-                priority
-              />
-            ) : (
-              <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                <Car className="h-24 w-24 text-gray-400" />
-              </div>
-            )}
-          </div>
-          {/* Thumbnails */}
-          {car.images && car.images.length > 1 && (
-            <div className="flex gap-2 overflow-x-auto pb-2 hide-scrollbar">
-              {car.images.map((image, index) => (
-                <div
-                  key={index}
-                  className={`relative cursor-pointer rounded-md h-20 w-24 flex-shrink-0 transition ${
-                    index === currentImageIndex
-                      ? "border-2 border-blue-600"
-                      : "opacity-70 hover:opacity-100"
-                  }`}
-                  onClick={() => setCurrentImageIndex(index)}
-                >
-                  <Image
-                    src={image}
-                    alt={`${car.year} ${car.make} ${car.model} - view ${
-                      index + 1
-                    }`}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
+          <CarGallery
+            car={car}
+            currentImageIndex={currentImageIndex}
+            setCurrentImageIndex={setCurrentImageIndex}
+          />
           {/* Secondary Actions */}
           <div className="flex mt-4 gap-4">
             <Button
               variant="outline"
-              className={`flex items-center gap-2 flex-1 cursor-pointer ${
-                isWishlisted ? "text-red-500" : ""
+              className={`flex flex-1 cursor-pointer items-center gap-2 border-white/15 bg-transparent text-white hover:bg-white/5 hover:text-white ${
+                isWishlisted ? "text-[#ff4d1a]" : ""
               }`}
               onClick={handleSaveCar}
               disabled={savingCar}
             >
               <Heart
-                className={`h-5 w-5 ${isWishlisted ? "fill-red-500" : ""}`}
+                className={`h-5 w-5 ${isWishlisted ? "fill-[#ff4d1a] text-[#ff4d1a]" : ""}`}
               />
               {isWishlisted ? "Saved" : "Save"}
             </Button>
             <Button
               variant="outline"
-              className="flex items-center gap-2 flex-1 cursor-pointer"
+              className="flex flex-1 cursor-pointer items-center gap-2 border-white/15 bg-transparent text-white hover:bg-white/5 hover:text-white"
               onClick={handleShare}
             >
               <Share2 className="h-5 w-5" />
@@ -178,74 +212,77 @@ const CarDetails = ({ car, testDriveInfo }) => {
           <div className="flex items-center justify-between">
             <Badge className="mb-2">{car.bodyType}</Badge>
           </div>
-          <h1 className="text-4xl font-bold mb-1">
+          <h1 className="mb-1 font-[family-name:var(--font-clash)] text-4xl font-semibold uppercase tracking-tight sm:text-5xl">
             {car.year} {car.make} {car.model}
           </h1>
-          <div className="text-2xl font-bold text-blue-600">
+          <div className="text-2xl font-semibold text-[#1a5cff]">
             {formatCurrency(car.price)}
           </div>
           {/* Quick Stats */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 my-6">
             <div className="flex items-center gap-2">
-              <Gauge className="text-gray-500 h-5 w-5" />
+              <Gauge className="h-5 w-5 text-[#ff4d1a]" />
               <span>{car.mileage.toLocaleString()} miles</span>
             </div>
             <div className="flex items-center gap-2">
-              <Fuel className="text-gray-500 h-5 w-5" />
+              <Fuel className="h-5 w-5 text-[#ff4d1a]" />
               <span>{car.fuelType}</span>
             </div>
             <div className="flex items-center gap-2">
-              <Car className="text-gray-500 h-5 w-5" />
+              <Car className="h-5 w-5 text-[#ff4d1a]" />
               <span>{car.transmission}</span>
             </div>
           </div>
           {/* Emi part */}
           <Dialog>
-            <DialogTrigger className="w-full text-start cursor-pointer">
-              <Card>
-                <CardContent>
-                  <div className="flex items-center gap-2 text-lg font-medium mb-2">
-                    <Currency className="h-5 w-5 text-blue-600" />
-                    <h3>EMI Calculator</h3>
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    Estimated Monthly Payment:{" "}
-                    <span className="font-bold text-gray-900">
-                      {formatCurrency(car.price / 60)}
-                    </span>{" "}
-                    for 60 months
-                  </div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    *Based on $0 down payment and 4.5% interest rate
-                  </div>
-                </CardContent>
-              </Card>
+            <DialogTrigger asChild>
+              <button type="button" className="w-full cursor-pointer text-left">
+                <Card className="border-white/10 bg-[#0b0b0c] transition-shadow hover:shadow-[0_0_36px_-16px_rgba(255,77,26,0.7)]">
+                  <CardContent>
+                    <div className="mb-2 flex items-center gap-2 text-lg font-medium">
+                      <Currency className="h-5 w-5 text-[#ff4d1a]" />
+                      <h3>EMI Calculator</h3>
+                    </div>
+                    <div className="text-sm text-white/60">
+                      Estimated Monthly Payment:{" "}
+                      <span className="font-semibold text-[#1a5cff]">
+                        {formatCurrency(car.price / 60)}
+                      </span>{" "}
+                      for 60 months
+                    </div>
+                    <div className="mt-1 text-xs text-white/40">
+                      Based on $0 down payment and 4.5% interest rate
+                    </div>
+                  </CardContent>
+                </Card>
+              </button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="max-h-[85svh] overflow-y-auto border-white/10 bg-[#0b0b0c] text-white sm:max-w-lg">
               <DialogHeader>
-                <DialogTitle>EMI Calculator</DialogTitle>
-                <DialogDescription>
-                  <EmiCalculator price={car.price} />
+                <DialogTitle className="font-[family-name:var(--font-clash)] uppercase tracking-tight">
+                  EMI Calculator
+                </DialogTitle>
+                <DialogDescription className="text-white/50">
+                  Estimate a monthly payment for this car.
                 </DialogDescription>
               </DialogHeader>
+              <EmiCalculator price={Number(car.price)} />
             </DialogContent>
           </Dialog>
           {/* Request More Info */}
-          <Card className="my-6">
+          <Card className="my-6 border-white/10 bg-[#0b0b0c]">
             <CardContent className="p-4">
-              <div className="flex items-center gap-2 text-lg font-medium mb-2">
-                <MessageSquare className="h-5 w-5 text-blue-600" />
+              <div className="mb-2 flex items-center gap-2 text-lg font-medium">
+                <MessageSquare className="h-5 w-5 text-[#ff4d1a]" />
                 <h3>Have Questions?</h3>
               </div>
-              <p className="text-sm text-gray-600 mb-3">
-                Our representatives are available to answer all your queries
-                about this vehicle.
+              <p className="mb-3 text-sm text-white/60">
+                A dealership representative can answer questions about this
+                vehicle.
               </p>
-              <a href="mailto:gamerhmv2050@gmail.com">
-                <Button variant="outline" className="w-full cursor-pointer">
-                  Request Info
-                </Button>
-              </a>
+              <Button asChild variant="outline" className="w-full cursor-pointer border-white/15">
+                <a href="mailto:gamerhmv2050@gmail.com">Request Info</a>
+              </Button>
             </CardContent>
           </Card>
 
@@ -262,7 +299,7 @@ const CarDetails = ({ car, testDriveInfo }) => {
           {/* Book Test Drive Button */}
           {car.status !== "SOLD" && car.status !== "UNAVAILABLE" && (
             <Button
-              className="w-full py-6 text-lg cursor-pointer"
+              className="w-full cursor-pointer bg-[#ff4d1a] py-6 text-lg text-white hover:bg-[#ff6a3d]"
               onClick={handleBookTestDrive}
               disabled={testDriveInfo.userTestDrive}
             >
@@ -278,37 +315,41 @@ const CarDetails = ({ car, testDriveInfo }) => {
         </div>
       </div>
       {/* More Information */}
-      <div className="mt-12 p-6 bg-white rounded-lg shadow-sm">
+      <div className="mt-12 rounded-[2rem] border border-white/10 bg-[#0b0b0c] p-6">
         <div className="flex flex-col md:flex-row gap-8">
           <div className="w-full md:w-1/2">
-            <h3 className="text-2xl font-bold mb-6">Description</h3>
-            <p className="whitespace-pre-line text-gray-700">
+            <h3 className="mb-6 font-[family-name:var(--font-clash)] text-2xl font-semibold uppercase tracking-tight">
+              Description
+            </h3>
+            <p className="whitespace-pre-line text-white/70">
               {car.description}
             </p>
           </div>
           <div className="flex-1">
-            <h3 className="text-2xl font-bold mb-6">Features</h3>
+            <h3 className="mb-6 font-[family-name:var(--font-clash)] text-2xl font-semibold uppercase tracking-tight">
+              Features
+            </h3>
             <ul className="grid grid-cols-1 gap-2">
               <li className="flex items-center gap-2">
-                <span className="h-2 w-2 bg-blue-600 rounded-full"></span>
+                <span className="h-2 w-2 rounded-full bg-[#ff4d1a]"></span>
                 {car.transmission} Transmission
               </li>
               <li className="flex items-center gap-2">
-                <span className="h-2 w-2 bg-blue-600 rounded-full"></span>
+                <span className="h-2 w-2 rounded-full bg-[#ff4d1a]"></span>
                 {car.fuelType} Engine
               </li>
               <li className="flex items-center gap-2">
-                <span className="h-2 w-2 bg-blue-600 rounded-full"></span>
+                <span className="h-2 w-2 rounded-full bg-[#ff4d1a]"></span>
                 {car.bodyType} Body Style
               </li>
               {car.seats && (
                 <li className="flex items-center gap-2">
-                  <span className="h-2 w-2 bg-blue-600 rounded-full"></span>
+                  <span className="h-2 w-2 rounded-full bg-[#ff4d1a]"></span>
                   {car.seats} Seats
                 </li>
               )}
               <li className="flex items-center gap-2">
-                <span className="h-2 w-2 bg-blue-600 rounded-full"></span>
+                <span className="h-2 w-2 rounded-full bg-[#ff4d1a]"></span>
                 {car.color} Exterior
               </li>
             </ul>
@@ -317,47 +358,49 @@ const CarDetails = ({ car, testDriveInfo }) => {
       </div>
 
       {/* Specifications Section */}
-      <div className="mt-8 p-6 bg-white rounded-lg shadow-sm">
-        <h2 className="text-2xl font-bold mb-6">Specifications</h2>
-        <div className="bg-gray-50 rounded-lg p-6">
+      <div className="mt-8 rounded-[2rem] border border-white/10 bg-[#0b0b0c] p-6">
+        <h2 className="mb-6 font-[family-name:var(--font-clash)] text-2xl font-semibold uppercase tracking-tight">
+          Specifications
+        </h2>
+        <div className="rounded-2xl bg-[#111113] p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
-            <div className="flex justify-between py-2 border-b">
-              <span className="text-gray-600">Make</span>
+            <div className="flex justify-between border-b border-white/10 py-2">
+              <span className="text-white/50">Make</span>
               <span className="font-medium">{car.make}</span>
             </div>
-            <div className="flex justify-between py-2 border-b">
-              <span className="text-gray-600">Model</span>
+            <div className="flex justify-between border-b border-white/10 py-2">
+              <span className="text-white/50">Model</span>
               <span className="font-medium">{car.model}</span>
             </div>
-            <div className="flex justify-between py-2 border-b">
-              <span className="text-gray-600">Year</span>
+            <div className="flex justify-between border-b border-white/10 py-2">
+              <span className="text-white/50">Year</span>
               <span className="font-medium">{car.year}</span>
             </div>
-            <div className="flex justify-between py-2 border-b">
-              <span className="text-gray-600">Body Type</span>
+            <div className="flex justify-between border-b border-white/10 py-2">
+              <span className="text-white/50">Body Type</span>
               <span className="font-medium">{car.bodyType}</span>
             </div>
-            <div className="flex justify-between py-2 border-b">
-              <span className="text-gray-600">Fuel Type</span>
+            <div className="flex justify-between border-b border-white/10 py-2">
+              <span className="text-white/50">Fuel Type</span>
               <span className="font-medium">{car.fuelType}</span>
             </div>
-            <div className="flex justify-between py-2 border-b">
-              <span className="text-gray-600">Transmission</span>
+            <div className="flex justify-between border-b border-white/10 py-2">
+              <span className="text-white/50">Transmission</span>
               <span className="font-medium">{car.transmission}</span>
             </div>
-            <div className="flex justify-between py-2 border-b">
-              <span className="text-gray-600">Mileage</span>
+            <div className="flex justify-between border-b border-white/10 py-2">
+              <span className="text-white/50">Mileage</span>
               <span className="font-medium">
                 {car.mileage.toLocaleString()} miles
               </span>
             </div>
-            <div className="flex justify-between py-2 border-b">
-              <span className="text-gray-600">Color</span>
+            <div className="flex justify-between border-b border-white/10 py-2">
+              <span className="text-white/50">Color</span>
               <span className="font-medium">{car.color}</span>
             </div>
             {car.seats && (
-              <div className="flex justify-between py-2 border-b">
-                <span className="text-gray-600">Seats</span>
+              <div className="flex justify-between border-b border-white/10 py-2">
+                <span className="text-white/50">Seats</span>
                 <span className="font-medium">{car.seats}</span>
               </div>
             )}
@@ -366,24 +409,26 @@ const CarDetails = ({ car, testDriveInfo }) => {
       </div>
 
       {/* Dealership Location Section */}
-      <div className="mt-8 p-6 bg-white rounded-lg shadow-sm">
-        <h2 className="text-2xl font-bold mb-6">Dealership Location</h2>
-        <div className="bg-gray-50 rounded-lg p-6">
+      <div className="mt-8 rounded-[2rem] border border-white/10 bg-[#0b0b0c] p-6">
+        <h2 className="mb-6 font-[family-name:var(--font-clash)] text-2xl font-semibold uppercase tracking-tight">
+          Dealership Location
+        </h2>
+        <div className="rounded-2xl bg-[#111113] p-6">
           <div className="flex flex-col md:flex-row gap-6 justify-between">
             {/* Dealership Name and Address */}
             <div className="flex items-start gap-3">
-              <LocateFixed className="h-5 w-5 text-blue-600 mt-1 flex-shrink-0" />
+              <LocateFixed className="mt-1 h-5 w-5 shrink-0 text-[#ff4d1a]" />
               <div>
                 <h4 className="font-medium">
                   {testDriveInfo.dealership?.name || "Not Available"}
                 </h4>
-                <p className="text-gray-600">
+                <p className="text-white/50">
                   {testDriveInfo.dealership?.address || "Not Available"}
                 </p>
-                <p className="text-gray-600 mt-1">
+                <p className="text-white/50 mt-1">
                   Phone: {testDriveInfo.dealership?.phone || "Not Available"}
                 </p>
-                <p className="text-gray-600">
+                <p className="text-white/50">
                   Email: {testDriveInfo.dealership?.email || "Not Available"}
                 </p>
               </div>
@@ -414,7 +459,7 @@ const CarDetails = ({ car, testDriveInfo }) => {
                           key={day.dayOfWeek}
                           className="flex justify-between text-sm"
                         >
-                          <span className="text-gray-600">
+                          <span className="text-white/50">
                             {day.dayOfWeek.charAt(0) +
                               day.dayOfWeek.slice(1).toLowerCase()}
                           </span>
@@ -436,7 +481,7 @@ const CarDetails = ({ car, testDriveInfo }) => {
                       "Sunday",
                     ].map((day, index) => (
                       <div key={day} className="flex justify-between text-sm">
-                        <span className="text-gray-600">{day}</span>
+                        <span className="text-white/50">{day}</span>
                         <span>
                           {index < 5
                             ? "9:00 - 18:00"

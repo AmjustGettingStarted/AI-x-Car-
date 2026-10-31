@@ -47,7 +47,7 @@ const CarFilterControls = ({
   return (
     <div className="space-y-6">
       <div className="space-y-4">
-        <h3 className="font-medium">Price Range</h3>
+            <h3 className="font-medium text-white">Price Range</h3>
         <div className="px-2">
           <Slider
             min={filters.priceRange.min}
@@ -58,8 +58,8 @@ const CarFilterControls = ({
           />
         </div>
         <div className="flex items-center justify-between">
-          <div className="font-medium text-sm">$ {priceRange[0]}</div>
-          <div className="font-medium text-sm">$ {priceRange[1]}</div>
+          <div className="text-sm font-medium text-[#1a5cff]">$ {priceRange[0]}</div>
+          <div className="text-sm font-medium text-[#1a5cff]">$ {priceRange[1]}</div>
         </div>
       </div>
       {/* Filter Categories */}
@@ -69,7 +69,7 @@ const CarFilterControls = ({
             <span>{section.title}</span>
             {section.currentValue && (
               <button
-                className="text-xs text-gray-600 flex items-center"
+                className="flex items-center text-xs text-white/50"
                 onClick={() => onClearFilter(section.id)}
               >
                 <X className="mr-1 h-3 w-3" />
@@ -86,8 +86,8 @@ const CarFilterControls = ({
                 }
                 className={`cursor-pointer px-3 py-1 ${
                   section.currentValue === option.value
-                    ? "bg-blue-100 hover:bg-blue-200 text-blue-900 border-blue-200"
-                    : "bg-white hover:bg-gray-100 text-gray-700"
+                    ? "border-[#ff4d1a]/50 bg-[#ff4d1a]/15 text-white hover:bg-[#ff4d1a]/25"
+                    : "border-white/15 bg-transparent text-white/70 hover:bg-white/5 hover:text-white"
                 }`}
                 onClick={() => {
                   section.onChange(

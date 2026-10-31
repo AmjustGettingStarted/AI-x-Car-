@@ -7,7 +7,7 @@ import CarListingsLoading from "./car-listings-loading";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Info } from "lucide-react";
 import Link from "next/link";
-import CarCard from "@/components/car-card";
+import PremiumCarCard from "@/components/premium-car-card";
 import {
   Pagination,
   PaginationContent,
@@ -103,14 +103,16 @@ const CarListings = () => {
   // No results
   if (cars.length === 0) {
     return (
-      <div className="min-h-[400px] flex flex-col items-center justify-center text-center p-8 border rounded-lg bg-gray-50">
-        <div className="bg-gray-100 p-4 rounded-full mb-4">
-          <Info className="h-8 w-8 text-gray-500" />
+      <div className="flex min-h-[400px] flex-col items-center justify-center rounded-[2rem] border border-white/10 bg-[#0b0b0c] p-8 text-center">
+        <div className="mb-4 rounded-full border border-white/10 bg-white/5 p-4">
+          <Info className="h-8 w-8 text-white/50" />
         </div>
-        <h3 className="text-lg font-medium mb-2">No cars found</h3>
-        <p className="text-gray-500 mb-6 max-w-md">
-          We couldn't find any cars matching your search criteria. Try adjusting
-          your filters or search term.
+        <h3 className="font-[family-name:var(--font-clash)] text-2xl font-semibold uppercase tracking-tight">
+          No cars found
+        </h3>
+        <p className="mb-6 mt-3 max-w-md text-sm text-white/60">
+          No cars match this search. Adjust the filters or clear them and look
+          through the full inventory.
         </p>
         <Button variant="outline" asChild>
           <Link href="/cars">Clear all filters</Link>
@@ -192,7 +194,7 @@ const CarListings = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <p className="text-gray-600">
+        <p className="text-sm text-white/60">
           Showing{" "}
           <span className="font-medium">
             {(page - 1) * limit + 1}-{Math.min(page * limit, pagination.total)}
@@ -202,9 +204,14 @@ const CarListings = () => {
       </div>
 
       {/* Car grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         {cars.map((car) => (
-          <CarCard key={car.id} car={car} />
+          <div key={car.id} className="h-[32rem]">
+            <PremiumCarCard
+              car={car}
+              sizes="(min-width: 768px) 40vw, 100vw"
+            />
+          </div>
         ))}
       </div>
 

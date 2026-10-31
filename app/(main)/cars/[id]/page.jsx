@@ -1,6 +1,6 @@
 import { getCarById } from "@/actions/car-listings";
+import { BRAND_NAME } from "@/lib/brand";
 import { notFound } from "next/navigation";
-import React from "react";
 import CarDetails from "./_components/car-details";
 
 export async function generateMetadata({ params }) {
@@ -9,7 +9,7 @@ export async function generateMetadata({ params }) {
 
   if (!result.success) {
     return {
-      title: "❌ Car Not Found ❌ | AIxCAR",
+      title: `Car Not Found | ${BRAND_NAME}`,
       description: "The requested car could not be found",
     };
   }
@@ -17,7 +17,7 @@ export async function generateMetadata({ params }) {
   const car = result.data;
 
   return {
-    title: `${car.year} ${car.make} ${car.model} 💕 | AIxCAR`,
+    title: `${car.year} ${car.make} ${car.model} | ${BRAND_NAME}`,
     description: car.description.substring(0, 160),
     openGraph: {
       images: car.images?.[0] ? [car.images[0]] : [],
@@ -33,7 +33,7 @@ const CarDetailsPage = async ({ params }) => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="px-2 py-4 sm:px-4">
       <CarDetails car={result.data} testDriveInfo={result.data.testDriveInfo} />
     </div>
   );

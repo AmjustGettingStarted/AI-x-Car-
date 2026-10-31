@@ -1,28 +1,28 @@
 import { getCarFilters } from "@/actions/car-listings";
-import React from "react";
+import { BRAND_NAME } from "@/lib/brand";
 import CarFilters from "./_components/car-filters";
 import CarListings from "./_components/car-listings";
 
 export const metadata = {
-  title: "Cars 🏎 | AIxCAR",
-  description: "Browse and search for your dream car",
+  title: `Cars | ${BRAND_NAME}`,
+  description: "Browse verified dealership inventory.",
 };
 
 const CarsPage = async () => {
   const filtersData = await getCarFilters();
   return (
-    <div className="mx-auto container px-4 py-12">
-      <h1 className="text-6xl mb-4 gradient font-extrabold tracking-tighter pr-2 pb-2 text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-green-500">
+    <div className="px-2 py-4 sm:px-4">
+      <p className="mb-3 font-[family-name:var(--font-label)] text-[10px] uppercase tracking-[0.35em] text-[#ff4d1a]">
+        Inventory
+      </p>
+      <h1 className="mb-8 font-[family-name:var(--font-clash)] text-5xl font-semibold uppercase tracking-tight sm:text-7xl">
         Browse Cars
       </h1>
-      <div className="flex flex-col lg:flex-row gap-8">
-        <div className="w-full lg:w-80 flex-shrink-0">
-          {/* Filters */}
+      <div className="flex flex-col gap-8 lg:flex-row">
+        <div className="w-full shrink-0 lg:w-80">
           <CarFilters filters={filtersData.data} />
         </div>
-        <div className="flex-1 ">
-          {/* Listings */}
-
+        <div className="min-w-0 flex-1">
           <CarListings />
         </div>
       </div>

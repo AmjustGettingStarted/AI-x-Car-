@@ -1,27 +1,29 @@
 import { getUserTestDrives } from "@/actions/test-drive";
 import { auth } from "@clerk/nextjs/server";
-import React from "react";
+import { redirect } from "next/navigation";
+import { BRAND_NAME } from "@/lib/brand";
 import ReservationsList from "./_components/reservations-list";
 
 export const metadata = {
-  title: "My Reservations 🗃 | AIxCAR",
+  title: `Reservations | ${BRAND_NAME}`,
   description: "Manage your test drive reservations",
 };
 
 const ReservationsPage = async () => {
-  // Check user authentication on server
   const { userId } = await auth();
   if (!userId) {
     redirect("/sign-in?redirect=/reservations");
   }
 
-  // Fetch reservations on the server
   const reservationsResult = await getUserTestDrives();
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      <h1 className="text-6xl mb-6  gradient font-extrabold tracking-tighter pr-2 pb-2 text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-green-500">
-        Your Reservations
+    <div className="px-2 py-4 sm:px-4">
+      <p className="mb-3 font-[family-name:var(--font-label)] text-[10px] uppercase tracking-[0.35em] text-[#ff4d1a]">
+        Your drives
+      </p>
+      <h1 className="mb-8 font-[family-name:var(--font-clash)] text-5xl font-semibold uppercase tracking-tight sm:text-7xl">
+        Reservations
       </h1>
       <ReservationsList initialData={reservationsResult} />
     </div>
