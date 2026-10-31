@@ -144,7 +144,7 @@ function PinnedWhy() {
     <section
       ref={ref}
       aria-labelledby="why-choose-pinned"
-      className="relative z-20 hidden h-[300vh] bg-[#050505] lg:motion-safe:block"
+      className="relative z-20 hidden h-[300vh] rounded-t-[2.5rem] bg-[#050505] lg:motion-safe:block"
     >
       <div className="sticky top-0 h-[100svh] overflow-hidden">
         <motion.div
@@ -170,7 +170,7 @@ function StackedWhy() {
   return (
     <section
       aria-labelledby="why-choose-stack"
-      className="relative z-20 bg-[#050505] px-4 py-20 sm:px-6 lg:motion-safe:hidden"
+      className="relative z-20 rounded-t-[2.5rem] bg-[#050505] px-4 py-20 sm:px-6 lg:motion-safe:hidden"
     >
       <SectionTitle
         id="why-choose-stack"

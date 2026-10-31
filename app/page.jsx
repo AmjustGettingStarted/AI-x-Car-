@@ -47,7 +47,7 @@ export default async function Home() {
       <Header />
       {/* Keeps the page above the fixed footer. No transform here: the brand
           reveal image has to stay viewport-fixed. */}
-      <div className="relative z-10 flex flex-col bg-[#050505]">
+      <div className="relative z-10 flex flex-col">
         <HeroSection />
 
         <section
