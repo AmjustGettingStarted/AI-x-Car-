@@ -1,11 +1,20 @@
 "use client";
 
+import { Fragment } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UserButton } from "@clerk/nextjs";
 import { ArrowLeft, Calendar, Car, Cog, LayoutDashboard } from "lucide-react";
 import { BRAND_NAME } from "@/lib/brand";
 import { Button } from "@/components/ui/button";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import {
   Sidebar,
   SidebarContent,
@@ -29,21 +38,41 @@ const routes = [
   { label: "Settings", icon: Cog, href: "/admin/settings" },
 ];
 
+const CRUMB_LABELS = {
+  admin: "Dashboard",
+  cars: "Cars",
+  create: "New car",
+  "test-drives": "Test Drives",
+  settings: "Settings",
+};
+
 function isActive(pathname, href) {
   if (href === "/admin") return pathname === "/admin";
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export default function AdminShell({ user, children }) {
+function crumbsFor(pathname) {
+  const parts = pathname.split("/").filter(Boolean);
+  if (parts[0] !== "admin") {
+    return [{ label: "Dashboard", href: "/admin" }];
+  }
+  return parts.map((part, index) => ({
+    label: CRUMB_LABELS[part] || part,
+    href: `/${parts.slice(0, index + 1).join("/")}`,
+  }));
+}
+
+export default function AdminShell({ user, defaultOpen = true, children }) {
   const pathname = usePathname();
+  const crumbs = crumbsFor(pathname);
 
   return (
-    <SidebarProvider>
-      <Sidebar collapsible="icon" className="border-white/10">
-        <SidebarHeader className="gap-1 px-4 py-5">
+    <SidebarProvider defaultOpen={defaultOpen} className="bg-[#050505] text-white">
+      <Sidebar collapsible="icon" className="border-white/[0.08] bg-[#0a0a0b]">
+        <SidebarHeader className="gap-1 bg-[#0a0a0b] px-4 py-5">
           <Link
             href="/admin"
-            className="truncate font-[family-name:var(--font-clash)] text-lg font-semibold uppercase tracking-tight text-white"
+            className="truncate font-display text-lg font-semibold uppercase tracking-tight text-white"
           >
             {BRAND_NAME}
           </Link>
@@ -51,7 +80,7 @@ export default function AdminShell({ user, children }) {
             Admin
           </p>
         </SidebarHeader>
-        <SidebarContent>
+        <SidebarContent className="bg-[#0a0a0b]">
           <SidebarGroup>
             <SidebarGroupLabel>Showroom</SidebarGroupLabel>
             <SidebarGroupContent>
@@ -61,11 +90,13 @@ export default function AdminShell({ user, children }) {
                   const Icon = route.icon;
                   return (
                     <SidebarMenuItem key={route.href}>
-                      <SidebarMenuButton asChild isActive={active} tooltip={route.label}>
-                        <Link
-                          href={route.href}
-                          className={active ? "border-l-2 border-[#ff4d1a]" : ""}
-                        >
+                      <SidebarMenuButton
+                        asChild
+                        isActive={active}
+                        tooltip={route.label}
+                        className="border-l-[3px] border-transparent data-[active=true]:border-[#ff4d1a] data-[active=true]:bg-white/5 data-[active=true]:text-white"
+                      >
+                        <Link href={route.href}>
                           <Icon />
                           <span>{route.label}</span>
                         </Link>
@@ -80,26 +111,47 @@ export default function AdminShell({ user, children }) {
         <SidebarRail />
       </Sidebar>
       <SidebarInset className="bg-[#050505] text-white">
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-white/10 bg-[#0b0b0c]/95 px-3 backdrop-blur-xl md:px-5">
+        <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-white/[0.08] bg-[#0a0a0b]/80 px-3 backdrop-blur-xl md:px-5">
           <SidebarTrigger className="text-white hover:bg-white/5 hover:text-white" />
+          <Breadcrumb className="min-w-0">
+            <BreadcrumbList className="flex-nowrap text-white/70">
+              {crumbs.map((crumb, index) => {
+                const last = index === crumbs.length - 1;
+                return (
+                  <Fragment key={crumb.href}>
+                    {index > 0 ? <BreadcrumbSeparator className="text-white/40" /> : null}
+                    <BreadcrumbItem className="min-w-0">
+                      {last ? (
+                        <BreadcrumbPage className="truncate text-white">{crumb.label}</BreadcrumbPage>
+                      ) : (
+                        <BreadcrumbLink asChild className="truncate text-white/70 hover:text-white">
+                          <Link href={crumb.href}>{crumb.label}</Link>
+                        </BreadcrumbLink>
+                      )}
+                    </BreadcrumbItem>
+                  </Fragment>
+                );
+              })}
+            </BreadcrumbList>
+          </Breadcrumb>
           <Button
             asChild
             variant="outline"
-            className="border-white/20 bg-transparent text-white hover:bg-white/10 hover:text-white"
+            className="ml-auto border-white/40 bg-transparent text-white hover:bg-white/10 hover:text-white"
           >
             <Link href="/">
               <ArrowLeft className="text-[#ff4d1a]" />
               <span className="hidden sm:inline">Back to app</span>
             </Link>
           </Button>
-          <div className="ml-auto flex items-center gap-3">
+          <div className="flex items-center gap-3">
             <span className="hidden max-w-[12rem] truncate text-sm text-white/70 md:inline">
               {user?.name || user?.email}
             </span>
-            <UserButton appearance={{ elements: { avatarBox: "h-9 w-9" } }} />
+            <UserButton appearance={{ elements: { avatarBox: "h-8 w-8" } }} />
           </div>
         </header>
-        <div data-admin className="min-h-[calc(100svh-4rem)]">
+        <div data-admin className="min-h-[calc(100svh-3.5rem)] bg-[#050505]">
           {children}
         </div>
       </SidebarInset>
