@@ -63,6 +63,7 @@ const CarCard = ({ car }) => {
               src={car.images[0]}
               alt={`${car.make} ${car.model}`}
               fill
+              sizes="(min-width: 768px) 33vw, 100vw"
               className="object-cover group-hover:scale-105 transition-all duration-500"
               onClick={handleToggleSave}
             />
