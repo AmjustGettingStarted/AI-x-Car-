@@ -12,6 +12,7 @@ import useFetch from "@/hooks/use-fetch";
 import { toggleSavedCar } from "@/actions/car-listings";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import CarCard from "@/components/car-card";
 
 function WishlistButton({ car, onSavedChange, optimistic = false }) {
   const [isSaved, setIsSaved] = useState(Boolean(car.wishlisted ?? car.wishListed));
@@ -203,71 +204,16 @@ const PremiumCarCard = React.forwardRef(function PremiumCarCard(
   }
 
   return (
-    <motion.article
+    <CarCard
       ref={ref}
-      onPointerMove={onPointerMove}
-      onPointerLeave={onPointerLeave}
-      style={{
-        scale,
-        opacity,
-        rotateX: tilt ? springX : 0,
-        rotateY: tilt ? springY : 0,
-      }}
-      className={`relative h-full w-full overflow-hidden rounded-3xl border border-white/10 bg-[#0b0b0c] ${className}`}
-    >
-      <Link
-        href={`/cars/${car.id}`}
-        aria-label={`View ${car.make} ${car.model}`}
-        className="absolute inset-0 z-0"
-      >
-        <CarImage
-          src={image}
-          alt={`${car.make} ${car.model}`}
-          sizes={sizes}
-          priority={priority}
-        />
-      </Link>
-
-      <div className="absolute right-4 top-4 z-10">
-        <WishlistButton car={car} onSavedChange={onSavedChange} />
-      </div>
-
-      <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black via-black/85 to-transparent p-8">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div className="min-w-0 text-base">
-            <h3 className="line-clamp-2 text-balance font-display text-[clamp(1.5rem,2.6vw,2.5rem)] font-semibold uppercase leading-[0.95] text-white">
-              {car.make} {car.model}
-            </h3>
-            <p className="mt-2 text-[1.5em] font-semibold leading-none text-[#1a5cff]">
-              ${Number(car.price).toLocaleString()}
-            </p>
-            <p className="mt-3 text-sm text-white/70">
-              {car.year}
-              <span className="mx-2 text-white/40">/</span>
-              {car.transmission}
-              <span className="mx-2 text-white/40">/</span>
-              {car.fuelType}
-            </p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {chips.map((label, index) => (
-                <Badge key={`${label}-${index}`} className="border-transparent bg-white/10 text-white">
-                  {label}
-                </Badge>
-              ))}
-            </div>
-          </div>
-
-          <Button
-            asChild
-            className="h-12 shrink-0 cursor-pointer bg-[#ff4d1a] px-6 text-white hover:bg-[#ff6a3d]"
-          >
-            <Link href={`/cars/${car.id}`}>
-              View car <ArrowRight className="h-4 w-4" />
-            </Link>
-          </Button>
-        </div>
-      </div>
-    </motion.article>
+      car={car}
+      scale={scale}
+      opacity={opacity}
+      className={className}
+      priority={priority}
+      sizes={sizes}
+      onSavedChange={onSavedChange}
+    />
   );
 });
 

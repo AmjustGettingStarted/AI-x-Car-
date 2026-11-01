@@ -106,7 +106,9 @@ const CarDetails = ({ car, testDriveInfo }) => {
   const router = useRouter();
   const { isSignedIn } = useAuth();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isWishlisted, setIsWishlisted] = useState(car.wishlisted);
+  const [isWishlisted, setIsWishlisted] = useState(
+    car.wishListed ?? car.wishlisted ?? false
+  );
 
   const {
     loading: savingCar,
@@ -301,10 +303,10 @@ const CarDetails = ({ car, testDriveInfo }) => {
             <Button
               className="w-full cursor-pointer bg-[#ff4d1a] py-6 text-lg text-white hover:bg-[#ff6a3d]"
               onClick={handleBookTestDrive}
-              disabled={testDriveInfo.userTestDrive}
+              disabled={Boolean(testDriveInfo?.userTestDrive)}
             >
               <Calendar className="mr-2 h-5 w-5" />
-              {testDriveInfo.userTestDrive
+              {testDriveInfo?.userTestDrive
                 ? `Booked for ${format(
                     new Date(testDriveInfo.userTestDrive.bookingDate),
                     "EEEE, MMMM d, yyyy"

@@ -7,7 +7,7 @@ export async function generateMetadata({ params }) {
   const { id } = await params;
   const result = await getCarById(id);
 
-  if (!result.success) {
+  if (!result || !result.success || !result.data) {
     return {
       title: `Car Not Found | ${BRAND_NAME}`,
       description: "The requested car could not be found",
@@ -18,7 +18,7 @@ export async function generateMetadata({ params }) {
 
   return {
     title: `${car.year} ${car.make} ${car.model} | ${BRAND_NAME}`,
-    description: car.description.substring(0, 160),
+    description: car.description ? car.description.substring(0, 160) : "",
     openGraph: {
       images: car.images?.[0] ? [car.images[0]] : [],
     },
@@ -28,7 +28,7 @@ const CarDetailsPage = async ({ params }) => {
   const { id } = await params;
   const result = await getCarById(id);
 
-  if (!result.success) {
+  if (!result || !result.success || !result.data) {
     notFound();
   }
 

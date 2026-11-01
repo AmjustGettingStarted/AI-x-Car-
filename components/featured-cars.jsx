@@ -10,7 +10,7 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
-import PremiumCarCard from "@/components/premium-car-card";
+import CarCard from "@/components/car-card";
 import { Button } from "@/components/ui/button";
 
 const pad = (n) => String(n).padStart(2, "0");
@@ -40,19 +40,12 @@ function SectionHeading({ className = "" }) {
 }
 
 function TrackCard({ car, index, trackX, metrics }) {
-  const scale = useTransform(trackX, (tx) => {
-    if (!metrics.stride) return 1;
-    const center = metrics.origin + index * metrics.stride + metrics.cardWidth / 2 + tx;
-    const delta = Math.abs(center - metrics.viewport / 2);
-    const t = Math.min(1, delta / metrics.stride);
-    return 1 - t * 0.06;
-  });
   const opacity = useTransform(trackX, (tx) => {
     if (!metrics.stride) return 1;
     const center = metrics.origin + index * metrics.stride + metrics.cardWidth / 2 + tx;
     const delta = Math.abs(center - metrics.viewport / 2);
     const t = Math.min(1, delta / metrics.stride);
-    return 1 - t * 0.3;
+    return 1 - t * 0.15;
   });
 
   return (
@@ -60,10 +53,10 @@ function TrackCard({ car, index, trackX, metrics }) {
       data-featured-card
       className="h-[min(62vh,640px)] w-[min(78vw,1100px)] shrink-0 first:ml-[8vw]"
     >
-      <PremiumCarCard
+      <CarCard
         car={car}
-        scale={scale}
         opacity={opacity}
+        priority={index === 0}
         sizes="(min-width: 768px) 78vw, 86vw"
       />
     </div>
@@ -136,7 +129,7 @@ function PinnedTrack({ featuredCars }) {
         </div>
 
         <div className="flex min-h-0 flex-1 items-center">
-          <motion.div ref={trackRef} style={{ x }} className="flex items-center gap-[2vw]">
+          <motion.div ref={trackRef} style={{ x }} className="flex items-center gap-1 sm:gap-1.5">
             {featuredCars.map((car, index) => (
               <TrackCard
                 key={car.id}
@@ -150,13 +143,16 @@ function PinnedTrack({ featuredCars }) {
         </div>
 
         <div className="flex items-center gap-4 px-[8vw] pb-8">
+          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/20 bg-black/50 font-display text-xs font-bold text-white select-none">
+            N
+          </div>
           <div className="h-[2px] flex-1 overflow-hidden bg-white/10">
             <motion.div
               style={{ scaleX: lineScale }}
               className="h-full w-full origin-left bg-[#ff4d1a]"
             />
           </div>
-          <p className="text-xs tabular-nums tracking-[0.3em] text-white">
+          <p className="text-xs font-mono tabular-nums tracking-[0.25em] text-white">
             {pad(active + 1)} / {pad(count)}
           </p>
         </div>
@@ -171,10 +167,10 @@ function SwipeTrack({ featuredCars }) {
       <div className="px-4">
         <SectionHeading className="mb-8" />
       </div>
-      <div className="hide-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 [scroll-padding-inline:1rem]">
-        {featuredCars.map((car) => (
+      <div className="hide-scrollbar flex snap-x snap-mandatory gap-1.5 overflow-x-auto px-4 pb-4 [scroll-padding-inline:1rem]">
+        {featuredCars.map((car, index) => (
           <div key={car.id} className="h-[min(62vh,640px)] w-[86vw] shrink-0 snap-center">
-            <PremiumCarCard car={car} sizes="86vw" />
+            <CarCard car={car} sizes="86vw" priority={index === 0} />
           </div>
         ))}
       </div>
