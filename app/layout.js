@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
 import { BRAND_NAME } from "@/lib/brand";
+import SmoothScroll from "@/components/smooth-scroll";
 
 // Main Global Font: Clash Display Variable
 const clashDisplay = localFont({
@@ -31,8 +32,10 @@ export default function RootLayout({ children }) {
     <ClerkProvider>
       <html lang="en" className={`${clashDisplay.variable} ${trento.variable}`}>
         <body className="overflow-x-clip bg-[#050505] font-[family-name:var(--font-clash)] text-white antialiased">
-          <main className="min-h-screen">{children}</main>
-          <Toaster richColors theme="dark" />
+          <SmoothScroll>
+            <main className="min-h-screen">{children}</main>
+            <Toaster richColors theme="dark" />
+          </SmoothScroll>
         </body>
       </html>
     </ClerkProvider>
