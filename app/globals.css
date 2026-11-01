@@ -233,38 +233,61 @@ html.lenis body {
   }
 }
 
-/* Browse by Make. Stays one horizontal row; reduced motion pauses, it does not wrap. */
-@keyframes brand-marquee {
-  to {
-    transform: translateX(-50%);
+/* Browse by Make — Premium Automotive Marquee */
+@keyframes marquee-flow-left {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
-.brand-marquee {
-  overflow: hidden;
-  width: 100%;
+@keyframes marquee-flow-right {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
 }
 
-.brand-marquee-track {
-  display: flex;
-  flex-flow: row nowrap;
-  width: max-content;
-  gap: 1rem;
-  animation: brand-marquee 45s linear infinite;
+.brand-marquee-container {
+  overflow: hidden !important;
+  width: 100% !important;
+  position: relative !important;
+  display: block !important;
 }
 
-.brand-marquee-track[data-direction="reverse"] {
-  animation-direction: reverse;
+.brand-marquee-lane-right {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  width: max-content !important;
+  will-change: transform;
+  animation: marquee-flow-right 40s linear infinite;
 }
 
-.brand-marquee:hover .brand-marquee-track,
-.brand-marquee:focus-within .brand-marquee-track {
+.brand-marquee-lane-left {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  width: max-content !important;
+  will-change: transform;
+  animation: marquee-flow-left 44s linear infinite;
+}
+
+.brand-marquee-container:hover .brand-marquee-lane-right,
+.brand-marquee-container:hover .brand-marquee-lane-left,
+.brand-marquee-container:focus-within .brand-marquee-lane-right,
+.brand-marquee-container:focus-within .brand-marquee-lane-left {
   animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .brand-marquee-track {
-    animation-play-state: paused;
+  .brand-marquee-lane-right,
+  .brand-marquee-lane-left {
+    animation-play-state: paused !important;
   }
 }
 
