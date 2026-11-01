@@ -3,7 +3,6 @@
 import { serializeCarData } from "@/lib/helper";
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
-import { Dog } from "lucide-react";
 import { revalidatePath } from "next/cache";
 
 export async function getCarFilters() {
@@ -343,25 +342,27 @@ export async function getCarById(carId) {
     }
 
     // Check if user has already booked a test drive for this car
-    const existingTestDrive = await db.testDriveBooking.findFirst({
-      where: {
-        carId,
-        userId: dbUser.id,
-        status: { in: ["PENDING", "CONFIRMED", "COMPLETED"] },
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
-
     let userTestDrive = null;
 
-    if (existingTestDrive) {
-      userTestDrive = {
-        id: existingTestDrive.id,
-        status: existingTestDrive.status,
-        bookingDate: existingTestDrive.bookingDate.toISOString(),
-      };
+    if (dbUser) {
+      const existingTestDrive = await db.testDriveBooking.findFirst({
+        where: {
+          carId,
+          userId: dbUser.id,
+          status: { in: ["PENDING", "CONFIRMED", "COMPLETED"] },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+
+      if (existingTestDrive) {
+        userTestDrive = {
+          id: existingTestDrive.id,
+          status: existingTestDrive.status,
+          bookingDate: existingTestDrive.bookingDate.toISOString(),
+        };
+      }
     }
 
     // Get dealership info for test drive availability
@@ -393,6 +394,10 @@ export async function getCarById(carId) {
       },
     };
   } catch (error) {
-    throw new Error("Error fetching car details:" + error.message);
+    console.error("Error fetching car details:", error);
+    return {
+      success: false,
+      error: error.message,
+    };
   }
 }
